@@ -1,5 +1,5 @@
 {
-  "name": "blockfighterjs",
+  "name": "deedlocker",
   "version": "0.0.0",
   "private": true,
   "scripts": {
@@ -15,7 +15,10 @@
     "http-errors": "~1.6.3",
     "jade": "~1.11.0",
     "morgan": "~1.9.1",
-    "winston": "^3.8.2"
+    "winston": "^3.8.2",
+    "lodash": "^4.17.21",
+    "lowdb": "^1.0.0",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "nodemon": "^2.0.20"

@@ -1,0 +1,29 @@
+{{> menu/menu id="dashboard"}}
+
+<section class="ui segment">  
+    {{#each deedBoxes}}
+        <section class="ui vertical segment">
+          {{id}}
+        </section>
+          {{#each security}}
+            {{address1}}
+            {{address2}}
+            {{address3}}
+            {{county}}
+            {{eircode}}
+          {{/each}}
+        {{! UI Buttons }}
+        <section class="ui vertical segment">
+        <a href="/station/{{id}}">
+            <i class="bordered grey large link folder icon"></i>
+        </a>
+         <a href="/dashboard/deletestation/{{id}}">
+            <i class="bordered grey large link trash icon"></i>
+        </a>
+    {{/each}}
+</section>
+
+<section>
+
+</section>
+

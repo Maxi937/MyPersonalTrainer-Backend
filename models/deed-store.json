@@ -1,0 +1,50 @@
+{
+  "deedCollection": [
+    {
+      "id": "DB01",
+      "clientId": "3ad52697-6d98-4d80-8273-084de55a86c0",
+      "security": [
+        {
+          "address1": "12 Pebble Walk",
+          "address2": "Pebble Beach",
+          "address3": "Tramore",
+          "county": "Waterford",
+          "eircode": "X91Y6T8"
+        }
+      ],
+      "locations": [
+        {
+          "id": "01",
+          "date": "2021-04-25T07:20:42.138Z"
+        },
+        {
+          "id": "02",
+          "date": "2021-05-25T07:20:42.138Z"
+        }
+      ]
+    },
+    {
+      "id": "DB02",
+      "clientId": "3ad52697-6d98-4d80-8273-084de55a86c0",
+      "security": [
+        {
+          "address1": "7 Elm View",
+          "address2": "Clogerboy",
+          "address3": "Navan",
+          "county": "Meath",
+          "eircode": "C91X890"
+        }
+      ],
+      "locations": [
+        {
+          "id": "03",
+          "date": "2021-02-25T07:20:42.138Z"
+        },
+        {
+          "id": "04",
+          "date": "2021-03-25T07:20:42.138Z"
+        }
+      ]
+    }
+  ]
+}
