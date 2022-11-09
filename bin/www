@@ -1,38 +1,32 @@
 #!/usr/bin/env node
 
-/**
- * Module dependencies.
- */
 
+// Module dependencies.
 var app = require('../server');
-var debug = require('debug')('blockfighterjs:server');
 var http = require('http');
+const mongoose = require('mongoose');
+const logger = require('../utils/logger');
+var fs = require('fs');
 
-/**
- * Get port from environment and store in Express.
- */
-
+// Get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || '3000');
 app.set('port', port);
 
-/**
- * Create HTTP server.
- */
-
+// Create HTTP server.
 var server = http.createServer(app);
 
-/**
- * Listen on provided port, on all network interfaces.
- */
+// connect to mongoDB - will catch connection error and display relavant HTML File
+const dbURI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@deedlocker.flr9csz.mongodb.net/?`;
+mongoose.connect(dbURI)
+  .then((result) => server.listen(port))
+  .catch((err) => onError(err))
+  .catch((err) => process.disconnect())
 
-server.listen(port);
+// Listen on provided port, on all network interfaces.
 server.on('error', onError);
 server.on('listening', onListening);
 
-/**
- * Normalize a port into a number, string, or false.
- */
-
+// Normalize a port into a number, string, or false.
 function normalizePort(val) {
   var port = parseInt(val, 10);
 
@@ -45,18 +39,12 @@ function normalizePort(val) {
     // port number
     return port;
   }
-
   return false;
 }
 
-/**
- * Event listener for HTTP server "error" event.
- */
 
+// Event listener for HTTP server "error" event.
 function onError(error) {
-  if (error.syscall !== 'listen') {
-    throw error;
-  }
 
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
@@ -72,19 +60,28 @@ function onError(error) {
       console.error(bind + ' is already in use');
       process.exit(1);
       break;
+    case 8000:  //catch MONGODB Authentication fail and create a server serving a html file
+      logger.info(error)
+      logger.info("Unable to connect to DB");
+      fs.readFile('./public/serverErrors/dbConnectionError.html', function (err, html) {
+        if (err) throw err;
+        http.createServer(function(req, res){
+          res.writeHeader(200, {"Content-Type": "text/html"});  
+          res.write(html);  
+          res.end();  
+        }).listen(port);
+      })
+      console.log(port)
     default:
       throw error;
   }
 }
 
-/**
- * Event listener for HTTP server "listening" event.
- */
-
+// Event listener for HTTP server "listening" event.
 function onListening() {
   var addr = server.address();
   var bind = typeof addr === 'string'
     ? 'pipe ' + addr
     : 'port ' + addr.port;
-  debug('Listening on ' + bind);
+  logger.info('Listening on ' + bind);
 }

@@ -1,14 +1,13 @@
 "use strict"
 
 require("dotenv").config();
-var createError = require('http-errors');
+const createError = require('http-errors');
 const express = require('express');
-const mongoose = require('mongoose');
-var path = require('path');
-var cookieParser = require('cookie-parser');
-var exphbs = require("express-handlebars");
-var router = require("./router");
-var logger = require("./utils/logger");
+const cookieParser = require('cookie-parser');
+const path = require('path');
+const exphbs = require("express-handlebars");
+const router = require("./router");
+const logger = require("./utils/logger");
 
 
 // set up epress
@@ -20,17 +19,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // logger pass through
 app.use( (req, res, done) => {
+  console.log(req)
   logger.info(`${req.method} "${req.originalUrl}"`);
   done();
 });
-
-// connect to mongoDB
-const username = process.env.USERNAME
-const password = process.env.PASSWORD
-const dbURI = `mongodb+srv://${username}:${password}@deedlocker.flr9csz.mongodb.net/?`
-
-// router
-app.use("/", router)
 
 // view engine setup
 app.engine(
@@ -41,6 +33,9 @@ app.engine(
   })
 );
 app.set("view engine", ".hbs");
+
+// router
+app.use("/", router)
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -55,7 +50,7 @@ app.use(function(err, req, res, next) {
 
   // render the error page
   res.status(err.status || 500);
-  res.render("error", { url: req.originalUrl, err: err.message } );
+  res.render("partials/error", { url: req.originalUrl, err: err.message } );
   logger.error(`${err.status} ${err.message}`)
 });
 
