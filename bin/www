@@ -1,12 +1,15 @@
 #!/usr/bin/env node
 
-
 // Module dependencies.
 var app = require('../server');
 var http = require('http');
 const mongoose = require('mongoose');
-const logger = require('../utils/logger');
-var fs = require('fs');
+const fs = require('fs');
+const logger = require("../utils/logger");
+const { info } = require('console');
+const { response } = require('../server');
+
+logger.info("Initialising server")
 
 // Get port from environment and store in Express.
 var port = normalizePort(process.env.PORT || '3000');
@@ -28,6 +31,14 @@ mongoose.connect(dbURI)
 // Listen on provided port, on all network interfaces.
 server.on('error', onError);
 server.on('listening', onListening);
+//server.on('request', function (req, res){
+//  res.end(404)
+//})
+
+
+function onTest() {
+  console.log("I am Dev");
+}
 
 // Normalize a port into a number, string, or false.
 function normalizePort(val) {
@@ -63,8 +74,8 @@ function onError(error) {
       process.exit(1);
       break;
     case 8000:  //catch MONGODB Authentication fail and create a server serving a html file
-      logger.info(error)
-      logger.info("Unable to connect to DB");
+      logger.error(error)
+      logger.error("Unable to connect to DB");
       fs.readFile('./public/serverErrors/dbConnectionError.html', function (err, html) {
         if (err) throw err;
         http.createServer(function(req, res){

@@ -19,7 +19,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // logger pass through
 app.use( (req, res, done) => {
-  console.log(req)
   logger.info(`${req.method} "${req.originalUrl}"`);
   done();
 });
