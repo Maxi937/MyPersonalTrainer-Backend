@@ -15,10 +15,13 @@ app.set('port', port);
 // Create HTTP server.
 var server = http.createServer(app);
 
-// connect to mongoDB - will catch connection error and display relavant HTML File
+// connect to mongoDB - will catch authentication error and display relavant HTML File
 const dbURI = `mongodb+srv://${process.env.MONGODB_USERNAME}:${process.env.MONGODB_PASSWORD}@deedlocker.flr9csz.mongodb.net/?`;
 mongoose.connect(dbURI)
-  .then((result) => server.listen(port))
+  .then(function (result) {
+    logger.info("Successfully connected to DB")
+    server.listen(port)
+  })
   .catch((err) => onError(err))
   .catch((err) => process.disconnect())
 
@@ -45,7 +48,6 @@ function normalizePort(val) {
 
 // Event listener for HTTP server "error" event.
 function onError(error) {
-
   var bind = typeof port === 'string'
     ? 'Pipe ' + port
     : 'Port ' + port;
@@ -71,7 +73,6 @@ function onError(error) {
           res.end();  
         }).listen(port);
       })
-      console.log(port)
     default:
       throw error;
   }
