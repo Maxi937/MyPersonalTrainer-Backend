@@ -1,12 +1,15 @@
 "use strict"
 
+require("dotenv").config();
 var createError = require('http-errors');
-var express = require('express');
+const express = require('express');
+const mongoose = require('mongoose');
 var path = require('path');
 var cookieParser = require('cookie-parser');
-var exphbs = require("express-handlebars")
+var exphbs = require("express-handlebars");
 var router = require("./router");
-var logger = require("./utils/logger")
+var logger = require("./utils/logger");
+
 
 // set up epress
 var app = express();
@@ -20,6 +23,11 @@ app.use( (req, res, done) => {
   logger.info(`${req.method} "${req.originalUrl}"`);
   done();
 });
+
+// connect to mongoDB
+const username = process.env.USERNAME
+const password = process.env.PASSWORD
+const dbURI = `mongodb+srv://${username}:${password}@deedlocker.flr9csz.mongodb.net/?`
 
 // router
 app.use("/", router)
