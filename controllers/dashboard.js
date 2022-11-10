@@ -2,21 +2,61 @@
 
 const logger = require("../utils/logger");
 const uuid = require("uuid");
-const deedStore = require("../models/deed-store");
-const accounts = require("./accounts.js")
+const accounts = require("./accounts.js");
+const deedBoxStore = require("../models/deedBox-Store");
+const securityStore = require("../models/security-Store");
+const deedStore = require("../models/deedBox-Store");
 
 const dashboard = {
   index(request, response) {
     logger.info("dashboard rendering");
-    const loggedInUser = accounts.getCurrentClient(request);
-    const deedBoxes = deedStore.getUserDeedBoxes(loggedInUser.id);
 
-    const viewData = {
-      title: "Dashboard",
-      deedBoxes: deedBoxes,
-      loggedInUser: loggedInUser
+    deedStore.getAllDeedBoxes()
+      .then((result) => {
+        logger.info("All DeedBoxes Called")
+        const deedBoxes = result
+
+        const viewData = {
+          title: "Dashboard",
+          deedBoxes: deedBoxes,
+        };
+
+        response.render("dashboard", viewData);
+      })
+    
+  },
+
+  addDeedBoxTest(request, response) {
+    const security = {
+      address1: "tramore",
+      address2: "pebble walk",
+      address3: "pebble beach",
+      eircode: "X98T833",
+      county: "Waterford",
+    }
+
+    const location = {
+      name: "Belgard Solcitors",
+      address1: "Block D",
+      address2: "Cookstown Court",
+      address3: "Belgard Road",
+      eircode: "X98Z673",
+      county: "Dublin",
+      date: "2021-02-25T07:20:42.138Z"
+    }
+    deedBoxStore.addDeedBoxTest(security, location)
+  },
+
+  addSecurityTest(request, response) {
+    const security = {
+      address1: "tramore",
+      address2: "pebble walk",
+      address3: "pebble beach",
+      eircode: "X98T833",
+      county: "Waterford",
     };
-    response.render("dashboard", viewData);
+    securityStore.addSecurityTest(security)
+    response.redirect('/dashboard')
   },
 
   /*addStation(request, response) {

@@ -8,6 +8,7 @@ const path = require('path');
 const exphbs = require("express-handlebars");
 const router = require("./router");
 const logger = require("./utils/logger");
+const mongoose = require('mongoose');
 
 
 // set up epress
@@ -36,6 +37,15 @@ app.set("view engine", ".hbs");
 // router
 app.use("/", router)
 
+// Set up MongoDB 
+// TODO: case for connection error
+mongoose.connect(process.env.MONGODB_DBURI)
+  .then(function (result) {
+    logger.info("Successfully connected to DB")
+    beginListening(process.env.PORT)
+  })
+  .catch((err) => console.log("Unable to connect to DB"))
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
@@ -52,5 +62,11 @@ app.use(function(err, req, res, next) {
   res.render("partials/error", { url: req.originalUrl, err: err.message } );
   logger.error(`${err.status} ${err.message}`)
 });
+
+function beginListening(port){
+  var server = app.listen( port || 3000, function(){
+    logger.info('Listening on port ' + server.address().port);
+  });
+}
 
 module.exports = app;

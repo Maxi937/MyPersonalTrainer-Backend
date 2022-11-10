@@ -1,6 +1,5 @@
 "use strict";
 
-const clientStore = require("../models/client-store");
 const logger = require("../utils/logger");
 const uuid = require("uuid");
 

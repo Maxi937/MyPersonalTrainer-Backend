@@ -5,13 +5,10 @@ const accounts = require("./accounts.js")
 
 const about = {
   index(request, response) {
-    logger.info("about rendering");
-
-    const loggedInUser = accounts.getCurrentUser(request)
+    logger.info("Rendering About");
 
     const viewData = {
       title: "About",
-      loggedInUser: loggedInUser
     };
     response.render("about", viewData);
   },
