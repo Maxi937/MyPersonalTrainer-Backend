@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("../utils/logger");
+const logger = require("../config/logger");
 const accounts = require("./accounts.js")
 
 const about = {

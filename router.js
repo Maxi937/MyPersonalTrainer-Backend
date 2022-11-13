@@ -11,6 +11,7 @@ const dashboard = require("./controllers/dashboard")
 
 //home
 router.get("/", home.index);
+router.get("/error500", home.error500)
 
 //About
 router.get("/about", about.index);

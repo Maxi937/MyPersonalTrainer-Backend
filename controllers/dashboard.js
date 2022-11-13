@@ -1,6 +1,6 @@
 "use strict";
 
-const logger = require("../utils/logger");
+const logger = require("../config/logger");
 const uuid = require("uuid");
 const accounts = require("./accounts.js");
 const deedBoxStore = require("../models/deedBox-Store");
@@ -11,19 +11,16 @@ const dashboard = {
   index(request, response) {
     logger.info("dashboard rendering");
 
-    deedStore.getAllDeedBoxes()
-      .then((result) => {
-        logger.info("All DeedBoxes Called")
-        const deedBoxes = result
+    deedStore.getAllDeedBoxes().then((result) => {
+      logger.info("All DeedBoxes Called");
+      const deedBoxes = result;
 
-        const viewData = {
-          title: "Dashboard",
-          deedBoxes: deedBoxes,
-        };
-
-        response.render("dashboard", viewData);
-      })
-    
+      const viewData = {
+        title: "Dashboard",
+        deedBoxes: deedBoxes,
+      };
+      response.render("dashboard", viewData);
+    });
   },
 
   addDeedBoxTest(request, response) {
@@ -33,7 +30,7 @@ const dashboard = {
       address3: "pebble beach",
       eircode: "X98T833",
       county: "Waterford",
-    }
+    };
 
     const location = {
       name: "Belgard Solcitors",
@@ -42,9 +39,9 @@ const dashboard = {
       address3: "Belgard Road",
       eircode: "X98Z673",
       county: "Dublin",
-      date: "2021-02-25T07:20:42.138Z"
-    }
-    deedBoxStore.addDeedBoxTest(security, location)
+      date: "2021-02-25T07:20:42.138Z",
+    };
+    deedBoxStore.addDeedBoxTest(security, location);
   },
 
   addSecurityTest(request, response) {
@@ -55,8 +52,8 @@ const dashboard = {
       eircode: "X98T833",
       county: "Waterford",
     };
-    securityStore.addSecurityTest(security)
-    response.redirect('/dashboard')
+    securityStore.addSecurityTest(security);
+    response.redirect("/dashboard");
   },
 
   /*addStation(request, response) {
