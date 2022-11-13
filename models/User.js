@@ -1,29 +1,29 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 
-const securitySchema = new Schema({
-  address1: {
+const userSchema = new Schema({
+  fName: {
     type: String,
     required: true
   },
-  address2: {
+  lName: {
     type: String,
     required: true
   },
-  address3: {
+  organisation:{
     type: String,
     required: true
   },
-  eircode: {
+  email: {
     type: String,
     required: true
   },
-  county: {
+  password: {
     type: String,
     required: true
   },
 }, { timestamps: true })
 
-const Security = mongoose.model('Security', securitySchema);
+const User = mongoose.model('User', userSchema);
 
-module.exports = Security;
+module.exports = User;

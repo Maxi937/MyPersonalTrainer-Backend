@@ -2,7 +2,7 @@
 
 const _ = require("lodash");
 const logger = require("../config/logger");
-const DeedBox = require("./deedBox");
+const DeedBox = require("./DeedBox");
 
 
 const deedStore = {
