@@ -5,7 +5,7 @@ const logger = require("../config/logger");
 const Security = require("./Security");
 
 
-const securitiesStore = {
+const securityStore = {
 
   addSecuritiesTest(securityToAdd) {
     const security = new Security({
@@ -24,4 +24,4 @@ const securitiesStore = {
   }
 }
 
-module.exports = securitiesStore;
+module.exports = securityStore;

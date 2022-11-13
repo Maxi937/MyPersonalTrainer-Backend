@@ -5,7 +5,6 @@ const uuid = require("uuid");
 const accounts = require("./accounts.js");
 const deedBoxStore = require("../models/deedBox-Store");
 const securityStore = require("../models/security-Store");
-const deedStore = require("../models/deedBox-Store");
 
 const dashboard = {
   index(request, response) {
