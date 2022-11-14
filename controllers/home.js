@@ -1,7 +1,5 @@
 "use strict";
 const logger = require("../config/logger");
-const userStore = require("../models/user-Store");
-const User = require("../models/User");
 
 const home = {
   index(req, res) {
@@ -27,25 +25,6 @@ const home = {
     err.name = "Server Test Error 500"; // you can custom insert your error name
     throw err;
   },
-
-  addUserTest(req, res) {
-    const User = new User({
-      fName: "Max",
-      lName: "Hornby",
-      organisation: "KPMG",
-      email: "mhornby123@gmail.com",
-      password: "secret",
-    })
-
-    User.save()
-      .then((result) => {
-        logger.info('User added Successfully');
-        res.redirect("/index")
-      })
-      .catch((err) => {
-        logger.error(err);
-      });
-  }
 };
 
 module.exports = home;

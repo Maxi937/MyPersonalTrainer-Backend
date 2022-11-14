@@ -12,6 +12,15 @@ const deedBoxSchema = new Schema({
   }
 }, { timestamps: true })
 
+deedBoxSchema.statics.findAll = function() {
+  try {
+    logger.info(this.find({}).lean() )
+    return this.find({}).lean() 
+  } catch (err) {
+    logger.error(err);
+  }
+}
+
 const DeedBox = mongoose.model('DeedBox', deedBoxSchema);
 
 module.exports = DeedBox;

@@ -43,7 +43,6 @@ router.get("/dashboard", dashboard.index);
 //test
 router.get('/add-deedBox', dashboard.addDeedBoxTest);
 router.get('/add-security', dashboard.addSecurityTest);
-router.get('/adduser', home.addUserTest);
 
 
 module.exports = router;

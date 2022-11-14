@@ -1,18 +1,21 @@
-{{> welcome-menu id="signup"}}
+{{> menu/welcome-menu id="signup"}}
 
-<div class="ui two column grid segment">
-  <div class="column">
+<div class="ui segment">
     <form class="ui stacked segment form" action="/register" method="POST">
       <h3 class="ui header">Register</h3>
       <div class="two fields">
         <div class="field">
           <label>First Name</label>
-          <input placeholder="First Name" type="text" name="firstName">
+          <input placeholder="First Name" type="text" name="fName">
         </div>
         <div class="field">
           <label>Last Name</label>
-          <input placeholder="Last Name" type="text" name="lastName">
+          <input placeholder="Last Name" type="text" name="lName">
         </div>
+      </div>
+      <div class="field">
+        <label>Organisation</label>
+        <input placeholder="Organisation" type="text" name="organisation">
       </div>
       <div class="field">
         <label>Email</label>
@@ -24,8 +27,5 @@
       </div>
       <button class="ui blue submit button">Submit</button>
     </form>
-  </div>
-  <div class="stretched column">
-    <img class="ui huge rounded image" src="/images/1_iSG4hcxJp7umCEFOVRTXAA.png">
   </div>
 </div>
