@@ -1,5 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const logger = require("../config/logger");
 
 const securitySchema = new Schema({
   address1: {
@@ -23,6 +24,17 @@ const securitySchema = new Schema({
     required: true
   },
 }, { timestamps: true })
+
+
+securitySchema.methods.addSecurity = function () {
+  try {
+    this.save();
+    logger.info("Security added Successfully");
+    logger.info(this);
+  } catch (err) {
+    logger.error(err);
+  }
+};
 
 const Security = mongoose.model('Security', securitySchema);
 

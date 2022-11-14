@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
-const logger = require("../config/logger");
 const Schema = mongoose.Schema;
+const logger = require("../config/logger");
 
 const userSchema = new Schema(
   {

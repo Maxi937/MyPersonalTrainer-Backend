@@ -41,8 +41,8 @@ router.get("/dashboard", dashboard.index);
 //router.get("/dashboard/:id/addAutoReading", dashboard.addAutoReading)
 
 //test
-router.get('/add-deedBox', dashboard.addDeedBoxTest);
-router.get('/add-security', dashboard.addSecurityTest);
+router.get('/addDeedBox', dashboard.addDeedBox);
+router.get('/addSecurity', dashboard.addSecurity);
 
 
 module.exports = router;

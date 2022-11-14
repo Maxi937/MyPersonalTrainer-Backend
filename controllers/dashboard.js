@@ -3,55 +3,50 @@
 const logger = require("../config/logger");
 const uuid = require("uuid");
 const accounts = require("./accounts.js");
-const deedBoxStore = require("../models/deedBox-Store");
-const securityStore = require("../models/security-Store");
+const DeedBox = require("../models/DeedBox");
+const Security = require("../models/Security");
 
 const dashboard = {
-  index(request, response) {
+ async index(request, response) {
     logger.info("dashboard rendering");
 
-    deedStore.getAllDeedBoxes().then((result) => {
-      logger.info("All DeedBoxes Called");
-      const deedBoxes = result;
+   const deedBoxes = await DeedBox.findAll();
+   console.log(deedBoxes)
 
-      const viewData = {
-        title: "Dashboard",
-        deedBoxes: deedBoxes,
-      };
-      response.render("dashboard", viewData);
+    const viewData = {
+      title: "Dashboard",
+      deedBoxes: deedBoxes,
+    };
+    response.render("dashboard", viewData);
+  },
+
+  addDeedBox(request, response) {
+    const deedBox = new DeedBox({
+      client: "63729d662e50fb12613af7b7",
+      securities: "6372b0e7d0fa95619b6b1aea",
+      locations: {
+        date: "2021-02-25T07:20:42.138Z",
+        name: "Belgard Solcitors",
+        address1: "Block D",
+        address2: "Cookstown Court",
+        address3: "Belgard Road",
+        eircode: "X98Z673",
+        county: "Dublin",
+      }
+    })
+    deedBox.addDeedBox();
+    response.redirect("/dashboard");
+  },
+
+  addSecurity(request, response) {
+    const security = new Security({
+      address1: "No.7",
+      address2: "Elm View",
+      address3: "Clogherboy",
+      eircode: "XTF7YBVY",
+      county: "Meath",
     });
-  },
-
-  addDeedBoxTest(request, response) {
-    const security = {
-      address1: "tramore",
-      address2: "pebble walk",
-      address3: "pebble beach",
-      eircode: "X98T833",
-      county: "Waterford",
-    };
-
-    const location = {
-      name: "Belgard Solcitors",
-      address1: "Block D",
-      address2: "Cookstown Court",
-      address3: "Belgard Road",
-      eircode: "X98Z673",
-      county: "Dublin",
-      date: "2021-02-25T07:20:42.138Z",
-    };
-    deedBoxStore.addDeedBoxTest(security, location);
-  },
-
-  addSecurityTest(request, response) {
-    const security = {
-      address1: "tramore",
-      address2: "pebble walk",
-      address3: "pebble beach",
-      eircode: "X98T833",
-      county: "Waterford",
-    };
-    securityStore.addSecurityTest(security);
+    security.addSecurity();
     response.redirect("/dashboard");
   },
 
