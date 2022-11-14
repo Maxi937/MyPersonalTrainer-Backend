@@ -1,7 +1,9 @@
+const { upperCase } = require('lodash');
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const logger = require("../config/logger");
 
+// TODO: Add Validators for inputs
 const securitySchema = new Schema({
   address1: {
     type: String,
@@ -17,7 +19,8 @@ const securitySchema = new Schema({
   },
   eircode: {
     type: String,
-    required: true
+    required: true,
+    uppercase: true
   },
   county: {
     type: String,

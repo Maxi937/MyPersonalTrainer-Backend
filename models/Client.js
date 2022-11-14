@@ -2,7 +2,8 @@ const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const logger = require("../config/logger");
 
-const userSchema = new Schema(
+// TODO: Add Validators for inputs
+const clientSchema = new Schema(
   {
     fName: {
       type: String,
@@ -19,6 +20,7 @@ const userSchema = new Schema(
     email: {
       type: String,
       required: true,
+      lowercase: true
     },
     password: {
       type: String,
@@ -28,7 +30,7 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-userSchema.methods.addUser = function () {
+clientSchema.methods.addUser = function () {
   try {
     this.save();
     logger.info("User added Successfully");
@@ -38,7 +40,7 @@ userSchema.methods.addUser = function () {
   }
 };
 
-userSchema.statics.findAll = function() {
+clientSchema.statics.findAll = function() {
   try {
     logger.info(this.find({}).lean() )
     return this.find({}).lean() 
@@ -47,11 +49,11 @@ userSchema.statics.findAll = function() {
   }
 }
 
-userSchema.query.byEmail = function(email) {
-  return this.where({ name: new RegExp(email, "i") })
+clientSchema.query.byEmail = function(email) {
+  return this.findOne({ email: new RegExp(email, "i") }).lean()
 }
 
-const User = mongoose.model("User", userSchema);
+const Client = mongoose.model("Client", clientSchema);
 
 
-module.exports = User;
+module.exports = Client;

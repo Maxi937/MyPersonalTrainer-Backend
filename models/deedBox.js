@@ -1,24 +1,33 @@
-const mongoose = require('mongoose');
+const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const logger = require("../config/logger");
 
-const deedBoxSchema = new Schema({
-  client: {
-    type: mongoose.SchemaTypes.ObjectId,
-    required: false
+// TODO: Add Validators for inputs
+const deedBoxSchema = new Schema(
+  {
+    client: {
+      type: mongoose.SchemaTypes.ObjectId,
+      ref: "Client",
+      required: false
+    },
+    securities:
+      [{
+        type: mongoose.SchemaTypes.ObjectId,
+        ref: "Security",
+      }],
+    locations: [{}],
   },
-  securities: [mongoose.SchemaTypes.ObjectId],
-  locations:[{}]
-}, { timestamps: true })
+  { timestamps: true }
+);
 
 // .statics can be called directly on the DeedBox model
-deedBoxSchema.statics.findAll = function() {
+deedBoxSchema.statics.findAll = function () {
   try {
-    return this.find({}).lean() 
+    return this.find({}).populate("securities").lean();
   } catch (err) {
     logger.error(err);
   }
-}
+};
 
 // .methods must be called on a deedBox object
 deedBoxSchema.methods.addDeedBox = function () {
@@ -31,6 +40,20 @@ deedBoxSchema.methods.addDeedBox = function () {
   }
 };
 
-const DeedBox = mongoose.model('DeedBox', deedBoxSchema);
+// .methods must be called on a deedBox query object
+deedBoxSchema.query.byClientId = function (clientId) {
+  try{
+    return this
+    .where("client")
+    .equals(clientId)
+    .populate("securities")
+    .lean()
+  }
+  catch(err){
+    logger.error(err);
+  }
+}
+
+const DeedBox = mongoose.model("DeedBox", deedBoxSchema);
 
 module.exports = DeedBox;

@@ -1,7 +1,7 @@
 "use strict";
 
 const logger = require("../config/logger");
-const User = require("../models/User");
+const Client = require("../models/Client");
 
 const accounts = {
   login(request, response) {
@@ -12,7 +12,7 @@ const accounts = {
   },
 
   logout(request, response) {
-    response.cookie("station", "");
+    response.cookie("client", "");
     response.redirect("/");
   },
 
@@ -20,7 +20,7 @@ const accounts = {
     const viewData = {
       title: "Login to the Service",
     };
-    response.render("forms/newUser", viewData);
+    response.render("forms/newClient", viewData);
   },
 
   register(request, response) {
@@ -35,21 +35,28 @@ const accounts = {
     response.redirect("/");
   },
 
-  authenticate(request, response) {
-    const user = User.find().byEmail(request.body.email);
-    if (user) {
-      logger.info("login successful")
-      response.cookie("user", user.email);
+  async authenticate(request, response) {
+    const client = await Client.find().byEmail(request.body.email);
+    const email = await client.email
+
+    console.log(request.body.email)
+
+    console.log(await client.email)
+ 
+    if (client._id) {
+      logger.info("login successful");
+      response.cookie("client", email);
       response.redirect("/dashboard");
     } else {
       response.redirect("/login");
     }
   },
 
-//  getCurrentClient(request) {
-//    const userEmail = request.cookies.deedBox;
-////    return clientStore.getClientByEmail(userEmail);
-//  },
+  async getCurrentClient(request) {
+    console.log(request)
+    const email = request.cookie.client;
+    return await Client.find().byEmail(email);
+  },
 };
 
 module.exports = accounts;

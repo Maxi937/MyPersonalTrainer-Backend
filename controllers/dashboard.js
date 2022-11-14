@@ -7,11 +7,13 @@ const DeedBox = require("../models/DeedBox");
 const Security = require("../models/Security");
 
 const dashboard = {
- async index(request, response) {
+  async index(request, response) {
     logger.info("dashboard rendering");
+    
+    const currentClient = await accounts.getCurrentClient(request);
+    const deedBoxes = await DeedBox.find().byClientId(currentClient);
 
-   const deedBoxes = await DeedBox.findAll();
-   console.log(deedBoxes)
+    console.log(currentClient);
 
     const viewData = {
       title: "Dashboard",
@@ -22,8 +24,8 @@ const dashboard = {
 
   addDeedBox(request, response) {
     const deedBox = new DeedBox({
-      client: "63729d662e50fb12613af7b7",
-      securities: "6372b0e7d0fa95619b6b1aea",
+      client: "6372b88df4ecc61e4b40c2df",
+      securities: "6372b99ae69bfe9b7bac06c1",
       locations: {
         date: "2021-02-25T07:20:42.138Z",
         name: "Belgard Solcitors",
@@ -32,19 +34,19 @@ const dashboard = {
         address3: "Belgard Road",
         eircode: "X98Z673",
         county: "Dublin",
-      }
-    })
+      },
+    });
     deedBox.addDeedBox();
     response.redirect("/dashboard");
   },
 
   addSecurity(request, response) {
     const security = new Security({
-      address1: "No.7",
-      address2: "Elm View",
-      address3: "Clogherboy",
-      eircode: "XTF7YBVY",
-      county: "Meath",
+      address1: "12 Pebble Walk",
+      address2: "Pebble Beach",
+      address3: "Pickardstown",
+      eircode: "XCT6Y767",
+      county: "Waterford",
     });
     security.addSecurity();
     response.redirect("/dashboard");
