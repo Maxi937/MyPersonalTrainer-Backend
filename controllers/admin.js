@@ -8,10 +8,15 @@ const Client = require("../models/Client");
 const admin = {
   async index(req, res) {
 
-    const clientInfo = await Client.findAll()
+    const clientInfo = await Client.findAll();
+    const unassignedDeedBoxes = await DeedBox.findUnassigned();
+    const allDeedBoxes = await DeedBox.find();
+
+    console.log(allDeedBoxes)
+    console.log(unassignedDeedBoxes)
 
     for (const client of clientInfo) {
-      const deedBoxes = await DeedBox.find().byClientId(client._id)
+      const deedBoxes = await DeedBox.find().byClientId(client._id);
       client.deedBoxCount = deedBoxes.length;
     }
     
@@ -53,8 +58,10 @@ const admin = {
 
   async addDeedBox(req, res){
     const deedBox = req.session.deedBox;
+ 
     logger.info(`Added: ${deedBox._id.toString()}`)
     try {
+      deedBox.addDeedBox()
       delete req.session.deedBox
     }
     catch (err) {
