@@ -13,7 +13,7 @@ function clickableTable(numberOfRows, route){
     const href = document.getElementById(`clickableRow-href-${i}`).innerHTML.trim()
     //console.log(row)
     row.addEventListener("click", () => {
-      window.location.href = `${route}/${href}`;
+      window.location.href = `/${route}/${href}`;
     });
   }
 }

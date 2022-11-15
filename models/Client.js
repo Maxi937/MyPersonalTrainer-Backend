@@ -42,7 +42,6 @@ clientSchema.methods.addUser = function () {
 
 clientSchema.statics.findAll = function() {
   try {
-    logger.info(this.find({}).lean() )
     return this.find({}).lean() 
   } catch (err) {
     logger.error(err);

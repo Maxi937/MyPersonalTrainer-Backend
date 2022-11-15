@@ -11,6 +11,8 @@ const dashboard = require('./controllers/dashboard')
 // Admin
 router.get("/admin", admin.index);
 router.get("/admin/client/:id", admin.client)
+router.get("/admin/newDeedBox", admin.newDeedBox)
+router.post("/admin/addDeedBox", admin.addDeedBox)
 
 // Home
 router.get("/", home.index);
@@ -44,10 +46,6 @@ router.get("/dashboard", dashboard.index);
 //router.get("/dashboard/deletestation/:id", dashboard.deleteStation);
 //router.post("/dashboard/addstation", dashboard.addStation);
 //router.get("/dashboard/:id/addAutoReading", dashboard.addAutoReading)
-
-// test
-router.get('/addDeedBox', dashboard.addDeedBox);
-router.get('/addSecurity', dashboard.addSecurity);
 
 
 module.exports = router;

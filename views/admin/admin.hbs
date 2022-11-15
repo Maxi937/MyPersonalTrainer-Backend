@@ -1,14 +1,5 @@
 {{> admin/admin-menu id="admin"}}
 
-<div class="ui two column grid">
+{{> admin/admin-left-menu}}
 
-  <div class="column">
-    <section class="ui segment">
-      {{> admin/clients clients = clientInfo}}
-    </section>
-  </div>
-
-
-
-
-</div>
+{{> admin/clients clients = clientInfo}}

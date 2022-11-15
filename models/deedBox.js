@@ -14,8 +14,13 @@ const deedBoxSchema = new Schema(
       [{
         type: mongoose.SchemaTypes.ObjectId,
         ref: "Security",
+        required: false
       }],
-    locations: [{}],
+    locations: [
+      {
+        required:false
+      }
+    ],
   },
   { timestamps: true }
 );

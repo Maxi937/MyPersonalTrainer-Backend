@@ -22,36 +22,6 @@ const dashboard = {
     response.render("dashboard", viewData);
   },
 
-  addDeedBox(request, response) {
-    const deedBox = new DeedBox({
-      client: "6372b88df4ecc61e4b40c2df",
-      securities: "6372b99ae69bfe9b7bac06c1",
-      locations: {
-        date: "2021-02-25T07:20:42.138Z",
-        name: "Belgard Solcitors",
-        address1: "Block D",
-        address2: "Cookstown Court",
-        address3: "Belgard Road",
-        eircode: "X98Z673",
-        county: "Dublin",
-      },
-    });
-    deedBox.addDeedBox();
-    response.redirect("/dashboard");
-  },
-
-  addSecurity(request, response) {
-    const security = new Security({
-      address1: "12 Pebble Walk",
-      address2: "Pebble Beach",
-      address3: "Pickardstown",
-      eircode: "XCT6Y767",
-      county: "Waterford",
-    });
-    security.addSecurity();
-    response.redirect("/dashboard");
-  },
-
   /*addStation(request, response) {
     const loggedInUser = accounts.getCurrentUser(request)
     console.log(request.body)

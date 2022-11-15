@@ -1,10 +1,14 @@
 {{> admin/admin-menu id="admin"}}
 
+
+{{> admin/admin-left-menu}}
+
 <section class="ui segment">
   <section class="ui blue inverted segment">
     <p><em><span class="ui big white text">{{client.organisation}}</span></em></p>
     <p>ID: {{client._id}}</p>
   </section>
+
   {{deedBoxes._id}}
   <section class="ui vertical segment">
       {{> admin/client-deedboxes deedBoxes = deedBoxes}}

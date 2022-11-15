@@ -33,12 +33,35 @@ const admin = {
     const viewData = {
       client,
       deedBoxes,
-      title: "Admin-Client",
+      title: "Admin",
     };
-
     logger.info("Rendering Admin Client");
     res.render("admin/client", viewData);
   },
+
+  newDeedBox(req, res){
+    const deedBox = new DeedBox;
+    req.session.deedBox = deedBox;
+    logger.info(deedBox._id.toString())
+    const viewData = {
+      deedBox: deedBox,
+      deedBoxId: deedBox.id.toString(),
+      title: "Admin",
+    };
+    res.render("admin/forms/newDeedBox", viewData)
+  },
+
+  async addDeedBox(req, res){
+    const deedBox = req.session.deedBox;
+    logger.info(`Added: ${deedBox._id.toString()}`)
+    try {
+      delete req.session.deedBox
+    }
+    catch (err) {
+      logger.info(err)
+    }
+    res.redirect("/admin")
+  }
 
 
 

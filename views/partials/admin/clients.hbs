@@ -1,6 +1,7 @@
 <table class="ui center aligned fixed table" id="clickableTable">
   <thead>
     <tr>
+      <th>ID</th>
       <th>Client</th>
       <th>Email</th>
       <th>Deed Boxes</th>
@@ -13,6 +14,9 @@
       <td id="clickableRow-href-{{@index}}">
         {{_id}}
       </td>
+      <td id="clickableRow-href-{{@index}}">
+        {{organisation}}
+      </td>
       <td>
         {{email}}
       </td>
@@ -20,7 +24,7 @@
         {{deedBoxCount}}
       </td>
       <td>
-        <a href="admin/client/{{_id}}">
+        <a href="/admin/client/{{_id}}">
           <i class="bordered grey  link folder icon"></i>
         </a>
       </td>

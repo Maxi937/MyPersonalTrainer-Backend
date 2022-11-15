@@ -1,0 +1,14 @@
+
+{{> admin/admin-menu id="admin"}}
+
+{{> admin/admin-left-menu}}
+
+<div class="ui segment">
+    <form class="ui stacked segment form" action="/admin/addDeedBox" method="POST">
+      <h2 class="ui header">Add Deed Box</h2>
+      <p><b>New Deed Box ID:</b> {{deedBoxId}}</p>
+      <div class="two fields"></div>
+      <button class="ui blue submit button">Submit</button>
+    </form>
+  </div>
+</div>
