@@ -11,9 +11,9 @@ const dashboard = {
     logger.info("dashboard rendering");
     
     const currentClient = await accounts.getCurrentClient(request);
-    const deedBoxes = await DeedBox.find().byClientId(currentClient);
+    const deedBoxes = await DeedBox.find().byClientId(currentClient._id);
 
-    console.log(currentClient);
+    console.log(deedBoxes);
 
     const viewData = {
       title: "Dashboard",

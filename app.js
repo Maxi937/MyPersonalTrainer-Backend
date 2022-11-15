@@ -47,11 +47,13 @@ app.engine(
 app.set("view engine", ".hbs");
 
 // Sessions
+const oneDay = 1000 * 60 * 60 * 24;
 app.use(
   session({
-    secret: "keyboard cat",
+    secret: process.env.SESSIONS_SECRET,
     resave: false,
     saveUninitialized: false,
+    cookie: { maxAge: oneDay },
     store: MongoStore.create({ mongoUrl: process.env.MONGODB_URI }),
   })
 );

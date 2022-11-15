@@ -12,7 +12,7 @@ const accounts = {
   },
 
   logout(request, response) {
-    response.cookie("client", "");
+    request.session.destroy();
     response.redirect("/");
   },
 
@@ -36,16 +36,22 @@ const accounts = {
   },
 
   async authenticate(request, response) {
+    // Check if Admin & reroute
+    if (request.body.email === process.env.ADMIN_USERNAME && request.body.email === process.env.ADMIN_USERNAME){
+      logger.info("Admin Login successful");
+      request.session.admin = true;
+      return response.redirect("/admin");
+    }
+  
     const client = await Client.find().byEmail(request.body.email);
     const email = await client.email
 
     console.log(request.body.email)
-
-    console.log(await client.email)
+    console.log(request.session)
  
     if (client._id) {
       logger.info("login successful");
-      response.cookie("client", email);
+      request.session.email = email;
       response.redirect("/dashboard");
     } else {
       response.redirect("/login");
@@ -53,8 +59,8 @@ const accounts = {
   },
 
   async getCurrentClient(request) {
-    console.log(request)
-    const email = request.cookie.client;
+    console.log(request.session)
+    const email = request.session.email;
     return await Client.find().byEmail(email);
   },
 };
