@@ -49,6 +49,14 @@ clientSchema.statics.findAll = function() {
   }
 }
 
+clientSchema.statics.byClientId = function(clientId) {
+  try {
+    return this.find({clientId}).lean() 
+  } catch (err) {
+    logger.error(err);
+  }
+}
+
 clientSchema.query.byEmail = function(email) {
   return this.findOne({ email: new RegExp(email, "i") }).lean()
 }

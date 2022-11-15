@@ -37,10 +37,15 @@ const accounts = {
 
   async authenticate(request, response) {
     // Check if Admin & reroute
-    if (request.body.email === process.env.ADMIN_USERNAME && request.body.email === process.env.ADMIN_USERNAME){
-      logger.info("Admin Login successful");
-      request.session.admin = true;
-      return response.redirect("/admin");
+    if (request.body.email === process.env.ADMIN_USERNAME) {
+      if(request.body.password === process.env.ADMIN_PASSWORD){
+        logger.info("Admin Login successful");
+        request.session.admin = true;
+        return response.redirect("/admin");
+      }
+      else {
+        return response.redirect("/login");
+      }
     }
   
     const client = await Client.find().byEmail(request.body.email);

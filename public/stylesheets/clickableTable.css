@@ -1,0 +1,5 @@
+#clickableTable tr:hover {
+  background: #f2f3ff;
+  outline: none;
+  cursor: pointer;
+}

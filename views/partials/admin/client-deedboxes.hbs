@@ -1,0 +1,40 @@
+<table class="ui center aligned fixed table" id="clickableTable">
+  <thead>
+    <tr>
+      <th>Deed Box</th>
+      <th colspan="2">Security</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  {{#each deedBoxes}}
+  <tbody>
+    <tr id="clickableRow-{{@index}}">
+      <td id="clickableRow-href-{{@index}}">
+        {{_id}}
+      </td>
+      <td colspan="2">
+        {{#each securities}}
+          {{this.address1}}, <br>
+          {{this.address2}}, <br>
+          {{this.address3}}, <br>
+          {{this.eircode}}, <br>
+          {{this.county}} 
+        {{/each}}
+      </td>
+      <td>
+        {{deedBoxCount}}
+      </td>
+      <td>
+        <a href="admin/client/{{_id}}">
+          <i class="bordered grey  link folder icon"></i>
+        </a>
+      </td>
+    </tr>
+  </tbody>
+  {{/each}}
+</table>
+
+<script>
+  clickableTable({{deedboxes.length}}, 'admin/deedBox')
+</script>
