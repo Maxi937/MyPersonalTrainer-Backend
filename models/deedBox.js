@@ -42,6 +42,14 @@ deedBoxSchema.statics.findUnassigned = function () {
   }
 };
 
+deedBoxSchema.statics.findOneUnassigned = function () {
+  try {
+    return this.find({}).where({ client: null }).populate("securities").findOne();
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
 // .methods must be called on a deedBox object
 
 

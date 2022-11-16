@@ -16,6 +16,7 @@ router.get("/admin/client/:id", admin.client)
 router.get("/admin/client/:id/deedBox/:deedBoxId", admin.index) // TODO: DeedBox View
 router.get("/admin/newDeedBox", admin.newDeedBox)
 router.post("/admin/addDeedBox", admin.addDeedBox)
+router.get("/admin/assigndeedbox/:securityId", admin.assignDeedBox)
 
 // Home
 router.get("/", home.index);

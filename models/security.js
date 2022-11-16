@@ -13,7 +13,7 @@ const securitySchema = new Schema({
   deedBox: {
     type: mongoose.SchemaTypes.ObjectId,
     ref: "DeedBox",
-    required: true
+    required: false
   },
   address1: {
     type: String,

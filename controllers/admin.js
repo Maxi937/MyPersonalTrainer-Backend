@@ -74,10 +74,21 @@ const admin = {
       logger.info(err)
     }
     res.redirect("/admin")
+  },
+
+  async assignDeedBox(req, res){
+    const security = await Security.findById(req.params.securityId)
+    const unassignedDeedBox = await DeedBox.findOneUnassigned() 
+
+    security.deedBox = unassignedDeedBox._id
+    unassignedDeedBox.security = security
+
+    security.save();
+    unassignedDeedBox.save();
+
+    console.log(unassignedDeedBox)
+    res.redirect("/admin")
   }
-
-
-
 };
 
 module.exports = admin;
