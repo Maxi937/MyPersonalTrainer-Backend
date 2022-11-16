@@ -23,10 +23,10 @@
         {{/each}}
       </td>
       <td>
-        {{deedBoxCount}}
+
       </td>
       <td>
-        <a href="admin/client/{{_id}}">
+        <a href='{{../clientId}}/deedBox/{{_id}}'>
           <i class="bordered grey  link folder icon"></i>
         </a>
       </td>
@@ -35,6 +35,7 @@
   {{/each}}
 </table>
 
+
 <script>
-  clickableTable({{deedboxes.length}}, 'admin/deedBox')
+  clickableTable({{deedBoxes.length}}, '{{clientId}}/deedBox')
 </script>

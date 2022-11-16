@@ -9,9 +9,8 @@
     <p>ID: {{client._id}}</p>
   </section>
 
-  {{deedBoxes._id}}
   <section class="ui vertical segment">
-      {{> admin/client-deedboxes deedBoxes = deedBoxes}}
+      {{> admin/client-deedboxes deedBoxes = deedBoxes clientId = client._id}}
   </section>
 
   <section class="ui vertical segment">
