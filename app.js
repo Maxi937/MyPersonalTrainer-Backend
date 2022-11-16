@@ -11,7 +11,7 @@ const router = require("./router");
 const logger = require("./config/logger");
 const connectDB = require("./config/db");
 const MongoStore = require("connect-mongo");
-const responseTime = require('response-time')
+const responseTime = require("response-time");
 
 // Load Config
 dotenv.config({ path: "./config/config.env" });
@@ -31,10 +31,15 @@ connectDB();
 
 // Log Server requests and Time taken
 if (process.env.NODE_ENV === "development") {
-  app.use(responseTime(function (req, res, time) {
-    logger.info(`${req.method} "${req.url}" - ${time.toFixed(2)}ms`);
-  }))
+  app.use(
+    responseTime(function (req, res, time) {
+      logger.info(`${req.method} "${req.url}" - ${time.toFixed(2)}ms`);
+    })
+  );
 }
+
+// Handlebars Helpers
+const { formatDate } = require("./config/hbs");
 
 // Handlebars
 app.engine(
@@ -42,6 +47,9 @@ app.engine(
   exphbs.engine({
     extname: ".hbs",
     defaultLayout: "main",
+    helpers: {
+      formatDate,
+    }
   })
 );
 app.set("view engine", ".hbs");
@@ -69,7 +77,6 @@ app.use("/", router);
 
 // Error handler
 app.use(function (err, req, res, next) {
-
   //set status as the error status - default to 404
   res.status(err.status || 404);
   logger.error(res.statusCode);
@@ -96,7 +103,6 @@ app.use(function (err, req, res, next) {
       break;
   }
 });
-
 
 // Start Server
 const PORT = process.env.PORT || 3000;

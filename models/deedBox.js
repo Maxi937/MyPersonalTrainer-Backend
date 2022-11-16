@@ -34,6 +34,19 @@ deedBoxSchema.statics.findAll = function () {
   }
 };
 
+deedBoxSchema.statics.addDeedBox = function (deedBox) {
+  try {
+    const deedBox = new DeedBox({
+      _id: deedBox._id
+    })
+    deedBox.save();
+    logger.info("DeedBox added Successfully");
+    logger.info(deedBox);
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
 deedBoxSchema.statics.findUnassigned = function () {
   try {
     return this.find({}).where({ client: null }).populate("securities").lean();
