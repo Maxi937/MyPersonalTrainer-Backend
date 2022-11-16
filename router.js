@@ -11,6 +11,7 @@ const dashboard = require('./controllers/dashboard')
 
 // Admin
 router.get("/admin", admin.index);
+router.get("/admin/admin-clients", admin.adminClients);
 router.get("/admin/client/:id", admin.client)
 router.get("/admin/client/:id/deedBox/:deedBoxId", admin.index) // TODO: DeedBox View
 router.get("/admin/newDeedBox", admin.newDeedBox)

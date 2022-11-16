@@ -10,6 +10,11 @@ const securitySchema = new Schema({
     ref: "Client",
     required: true
   },
+  deedBox: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "DeedBox",
+    required: true
+  },
   address1: {
     type: String,
     required: true
@@ -33,6 +38,14 @@ const securitySchema = new Schema({
   },
 }, { timestamps: true })
 
+
+securitySchema.statics.findUnassigned = function () {
+  try {
+    return this.find({}).where({ deedBox: null }).populate("client").lean();
+  } catch (err) {
+    logger.error(err);
+  }
+};
 
 securitySchema.methods.addSecurity = function () {
   try {

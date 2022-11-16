@@ -7,11 +7,21 @@ const Client = require("../models/Client");
 
 const admin = {
   async index(req, res) {
-
-    const clientInfo = await Client.findAll();
     const unassignedDeedBoxes = await DeedBox.findUnassigned();
+    const unassignedSecurity = await Security.findUnassigned();
+    
+    const viewData = {
+      unassignedDeedBoxes,
+      unassignedSecurity,
+      title: "Admin",
+    };
 
-    console.log(unassignedDeedBoxes)
+    logger.info("Rendering Admin Dashboard");
+    res.render("admin/admin-dashboard", viewData);
+  },
+
+  async adminClients(req, res) {
+    const clientInfo = await Client.findAll();
 
     for (const client of clientInfo) {
       const deedBoxes = await DeedBox.find().byClientId(client._id);
@@ -19,13 +29,11 @@ const admin = {
     }
     
     const viewData = {
-      unassignedDeedBoxes,
       clientInfo,
       title: "Admin",
     };
-
-    logger.info("Rendering Admin");
-    res.render("admin/admin", viewData);
+    logger.info("Rendering Admin-Clients");
+    res.render("admin/admin-clients", viewData);
   },
 
   async client(req, res) {

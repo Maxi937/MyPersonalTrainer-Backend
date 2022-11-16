@@ -10,7 +10,7 @@ const dashboard = {
   async index(request, response) {
     logger.info("dashboard rendering");
     
-    const currentClient = await Client.findById(request.session.client);
+    const currentClient = await Client.findById(request.session.client).lean();
     const deedBoxes = await DeedBox.find().byClientId(currentClient._id);
 
     console.log(deedBoxes);
