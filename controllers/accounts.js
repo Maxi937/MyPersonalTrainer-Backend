@@ -50,23 +50,14 @@ const accounts = {
   
     const client = await Client.find().byEmail(request.body.email);
     const email = await client.email
-
-    console.log(request.body.email)
-    console.log(request.session)
  
     if (client._id) {
       logger.info("login successful");
-      request.session.email = email;
+      request.session.client = client._id;
       response.redirect("/dashboard");
     } else {
       response.redirect("/login");
     }
-  },
-
-  async getCurrentClient(request) {
-    console.log(request.session)
-    const email = request.session.email;
-    return await Client.find().byEmail(email);
   },
 };
 

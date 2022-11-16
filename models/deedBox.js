@@ -34,19 +34,6 @@ deedBoxSchema.statics.findAll = function () {
   }
 };
 
-deedBoxSchema.statics.addDeedBox = function (deedBox) {
-  try {
-    const deedBox = new DeedBox({
-      _id: deedBox._id
-    })
-    deedBox.save();
-    logger.info("DeedBox added Successfully");
-    logger.info(deedBox);
-  } catch (err) {
-    logger.error(err);
-  }
-};
-
 deedBoxSchema.statics.findUnassigned = function () {
   try {
     return this.find({}).where({ client: null }).populate("securities").lean();
@@ -56,17 +43,9 @@ deedBoxSchema.statics.findUnassigned = function () {
 };
 
 // .methods must be called on a deedBox object
-deedBoxSchema.methods.addDeedBox = function () {
-  try {
-    this.save();
-    logger.info("DeedBox added Successfully");
-    logger.info(this);
-  } catch (err) {
-    logger.error(err);
-  }
-};
 
-// .methods must be called on a deedBox query object
+
+// .query must be called on a deedBox query object
 deedBoxSchema.query.byClientId = function (clientId) {
   try{
     return this

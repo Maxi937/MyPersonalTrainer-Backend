@@ -3,6 +3,7 @@
 const express = require('express');
 const router = express.Router();
 const admin = require('./controllers/admin')
+const client = require('./controllers/client')
 const home = require('./controllers/home')
 const about = require('./controllers/about')
 const accounts = require('./controllers/accounts')
@@ -31,7 +32,9 @@ router.get("/logout", accounts.logout);
 router.post("/register", accounts.register);
 router.post("/authenticate", accounts.authenticate);
 
-// User
+//Client Security
+router.get('/client/registersecurity', client.newSecurity)
+router.post('/client/registersecurity', client.registerSecurity)
 //router.get("/user", user.index)
 //router.get("/user/edituserdetails", user.editUserDetails)
 //router.post("/user/updateuserdetails", user.updateUserDetails)

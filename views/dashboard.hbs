@@ -1,5 +1,10 @@
 {{> menu/menu id="dashboard"}}
 
+  <section class="ui blue inverted segment">
+    <p><em><span class="ui big white text">{{currentClient.organisation}}</span></em></p>
+    <p>ID: {{currentClient._id}}</p>
+  </section>
+
 <section class="ui segment">  
     {{#each deedBoxes}}
         <section class="ui vertical segment">
@@ -8,17 +13,14 @@
         <section class="ui vertical segment">
 
         {{#each securities}}
-         {{> user/securities}}
+         {{> dashboard-securities}}
         {{/each}}
-        
         </section>
+
         {{! UI Buttons }}
         <section class="ui vertical segment">
         <a href="/station/{{id}}">
             <i class="bordered grey large link folder icon"></i>
-        </a>
-         <a href="/dashboard/deletestation/{{id}}">
-            <i class="bordered grey large link trash icon"></i>
         </a>
     {{/each}}
 </section>

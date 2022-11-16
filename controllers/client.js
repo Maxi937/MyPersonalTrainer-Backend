@@ -4,24 +4,30 @@ const logger = require("../config/logger");
 const accounts = require("./accounts.js");
 const DeedBox = require("../models/DeedBox");
 const Security = require("../models/Security");
-const Client = require('../models/Client')
 
 const dashboard = {
-  async index(request, response) {
-    logger.info("dashboard rendering");
-    
-    const currentClient = await Client.findById(request.session.client);
-    const deedBoxes = await DeedBox.find().byClientId(currentClient._id);
 
-    console.log(deedBoxes);
-
+  newSecurity(request, response){
     const viewData = {
-      title: "Dashboard",
-      currentClient,
-      deedBoxes: deedBoxes,
+      title: "Register Security",
     };
-    response.render("dashboard", viewData);
+    response.render("forms/newSecurity", viewData);
   },
+
+  registerSecurity(request, response){
+    const security = new Security({
+      client: request.session.client,
+      address1: request.body.address1,
+      address2: request.body.address2,
+      address3: request.body.address3,
+      eircode: request.body.eircode,
+      county: request.body.county,
+    });
+    security.save();
+    logger.info("security saved successfully")
+    logger.info(security)
+    response.redirect('/dashboard')
+  }
 
   /*addStation(request, response) {
     const loggedInUser = accounts.getCurrentUser(request)

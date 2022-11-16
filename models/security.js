@@ -5,6 +5,11 @@ const logger = require("../config/logger");
 
 // TODO: Add Validators for inputs
 const securitySchema = new Schema({
+  client: {
+    type: mongoose.SchemaTypes.ObjectId,
+    ref: "Client",
+    required: true
+  },
   address1: {
     type: String,
     required: true
