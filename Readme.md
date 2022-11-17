@@ -15,4 +15,4 @@
 
 ### CSS Framework
 
-- Semantic UI
+- Fomantic UI
