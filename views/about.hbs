@@ -1,4 +1,10 @@
-{{> menu/menu id="about"}}
+{{#if client}}
+  {{> menu/menu id="about"}}
+{{else}}
+  {{> menu/welcome-menu id="about"}}
+{{/if}}
+
+
 
 <div class="ui segment">
   <h2>
