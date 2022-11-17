@@ -6,26 +6,11 @@
   <span class="ui big white text"> Clients </span>
 </section>
 
-<div class="ui grid">
-  <div class="four wide column">
-    <section class="ui segments">
-      <section class="ui segment">
-        <a href="">Add </a>
-      </section>
-      <section class="ui segment">
 
-      </section>
-      <section class="ui segment">
+<section class="ui segment">
+  {{> admin/client-table clients = clientInfo }}
+</section>
 
-      </section>
-
-    </section>
-  </div>
-  <div class="twelve wide column">
-    <section class="ui segment">
-      {{> admin/client-table clients = clientInfo }}
-    </section>
-  </div>
 </div>
 <div class="ui divider"></div>
 

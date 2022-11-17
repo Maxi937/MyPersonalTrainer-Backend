@@ -12,13 +12,15 @@ const dashboard = {
     
     const currentClient = await Client.findById(request.session.client).lean();
     const deedBoxes = await DeedBox.find().byClientId(currentClient._id);
+    const unassignedSecurity = await Security.findUnassignedById(request.session.client);
 
-    console.log(deedBoxes);
+    console.log(`unassigned: ${unassignedSecurity}`);
 
     const viewData = {
       title: "Dashboard",
       currentClient,
-      deedBoxes: deedBoxes,
+      deedBoxes,
+      unassignedSecurity
     };
     response.render("dashboard", viewData);
   },

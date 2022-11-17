@@ -1,7 +1,5 @@
 "use strict";
 
-console.log(process.env.MONGODB_URI);
-
 const dotenv = require("dotenv");
 const createError = require("http-errors");
 const mongoose = require("mongoose");

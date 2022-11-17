@@ -39,9 +39,23 @@ const securitySchema = new Schema({
 }, { timestamps: true })
 
 
-securitySchema.statics.findUnassigned = function () {
+securitySchema.statics.findAllUnassigned = function () {
   try {
-    return this.find({}).where({ deedBox: null }).populate("client").lean();
+    return this.find({})
+    .where({ deedBox: { $exists:false } })
+    .populate("client")
+    .lean();
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
+securitySchema.statics.findUnassignedById = function (clientId) {
+  try {
+    return this.find({clientId})
+    .where({ deedBox: { $exists:false } })
+    .populate("client")
+    .lean();
   } catch (err) {
     logger.error(err);
   }
@@ -56,6 +70,8 @@ securitySchema.methods.addSecurity = function () {
     logger.error(err);
   }
 };
+
+
 
 const Security = mongoose.model('Security', securitySchema);
 

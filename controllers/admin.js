@@ -8,7 +8,9 @@ const Client = require("../models/Client");
 const admin = {
   async index(req, res) {
     const unassignedDeedBoxes = await DeedBox.findUnassigned();
-    const unassignedSecurity = await Security.findUnassigned();
+    const unassignedSecurity = await Security.findAllUnassigned();
+
+    console.log(unassignedDeedBoxes)
     
     const viewData = {
       unassignedDeedBoxes,
@@ -38,8 +40,9 @@ const admin = {
 
   async client(req, res) {
     const clientId = req.params.id
-    const client = await Client.findById(clientId).lean()
-    const deedBoxes = await DeedBox.find().byClientId(clientId)
+    const client = await Client.findById(clientId).lean();
+    const deedBoxes = await DeedBox.find().byClientId(clientId);
+   
 
     const viewData = {
       client,
@@ -81,11 +84,13 @@ const admin = {
     const unassignedDeedBox = await DeedBox.findOneUnassigned() 
 
     security.deedBox = unassignedDeedBox._id
-    unassignedDeedBox.security = security
+    unassignedDeedBox.securities = security
+    unassignedDeedBox.client = security.client
 
     security.save();
     unassignedDeedBox.save();
 
+    console.log(security)
     console.log(unassignedDeedBox)
     res.redirect("/admin")
   }

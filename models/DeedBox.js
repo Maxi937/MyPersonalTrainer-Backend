@@ -36,7 +36,7 @@ deedBoxSchema.statics.findAll = function () {
 
 deedBoxSchema.statics.findUnassigned = function () {
   try {
-    return this.find({}).where({ client: null }).populate("securities").lean();
+    return this.find({}).populate("securities").where({ client: null }).lean();
   } catch (err) {
     logger.error(err);
   }
@@ -44,7 +44,7 @@ deedBoxSchema.statics.findUnassigned = function () {
 
 deedBoxSchema.statics.findOneUnassigned = function () {
   try {
-    return this.find({}).where({ client: null }).populate("securities").findOne();
+    return this.find().where({ client: null }).populate("securities").findOne();
   } catch (err) {
     logger.error(err);
   }
