@@ -1,5 +1,7 @@
 "use strict";
 
+console.log(process.env.MONGODB_URI);
+
 const dotenv = require("dotenv");
 const createError = require("http-errors");
 const mongoose = require("mongoose");
@@ -14,7 +16,14 @@ const MongoStore = require("connect-mongo");
 const responseTime = require("response-time");
 
 // Load Config
-dotenv.config({ path: "./config/config.env" });
+if (process.env.NODE_ENV === "development"){
+  dotenv.config({ path: "./config/config.env" });
+}
+else {
+  dotenv.config({ path: "config.env" })
+
+}
+
 
 // Express
 var app = express();
