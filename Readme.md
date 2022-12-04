@@ -6,8 +6,6 @@ $~$
 
 ## **Tasklist**
 
----
-
 ### General
 
 - [x] Create Proposal
@@ -43,8 +41,6 @@ $~$
 $~$
 
 ## **Technology**
-
----
 
 ### **Database**
 
