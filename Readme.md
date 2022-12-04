@@ -32,6 +32,7 @@ $~$
 - [x] Sessions
 - [x] Router
 - [ ] RasberryPI Routes
+- [ ] UI Pass
 
 ### Physical
 
