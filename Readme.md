@@ -51,6 +51,7 @@ $~$
 
 - Node
 - Express
+- Mongoose
 
 ### **Logging**
 
