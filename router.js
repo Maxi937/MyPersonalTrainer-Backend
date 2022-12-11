@@ -55,7 +55,8 @@ router.get("/dashboard", dashboard.index);
 //router.get("/dashboard/:id/addAutoReading", dashboard.addAutoReading)
 
 // DeedLockerPi
-router.get("/deedlockerPi/test", deedlockerPi.test)
+router.get("/deedlockerPi/hello", deedlockerPi.hello)
+router.get("/deedlockerPi/getUsers", deedlockerPi.getUsers)
 
 
 
