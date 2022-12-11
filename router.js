@@ -53,5 +53,8 @@ router.get("/dashboard", dashboard.index);
 //router.post("/dashboard/addstation", dashboard.addStation);
 //router.get("/dashboard/:id/addAutoReading", dashboard.addAutoReading)
 
+// DeedLockerPi
+router.get("/deedlockerPi/test", deedlockerPi.test)
+
 
 module.exports = router;
