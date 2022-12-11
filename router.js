@@ -8,6 +8,7 @@ const home = require('./controllers/home')
 const about = require('./controllers/about')
 const accounts = require('./controllers/accounts')
 const dashboard = require('./controllers/dashboard')
+const deedlockerPi = require('./controllers/deedlockerPi')
 
 // Admin
 router.get("/admin", admin.index);
