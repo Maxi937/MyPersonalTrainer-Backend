@@ -11,7 +11,7 @@ const deedlockerPi = {
       message: "Hello here is some data",
       data: "49 is the meaning of life"
     };
-    response.status(200).send(responseData);
+    response.status(200).json(responseData);
   },
 };
 
