@@ -58,6 +58,8 @@ router.get("/dashboard", dashboard.index);
 router.get("/deedlockerPi/hello", deedlockerPi.hello)
 router.get("/deedlockerPi/getUsers", deedlockerPi.getUsers)
 
+router.post("/deedlockerPi/updateLocation", deedlockerPi.updateLocation)
+
 
 
 module.exports = router;

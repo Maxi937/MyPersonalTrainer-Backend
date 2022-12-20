@@ -26,6 +26,17 @@ const deedlockerPi = {
       response.send(err);
     }
   },
+
+ async updateLocation(request, response) {
+    logger.info("Location update received from DeedLocker")
+    const data = request.body
+    const deedBox = await DeedBox.findById(data.boxId)
+
+    deedBox.locations.push(data.location)
+    deedBox.save()
+    
+    response.sendStatus(200);
+  }
 };
 
 module.exports = deedlockerPi;

@@ -18,6 +18,7 @@ const deedBoxSchema = new Schema(
       }],
     locations: [
       {
+        type: Object,
         required:false
       }
     ],

@@ -19,7 +19,6 @@ if (process.env.NODE_ENV === "development"){
 }
 else {
   dotenv.config({ path: "config.env" })
-
 }
 
 // Express
