@@ -8,8 +8,21 @@
 <section class="ui segment">  
     {{#each deedBoxes}}
         <section class="ui vertical segment">
-          Deed Box: {{_id}}
+          Deed Box: {{_id}} <br>
+          {{#each locations}}
+            {{#if @last}} 
+              Location:
+              {{#each this}}
+                {{#if @last}}
+                  &nbsp;&nbsp;&nbsp;&nbsp;Date: {{formatDate createdAt 'MM/DD/YYYY'}}
+                {{else}}
+                 {{this}}
+                {{/if}}
+              {{/each}}
+            {{/if}}
+          {{/each}}
         </section>
+          
         <section class="ui vertical segment">
 
         {{#each securities}}

@@ -5,6 +5,7 @@ const accounts = require("./accounts.js");
 const DeedBox = require("../models/DeedBox");
 const Security = require("../models/Security");
 const Client = require('../models/Client')
+const deedboxUtils = require('../utils/deedboxUtils')
 
 const dashboard = {
   async index(request, response) {
@@ -13,8 +14,6 @@ const dashboard = {
     const currentClient = await Client.findById(request.session.client).lean();
     const deedBoxes = await DeedBox.find().byClientId(currentClient._id);
     const unassignedSecurity = await Security.findUnassignedById(request.session.client);
-
-    console.log(`unassigned: ${unassignedSecurity}`);
 
     const viewData = {
       title: "Dashboard",

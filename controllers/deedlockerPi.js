@@ -6,20 +6,13 @@ const Security = require("../models/Security");
 const Client = require("../models/Client");
 
 const deedlockerPi = {
-  hello(request, response) {
-    const responseData = {
-      message: "Hello here is some data",
-      data: "49 is the meaning of life",
-    };
-    response.status(200).json(responseData);
-  },
-
-  async getUsers(request, response) {
+  
+  async getDeedboxes(request, response) {
     try {
-      const users = await Client.findAll();
+      const deedboxes = await DeedBox.findAll();
 
       const responseData = {
-        users,
+        deedboxes,
       };
       response.status(200).json(responseData);
     } catch (err) {
