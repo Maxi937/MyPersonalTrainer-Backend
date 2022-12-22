@@ -11,7 +11,7 @@ const admin = {
     const unassignedSecurity = await Security.findAllUnassigned();
 
     console.log(unassignedDeedBoxes)
-    
+
     const viewData = {
       unassignedDeedBoxes,
       unassignedSecurity,
@@ -29,7 +29,7 @@ const admin = {
       const deedBoxes = await DeedBox.find().byClientId(client._id);
       client.deedBoxCount = deedBoxes.length;
     }
-    
+
     const viewData = {
       clientInfo,
       title: "Admin",
@@ -42,7 +42,6 @@ const admin = {
     const clientId = req.params.id
     const client = await Client.findById(clientId).lean();
     const deedBoxes = await DeedBox.find().byClientId(clientId);
-   
 
     const viewData = {
       client,
@@ -53,7 +52,7 @@ const admin = {
     res.render("admin/client", viewData);
   },
 
-  newDeedBox(req, res){
+  newDeedBox(req, res) {
     const deedBox = new DeedBox;
     req.session.deedBox = deedBox;
     logger.info(deedBox._id.toString())
@@ -65,7 +64,7 @@ const admin = {
     res.render("admin/forms/newDeedBox", viewData)
   },
 
-  async addDeedBox(req, res){
+  async addDeedBox(req, res) {
     try {
       const deedBox = new DeedBox({
         _id: req.session.deedBox._id
@@ -79,9 +78,9 @@ const admin = {
     res.redirect("/admin")
   },
 
-  async assignDeedBox(req, res){
+  async assignDeedBox(req, res) {
     const security = await Security.findById(req.params.securityId)
-    const unassignedDeedBox = await DeedBox.findOneUnassigned() 
+    const unassignedDeedBox = await DeedBox.findOneUnassigned()
 
     security.deedBox = unassignedDeedBox._id
     unassignedDeedBox.securities = security

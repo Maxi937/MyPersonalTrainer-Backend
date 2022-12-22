@@ -6,20 +6,19 @@ const Security = require("../models/Security");
 const Client = require("../models/Client");
 
 const deedlockerPi = {
-  
+
+  // Send list of Deedboxes to Pi as JSON
   async getDeedboxes(request, response) {
     try {
-      const deedboxes = await DeedBox.findAll();
+      const deedboxes = await DeedBox.findAll().lean();
+      response.send(deedboxes);
 
-      const responseData = {
-        deedboxes,
-      };
-      response.status(200).json(responseData);
     } catch (err) {
       response.send(err);
     }
   },
 
+  // Update Location of Deedbox with update received from Pi
  async updateLocation(request, response) {
     logger.info("Location update received from DeedLocker")
     const data = request.body
@@ -28,6 +27,12 @@ const deedlockerPi = {
     deedBox.locations.push(data.location)
     deedBox.save()
     
+    response.sendStatus(200);
+  },
+
+  async assignRfid(request, response) {
+    logger.info("Request to assign Rfid to box")
+    console.log(data.boxId)
     response.sendStatus(200);
   }
 };

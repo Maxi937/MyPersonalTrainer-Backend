@@ -19,9 +19,14 @@ const deedBoxSchema = new Schema(
     locations: [
       {
         type: Object,
-        required:false
+        required: false
       }
     ],
+    rfid:
+    {
+      type: String,
+      required: false
+    }
   },
   { timestamps: true }
 );
@@ -52,18 +57,21 @@ deedBoxSchema.statics.findOneUnassigned = function () {
 };
 
 // .methods must be called on a deedBox object
-
+deedBoxSchema.method.updateRfid = function (Deedbox, rfid) {
+  Deedbox.rfid = rfid
+  Deedbox.save()
+}
 
 // .query must be called on a deedBox query object
 deedBoxSchema.query.byClientId = function (clientId) {
-  try{
+  try {
     return this
-    .where("client")
-    .equals(clientId)
-    .populate("securities")
-    .lean()
+      .where("client")
+      .equals(clientId)
+      .populate("securities")
+      .lean()
   }
-  catch(err){
+  catch (err) {
     logger.error(err);
   }
 }
