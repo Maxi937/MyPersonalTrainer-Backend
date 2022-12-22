@@ -10,7 +10,7 @@ const deedlockerPi = {
 // Send list of Deedboxes to Pi as JSON
   async getDeedboxes(request, response) {
     try {
-      const deedboxes = await DeedBox.findAll().lean();
+      const deedboxes = await DeedBox.findAll().populate("client","organisation").lean();
       response.send(deedboxes);
 
     } catch (err) {
@@ -39,14 +39,14 @@ const deedlockerPi = {
     const deedboxesWithRfid = await DeedBox.find().byRfid(data.rfid)
 
     for (const deedboxWithRfid of deedboxesWithRfid) {
-      console.log(deedboxWithRfid)
       deedboxWithRfid.rfid = ""
       deedboxWithRfid.save()
     }
 
+    logger.info(`RFID updated`)
     deedBox.rfid = data.rfid
     deedBox.save()
-
+    
     response.sendStatus(200);
   }
 };
