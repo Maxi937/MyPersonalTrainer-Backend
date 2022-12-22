@@ -57,9 +57,9 @@ deedBoxSchema.statics.findOneUnassigned = function () {
 };
 
 // .methods must be called on a deedBox object
-deedBoxSchema.method.updateRfid = function (Deedbox, rfid) {
-  Deedbox.rfid = rfid
-  Deedbox.save()
+deedBoxSchema.method.updateRfid = function updateRfid(rfid) {
+  this.rfid = rfid
+  console.log(this)
 }
 
 // .query must be called on a deedBox query object
@@ -70,6 +70,17 @@ deedBoxSchema.query.byClientId = function (clientId) {
       .equals(clientId)
       .populate("securities")
       .lean()
+  }
+  catch (err) {
+    logger.error(err);
+  }
+}
+
+deedBoxSchema.query.byRfid = function (rfid) {
+  try {
+    return this
+      .where("rfid")
+      .equals(rfid)
   }
   catch (err) {
     logger.error(err);

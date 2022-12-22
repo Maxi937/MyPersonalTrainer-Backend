@@ -7,7 +7,7 @@ const Client = require("../models/Client");
 
 const deedlockerPi = {
 
-  // Send list of Deedboxes to Pi as JSON
+// Send list of Deedboxes to Pi as JSON
   async getDeedboxes(request, response) {
     try {
       const deedboxes = await DeedBox.findAll().lean();
@@ -18,7 +18,7 @@ const deedlockerPi = {
     }
   },
 
-  // Update Location of Deedbox with update received from Pi
+// Update Location of Deedbox with update received from Pi
  async updateLocation(request, response) {
     logger.info("Location update received from DeedLocker")
     const data = request.body
@@ -30,9 +30,23 @@ const deedlockerPi = {
     response.sendStatus(200);
   },
 
-  async assignRfid(request, response) {
+  async updateRfid(request, response) {
     logger.info("Request to assign Rfid to box")
-    console.log(data.boxId)
+    const data = request.body
+    const deedBox = await DeedBox.findById(data.boxId)
+
+    // Clear out the rfid from any other boxes
+    const deedboxesWithRfid = await DeedBox.find().byRfid(data.rfid)
+
+    for (const deedboxWithRfid of deedboxesWithRfid) {
+      console.log(deedboxWithRfid)
+      deedboxWithRfid.rfid = ""
+      deedboxWithRfid.save()
+    }
+
+    deedBox.rfid = data.rfid
+    deedBox.save()
+
     response.sendStatus(200);
   }
 };
