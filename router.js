@@ -58,6 +58,7 @@ router.get("/dashboard", dashboard.index);
 router.get("/deedlockerPi/getDeedboxes", deedlockerPi.getDeedboxes)
 router.post("/deedlockerPi/updateLocation", deedlockerPi.updateLocation)
 router.post("/deedlockerPi/updateRfid", deedlockerPi.updateRfid)
+router.get("/deedlockerPi/checkifRfidUpdated/:id", deedlockerPi.checkifRfidUpdated), 
 
 
 

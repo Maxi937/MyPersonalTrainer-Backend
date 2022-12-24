@@ -65,10 +65,19 @@ const admin = {
   },
 
   async addDeedBox(req, res) {
+    const deedboxLocation = {
+      'addressline1' : 'DeedBox HQ',
+      'addressline2' : 'Dublin',
+      'eircode' : 'X78 8899',
+      'county' : 'Ireland',
+    }
+
     try {
       const deedBox = new DeedBox({
         _id: req.session.deedBox._id
       })
+      deedBox.locations.push(deedboxLocation)
+      console.log(deedBox)
       deedBox.save()
       delete req.session.deedBox
     }

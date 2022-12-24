@@ -42,12 +42,20 @@ const deedlockerPi = {
       deedboxWithRfid.rfid = ""
       deedboxWithRfid.save()
     }
-
     logger.info(`RFID updated`)
     deedBox.rfid = data.rfid
     deedBox.save()
     
     response.sendStatus(200);
+  },
+
+  async checkifRfidUpdated(request, response){
+    const boxId = request.params.id
+
+    const deedBox = await DeedBox.findById(request.params.id).lean()
+
+    response.header('Access-Control-Allow-Origin', '*');
+    response.send(JSON.stringify({deedBox}))
   }
 };
 
