@@ -77,7 +77,6 @@ const admin = {
         _id: req.session.deedBox._id
       })
       deedBox.locations.push(deedboxLocation)
-      console.log(deedBox)
       deedBox.save()
       delete req.session.deedBox
     }
