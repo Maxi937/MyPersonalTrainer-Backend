@@ -1,3 +1,5 @@
+// This is an example model from the Deed-Box webApp
+
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 const logger = require("../config/logger");

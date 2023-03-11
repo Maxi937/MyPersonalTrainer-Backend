@@ -1,47 +1,12 @@
 # **Description**
 
-WebApp to manage deed boxes.
+Template for a node app.
 
-<br>
+*Requires a config.env file in order to integrate the mongo database.
 
-## **Tasklist**
 
-### General
 
-- [x] Create Proposal
-- [x] Domain Info
-- [x] Create Diagrams
-
-### Database
-
-- [x] Create MongoDB store
-- [x] Client Collection
-- [x] DeedBox Collection
-- [x] Security Collection  
-- [x] Host Database on Cloud
-- [x] Connect DB to WebApp
-
-### WebApp
-
-- [x] Database Schema
-- [x] Admin Controller
-- [x] Client Controller
-- [x] Dashboard Controller
-- [x] Account Controller
-- [ ] RasberryPi Controller
-- [x] Sessions
-- [x] Router
-- [ ] RasberryPI Routes
-- [ ] UI Pass
-
-### Physical
-
-- [x] NFC Hat
-- [ ] RasberryPI functionality
-
-$~$
-
-## **Technology**
+## **Stack**
 
 ### **Database**
 
@@ -64,3 +29,7 @@ $~$
 ### **CSS**
 
 - Fomantic UI
+
+### **Utility**
+
+- Nodemon
