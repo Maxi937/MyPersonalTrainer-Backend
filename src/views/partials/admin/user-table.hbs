@@ -1,0 +1,30 @@
+<table class="ui center aligned unstackable short scrolling very basic table" id="clickableTable">
+    <thead>
+        <tr>
+            {{#with items.[0]}}
+            {{#each this}}
+            <th>{{@key}}</th>
+            {{/each}}
+            {{/with}}
+        </tr>
+    </thead>
+    {{#each items}}
+    <tbody>
+        <tr id="clickableRow-{{@index}}">
+            {{#each this}}
+                {{#if @first}}
+                <td id="clickableRow-href-{{@index}}">
+                    {{this}}
+                </td>
+                {{else}}
+                <td>{{this}}</td>
+                {{/if}}
+            {{/each}}
+        </tr>
+    </tbody>
+    {{/each}}
+</table>
+
+<script>
+    clickableTable({{ users.length }}, '/admin/users/')
+</script>

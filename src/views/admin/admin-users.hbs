@@ -1,0 +1,16 @@
+{{> admin/adminmenu}}
+
+{{> admin/admin-leftmenu}}
+
+<section class="section">
+  <p> This is the Admin Screen </p>
+</section>
+
+
+<section class="ui inverted Blue segment">
+  <span class="ui big white text"> Users </span>
+</section>
+
+<div class="ui divider"></div>
+
+{{> admin/user-table items=users}}
