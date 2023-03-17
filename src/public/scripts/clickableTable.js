@@ -10,12 +10,10 @@
 **  <td id="clickableRow-href-{{@index}}">
 */
 function clickableTable(numberOfRows, route) {
-  numberOfRows -= 1
   console.log(numberOfRows)
-  for (let i = 0; i <= numberOfRows; i++) {
+  for (let i = 0; i < numberOfRows; i += 1) {
     const row = document.getElementById(`clickableRow-${i}`);
-    const href = document.getElementById(`clickableRow-href-${i}`).innerHTML.trim()
-    console.log(row)
+    const href = row.children.namedItem("clickableRow-href").innerHTML.trim()
     row.addEventListener("click", () => {
       window.location.href = `${route}${href}`;
     });

@@ -1,6 +1,7 @@
 import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
 import inert from "@hapi/inert";
+import Cookie from "@hapi/cookie"
 import Handlebars from "handlebars";
 import Joi from "joi";
 import * as dotenv from "dotenv";
@@ -9,7 +10,9 @@ import { fileURLToPath } from "url";
 import { db } from "./models/db.js";
 import createlogger from "../config/logger.js";
 import { webRoutes } from "./web-routes.js";
+import { apiRoutes } from "./api-routes.js";
 import { responseTimes } from "./utility/serverutils.js";
+import { accountsController } from "./controllers/accounts-controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -25,14 +28,17 @@ async function init() {
     routes: {
       files: {
         relativeTo: path.join(__dirname, "public")
-      }
+      },
     }
   });
+
+  // Plugins
   await server.register(Vision);
   await server.register(inert)
+  await server.register(Cookie);
   server.validator(Joi);
   
-  // Handlebars Helpers;
+  // Views;
   server.views({
     engines: {
       hbs: Handlebars
@@ -48,12 +54,24 @@ async function init() {
   // Extend Server to get response time of a request and log to console
   responseTimes(server)
 
+  // Set up Cookies
+  server.auth.strategy("session", "cookie", {
+    cookie: {
+      name: process.env.cookie_name,
+      password: process.env.cookie_password,
+      isSecure: false,
+    },
+    redirectTo: "/",
+    validate: accountsController.validate,
+  });
+  server.auth.default("session");
 
   // Connect to Mongo Database
   db.init("mongo")
 
   // Set Routes
   server.route(webRoutes);
+  server.route(apiRoutes);
 
   server.route({
     method: "GET",

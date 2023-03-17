@@ -7,40 +7,46 @@ const logger = createlogger()
 
 // TODO: Add Validators for inputs
 
-const userSchema = new Mongoose.Schema(
+const reviewSchema = new Mongoose.Schema(
   {
-    fname: {
-      type: String,
+    date: {
+      type: Date,
       required: true,
     },
-    lname: {
-      type: String,
+    user: {
+      type: Mongoose.SchemaTypes.ObjectId,
+      ref: "User",
       required: true,
     },
-    email: {
-      type: String,
+    rating: {
+      type: Number,
       required: true,
       lowercase: true
     },
-    password: {
+    content: {
       type: String,
+      required: true,
+    },
+    place: {
+      type: Mongoose.SchemaTypes.ObjectId,
+      ref: "Place",
       required: true,
     },
   },
   { timestamps: true }
 );
 
-userSchema.methods.addUser = function () {
+reviewSchema.methods.addReview = function () {
   try {
     this.save();
-    logger.info("User added Successfully");
+    logger.info("Review added Successfully");
     logger.info(this);
   } catch (err) {
     logger.error(err);
   }
 };
 
-userSchema.statics.findAll = function() {
+reviewSchema.statics.findAll = function() {
   try {
     return this.find({}).lean() 
   } catch (err) {
@@ -49,20 +55,16 @@ userSchema.statics.findAll = function() {
   }
 }
 
-userSchema.statics.getById = async function(userId) {
+reviewSchema.statics.byReviewId = function(reviewId) {
   try {
-    return await this.findOne({userId}).lean() 
+    return this.find({placeId}).lean() 
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-userSchema.query.getByEmail = function(email) {
-  return this.findOne({ email: new RegExp(email, "i") }).lean()
-}
-
-export const User = Mongoose.model("User", userSchema);
+export const Review = Mongoose.model("Review", reviewSchema);
 
 
 
