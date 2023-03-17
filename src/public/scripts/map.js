@@ -1,4 +1,3 @@
-
 async function createMap() {
     // TODO: Add validators and error checking for the api key request
     // TODO: Dont forget to update the URL for the key request to your own url when this is hosted online

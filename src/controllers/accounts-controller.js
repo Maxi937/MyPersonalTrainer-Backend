@@ -5,15 +5,10 @@ import { getLocationToAddress, GooglegetLocationToAddress } from "../utility/rev
 
 const logger = createlogger()
 
-
 export const accountsController = {
   index: {
     auth: false,
     handler: async function (request, h) {
-
-    // const location = await GooglegetLocationToAddress(52.16161432651033, -7.150706293536281)
-    // console.log(location)
-    
       return h.view("user/user-main", { title: "Welcome to Pint Accountant" });
     },
   },
@@ -24,6 +19,7 @@ export const accountsController = {
       return h.view("signup-view", { title: "Sign up for Playlist" });
     },
   },
+
   signup: {
     auth: false,
     validate: {
