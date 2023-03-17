@@ -9,6 +9,7 @@ export const accountsController = {
   index: {
     auth: false,
     handler: async function (request, h) {
+    console.log(request)
       return h.view("user/user-main", { title: "Welcome to Pint Accountant" });
     },
   },
