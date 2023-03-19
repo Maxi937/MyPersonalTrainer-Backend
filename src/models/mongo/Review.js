@@ -10,7 +10,7 @@ const logger = createlogger()
 const reviewSchema = new Mongoose.Schema(
   {
     date: {
-      type: Date,
+      type: String,
       required: true,
     },
     user: {

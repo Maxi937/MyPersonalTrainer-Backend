@@ -13,12 +13,6 @@
           <p class="subtitle is-6" id="placeAddress">@johnsmith</p>
           <p class="subtitle is-6" id="placeRating">@johnsmith</p>
         </div>
-        <a class="button is-info is-pulled-right" onclick="openReviewForm()">
-          <span class="icon is-large">
-            <i class="fas fa-book-open"></i>
-          </span>
-          <span>Review</span>
-        </a>
       </div>
 
       <div class="content">
@@ -31,13 +25,8 @@
     </div>
   </div>
 
+  <div class="ui horizontal divider">Log in to leave a review</div>
 
-  <div id="new-review" class="content" style="display:none;">
-    {{> user/new-review}}
-  </div>
-
-
-  <div class="ui horizontal divider"></div>
   <div id="reviewDiv"></div>
 
   <template id="review" src="review.html">
@@ -61,17 +50,3 @@
       </div>
   </template>
 </div>
-
-<script>
-  let formOpen = false
-
-  function openReviewForm() {
-    if (formOpen) {
-      document.getElementById("new-review").style.display = "none"
-      formOpen = false
-    } else {
-      document.getElementById("new-review").style.display = "block"
-      formOpen = true
-    }
-  }
-</script>

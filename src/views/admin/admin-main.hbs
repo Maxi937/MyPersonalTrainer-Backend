@@ -2,13 +2,22 @@
 
 
 <section class="section">
-  <p> This is the Admin Screen </p>
+  <p> Welcome to Pint Accountant Admin </p>
 </section>
-
 
 <section class="ui inverted Blue segment">
   <span class="ui big white text"> Metrics </span>
 </section>
+
+<div class="block">
+  <div class="columns">
+    {{#each metrics}}
+    <div class="column">
+      {{> cards/card cardHeader=this.header cardData=this.data cardIcon=this.icon}}
+    </div>
+    {{/each}}
+  </div>
+</div>
 
 
 <div class="ui divider"></div>

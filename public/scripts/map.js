@@ -1,31 +1,33 @@
 async function getReviews(placeDetails) {
     const reviews = await fetch(`http://localhost:3000/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}/reviews`)
-    const reviewsJson = await reviews.json()
 
-    const template = document.querySelector("#review")
-    const reviewDiv = document.querySelector("#reviewDiv")
-    
+    if (reviews.status === 200) {
+        const reviewsJson = await reviews.json()
+        const template = document.querySelector("#review")
+        const reviewDiv = document.querySelector("#reviewDiv")
 
-    for (const review of reviewsJson) {
-        let clone = template.content.cloneNode(true)
-        clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`
-        clone.getElementById("reviewContent").textContent = review.content
-        clone.getElementById("reviewRating").textContent = review.rating
-        clone.getElementById("reviewDate").textContent = review.date
-        reviewDiv.appendChild(clone)
+        for (const review of reviewsJson) {
+            let clone = template.content.cloneNode(true)
+            clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`
+            clone.getElementById("reviewContent").textContent = review.content
+            clone.getElementById("reviewRating").textContent = review.rating
+            clone.getElementById("reviewDate").textContent = review.date
+            reviewDiv.appendChild(clone)
+        }
     }
-    
 }
-    
-function loadPlaceDetails(placeDetails) {
-    document.getElementById("placeName").innerHTML = placeDetails.placeName
-    document.getElementById("placeAddress").innerHTML = placeDetails.placeAddress
-    document.getElementById("placeDetails").style.display = "block"
+
+function loadReviewForm(placeDetails) {
     document.getElementById("lat").value = placeDetails.lat
     document.getElementById("lng").value = placeDetails.lng
     document.getElementById("formPlaceName").value = placeDetails.placeName
     document.getElementById("formPlaceAddress").value = placeDetails.placeAddress
-    getReviews(placeDetails)
+}
+
+function loadPlaceDetails(placeDetails) {
+    document.getElementById("placeDetails").style.display = "block"
+    document.getElementById("placeName").innerHTML = placeDetails.placeName
+    document.getElementById("placeAddress").innerHTML = placeDetails.placeAddress
 }
 
 
@@ -33,7 +35,7 @@ function onMarkerClick(searchResult) {
     const reviewDiv = document.querySelector("#reviewDiv")
     while (reviewDiv.lastElementChild) {
         reviewDiv.removeChild(reviewDiv.lastElementChild);
-      }
+    }
 
     const placeDetails = {
         placeName: searchResult.properties.PlaceName,
@@ -42,6 +44,10 @@ function onMarkerClick(searchResult) {
         lng: searchResult.latlng.lng
     }
     loadPlaceDetails(placeDetails)
+    getReviews(placeDetails)
+    if (document.querySelector("#new-review")) {
+        loadReviewForm(placeDetails)
+    }
 }
 
 

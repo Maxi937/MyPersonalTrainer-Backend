@@ -10,7 +10,40 @@ const logger = createlogger()
 export const adminController = {
   index: {
     handler: async function (request, h) {
-      return h.view("admin/admin-main");
+      const users = await db.User.findAll()
+      const places = await db.Place.findAll()
+      const beers = await db.Beer.findAll()
+      const reviews = await db.Review.findAll()
+
+      const metrics = {
+        totalUsers: {
+          data: users.length,
+          header: "Total Users",
+          icon: "fa-users"
+        },
+        totalPlaces: {
+          data: places.length,
+          header: "Total Places",
+          icon: "fa-map-marker"
+        },
+        totalBeers: {
+          data: beers.length,
+          header: "Total Beers",
+          icon: "fa-beer"
+        },
+        totalReviews: {
+          data: reviews.length,
+          header: "Total Reviews",
+          icon: "fa-book-open"
+
+        }
+      }
+
+      const viewData = {
+        metrics
+
+      }
+      return h.view("admin/admin-main", viewData);
     },
   },
 
@@ -64,7 +97,13 @@ export const adminController = {
     },
     handler: async function (request, h) {
       console.log(request.payload)
-      const user = new db.User(request.payload)
+      const user = new db.User({
+        fname: request.payload.fname,
+        lname: request.payload.lname,
+        email: request.payload.email,
+        password: request.payload.password,
+        role: "user"
+      })
       user.addUser()
       return h.redirect("/admin/users");
     },
@@ -94,12 +133,12 @@ export const adminController = {
         totalPlaces: {
           data: places.length,
           header: "Total Places",
-          icon: "fa-users"
+          icon: "fa-map-marker"
         },
         placesAddedToday: {
           header: "Places Added Today",
           data: placesAddedToday,
-          icon: "fa-user-plus"
+          icon:  "fa-plus"
         }
       }
 
@@ -169,12 +208,12 @@ export const adminController = {
         totalBeers: {
           data: beers.length,
           header: "Total Beers",
-          icon: "fa-users"
+          icon: "fa-beer"
         },
         beersAddedToday: {
           header: "Beers Added Today",
           data: beersAddedToday,
-          icon: "fa-user-plus"
+          icon: "fa-plus-square"
         }
       }
 
@@ -318,12 +357,12 @@ export const adminController = {
         totalReviews: {
           data: reviews.length,
           header: "Total Reviews",
-          icon: "fa-users"
+          icon: "fa-book-open"
         },
         reviewsAddedToday: {
           header: "Reviews Added Today",
           data: reviewsAddedToday,
-          icon: "fa-user-plus"
+          icon: "fa-plus"
         }
       }
 
@@ -332,6 +371,13 @@ export const adminController = {
         metrics
       }
       return h.view("admin/admin-reviews", viewData);
+    },
+  },
+
+  deleteReview: {
+    handler: async function (request, h) {
+      await db.Review.findByIdAndDelete(request.params.id)
+      return h.redirect("/admin/reviews");
     },
   },
 

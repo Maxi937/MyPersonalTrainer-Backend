@@ -17,7 +17,8 @@ export const dashboardController = {
       }
 
       const viewData = {
-        beers
+        beers,
+        role: "user" 
       }
       return h.view("user/user-dashboard", viewData);
     },
@@ -45,7 +46,7 @@ export const dashboardController = {
       console.log(request.auth.credentials)
 
       const review = new db.Review({
-        date: new Date(),
+        date: formatISOToDate(new Date()),
         user: request.auth.credentials._id,
         rating: 5,
         content: request.payload.reviewContent,

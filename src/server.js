@@ -1,8 +1,9 @@
 import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
-import inert from "@hapi/inert";
+import Inert from "@hapi/inert";
 import Cookie from "@hapi/cookie"
 import Handlebars from "handlebars";
+import HapiSwagger from "hapi-swagger"
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -19,23 +20,38 @@ const __dirname = path.dirname(__filename);
 const logger = createlogger();
 
 // Load Config File
-dotenv.config({ path: "./config/config.env" });
+const config = dotenv.config({ path: "./config/config.env" });
+if (config.error) {
+  logger.info(config.error.message);
+  process.exit(1);
+}
+
+const swaggerOptions = {
+  info: {
+    title: "PintAccountant API",
+    version: "0.1",
+  },
+};
 
 async function init() {
   const server = Hapi.server({
     port: 3000,
     host: "localhost",
-    routes: {
-      files: {
-        relativeTo: path.join(__dirname, "public")
-      },
-    }
   });
 
   // Plugins
+  await server.register(Inert)
   await server.register(Vision);
-  await server.register(inert)
   await server.register(Cookie);
+
+  await server.register([
+    Inert,
+    Vision,
+    {
+      plugin: HapiSwagger,
+      options: swaggerOptions,
+    },
+  ]);
   server.validator(Joi);
   
   // Views;
@@ -72,17 +88,6 @@ async function init() {
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);
-
-  server.route({
-    method: "GET",
-    path: "/{param*}",
-    handler: {
-        directory: {
-            path: ".",
-            redirectToSlash: true
-        }
-    }
-});
 
 
   // Start Server

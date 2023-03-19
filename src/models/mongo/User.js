@@ -26,6 +26,10 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
+    role: {
+      type: String,
+      required: true
+    }
   },
   { timestamps: true }
 );
@@ -59,7 +63,7 @@ userSchema.statics.getById = async function(userId) {
 }
 
 userSchema.query.getByEmail = function(email) {
-  return this.findOne({ email: new RegExp(email, "i") }).lean()
+  return this.findOne({ email: email}).lean()
 }
 
 export const User = Mongoose.model("User", userSchema);

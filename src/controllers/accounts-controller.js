@@ -17,7 +17,7 @@ export const accountsController = {
   showSignup: {
     auth: false,
     handler: function (request, h) {
-      return h.view("signup-view", { title: "Sign up for Playlist" });
+      return h.view("forms/user/user-signup", { title: "Sign up for Pint Accountant" });
     },
   },
 
@@ -27,12 +27,19 @@ export const accountsController = {
       payload: UserSpec,
       options: { abortEarly: false },
       failAction: function (request, h, error) {
-        return h.view("signup-view", { title: "Sign up error", errors: error.details }).takeover().code(400);
+        logger.error("form submission error")
+        return h.view("forms/user/user-signup", { title: "Sign up error", errors: error.details }).takeover().code(400);
       },
     },
     handler: async function (request, h) {
-      const user = request.payload;
-      await db.userStore.addUser(user);
+      const user = new db.User({
+        fname: request.payload.fname,
+        lname: request.payload.lname,
+        email: request.payload.email,
+        password: request.payload.password,
+        role: "user"
+      })
+      await user.save();
       return h.redirect("/");
     },
   },
@@ -54,13 +61,21 @@ export const accountsController = {
     },
     handler: async function (request, h) {
       const { email, password } = request.payload;
+      console.log(email)
       const user = await db.User.find().getByEmail(email);
 
       if (!user || user.password !== password) {
         return h.redirect("/");
       }
-      logger.info("login success")
+
+      console.log(user)
       request.cookieAuth.set({ id: user._id });
+
+      if (user.role === "admin") {
+        return h.redirect("/admin")
+      }
+
+      logger.info("login success")
       return h.redirect("/dashboard");
     },
   },

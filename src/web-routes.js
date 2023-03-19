@@ -8,6 +8,7 @@ export const webRoutes = [
     
     // Accounts
     { method: "GET", path: "/", config: accountsController.index },
+    { method: "GET", path: "/signup", config: accountsController.showSignup },
     { method: "GET", path: "/login", config: accountsController.showLogin },
     { method: "GET", path: "/logout", config: accountsController.logout },
     { method: "POST", path: "/register", config: accountsController.signup },
@@ -37,4 +38,7 @@ export const webRoutes = [
     { method: "POST", path: "/admin/beers/{id}", config: adminController.updateBeer },
 
     { method: "GET", path: "/admin/reviews", config: adminController.reviews },
+    { method: "GET", path: "/admin/reviews/delete/{id}", config: adminController.deleteReview },
+
+    { method: "GET", path: "/{param*}", handler: { directory: { path: "./public" } }, options: { auth: false } }
 ];
