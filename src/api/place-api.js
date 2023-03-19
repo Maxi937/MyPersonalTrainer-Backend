@@ -35,7 +35,6 @@ export const placeApi = {
           console.log(request.params.lat)
           try {
             const place = await db.Place.findByLatLng(request.params.lat,request.params.lng);
-            console.log(place)
             if (!place) {
               return Boom.notFound("No Place with this id");
             }
@@ -50,14 +49,11 @@ export const placeApi = {
         auth: false,
         async handler(request) {
           try {
-            const place = await db.Place.findByLatLng(request.params.lat,request.params.lng).populate({
-            path: "reviews",
-            populate: {
-              path: "user"
-              }
-            }).lean();
-            const reviews = place.reviews
+            const reviews = await db.Review.find(request.id).populate("user")
             console.log(reviews)
+            if(!reviews) {
+              return JSON.stringify("")
+            }
             return JSON.stringify(reviews);
           } catch (err) {
             return Boom.serverUnavailable("No Place with this latlon");

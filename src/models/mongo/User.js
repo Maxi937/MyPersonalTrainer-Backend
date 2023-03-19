@@ -29,6 +29,10 @@ const userSchema = new Mongoose.Schema(
     role: {
       type: String,
       required: true
+    },
+    profilepicture: {
+      data: Buffer, 
+      contentType: String,
     }
   },
   { timestamps: true }
@@ -55,7 +59,7 @@ userSchema.statics.findAll = function() {
 
 userSchema.statics.getById = async function(userId) {
   try {
-    return await this.findOne({userId}).lean() 
+    return await this.findOne({_id: userId}).lean() 
   } catch (err) {
     logger.error(err);
     return None

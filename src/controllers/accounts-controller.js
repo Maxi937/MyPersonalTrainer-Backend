@@ -1,7 +1,9 @@
+import fs from "fs"
+import path from "path";
 import { UserSpec, UserCredentialsSpec } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js";
 import createlogger from "../../config/logger.js";
-import * as geocode from "../utility/reverse-geocode-api.js";
+
 
 const logger = createlogger()
 
@@ -37,12 +39,23 @@ export const accountsController = {
         lname: request.payload.lname,
         email: request.payload.email,
         password: request.payload.password,
+        profilepicture: {
+          data: fs.readFileSync("./public/images/placeholder.png"),
+          contentType: "image/png"
+        },
         role: "user"
       })
-      await user.save();
+      console.log(user)
+      try {
+        await user.save();
+      } catch (err) {
+        console.log(err)
+      }
+      
       return h.redirect("/");
     },
   },
+
   showLogin: {
     auth: false,
     handler: function (request, h) {
@@ -61,17 +74,17 @@ export const accountsController = {
     },
     handler: async function (request, h) {
       const { email, password } = request.payload;
-      console.log(email)
+      console.log(request.payload)
       const user = await db.User.find().getByEmail(email);
-
+     
       if (!user || user.password !== password) {
         return h.redirect("/");
       }
 
-      console.log(user)
       request.cookieAuth.set({ id: user._id });
 
       if (user.role === "admin") {
+        console.log("is admin")
         return h.redirect("/admin")
       }
 
@@ -81,7 +94,7 @@ export const accountsController = {
   },
   
   logout: {
-    handler: function (request, h) {
+    handler: function (request, h, session) {
       request.cookieAuth.clear();
       return h.redirect("/");
     },

@@ -1,7 +1,4 @@
 import Joi from "joi";
-import createlogger from "../../../config/logger.js";
-
-const logger = createlogger()
 
 // If Value is County return err
 const countyValidator = (value, helpers) => {
@@ -16,6 +13,15 @@ export const UserSpec = {
   lname: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
+  profilepicture: Joi.allow()
+};
+
+export const UserUpdateSpec = {
+  fname: Joi.string().allow(""),
+  lname: Joi.string().allow(""),
+  email: Joi.string().email().allow(""),
+  password: Joi.string().allow(""),
+  profilepicture: Joi.allow()
 };
 
 export const PlaceSpec = {

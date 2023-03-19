@@ -18,7 +18,6 @@ export const dashboardController = {
 
       const viewData = {
         beers,
-        role: "user" 
       }
       return h.view("user/user-dashboard", viewData);
     },
@@ -26,9 +25,6 @@ export const dashboardController = {
 
   review: {
     handler: async function (request, h) {
-      console.log(request.payload)
-
-
       let place = await db.Place.findByLatLng(request.payload.lat, request.payload.lng)
 
       if (!place) {
@@ -48,15 +44,11 @@ export const dashboardController = {
       const review = new db.Review({
         date: formatISOToDate(new Date()),
         user: request.auth.credentials._id,
-        rating: 5,
+        rating: request.payload.rating,
         content: request.payload.reviewContent,
         place: place._id
       })
-
-      place.reviews.push(review._id)
-
       await review.save()
-      await place.save()
 
       return h.redirect("/dashboard");
       }

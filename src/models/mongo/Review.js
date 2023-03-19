@@ -21,7 +21,6 @@ const reviewSchema = new Mongoose.Schema(
     rating: {
       type: Number,
       required: true,
-      lowercase: true
     },
     content: {
       type: String,
@@ -45,6 +44,7 @@ reviewSchema.methods.addReview = function () {
     logger.error(err);
   }
 };
+
 
 reviewSchema.statics.findAll = function() {
   try {

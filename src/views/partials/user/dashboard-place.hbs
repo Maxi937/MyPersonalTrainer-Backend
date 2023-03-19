@@ -9,9 +9,9 @@
           </figure>
         </div>
         <div class="media-content">
-          <p class="title is-4" id="placeName">John Smith</p>
-          <p class="subtitle is-6" id="placeAddress">@johnsmith</p>
-          <p class="subtitle is-6" id="placeRating">@johnsmith</p>
+          <p class="title is-4" id="placeName"></p>
+          <p class="subtitle is-6" id="placeAddress"></p>
+          <p class="subtitle is-6" id="placeRating"></p>
         </div>
         <a class="button is-info is-pulled-right" onclick="openReviewForm()">
           <span class="icon is-large">
@@ -38,16 +38,16 @@
 
 
   <div class="ui horizontal divider"></div>
-  <div id="reviewDiv"></div>
+  <div id="reviewDiv" class="mb-6"></div>
+
 
   <template id="review" src="review.html">
-    <div id="reviewDetails">
   <div class="card">
     <div class="card-content">
       <div class="media">
         <div class="media-left">
           <figure class="image is-64x64">
-            <img class="is-rounded" id="placeImage" src="https://bulma.io/images/placeholders/96x96.png"
+            <img class="is-rounded" style="width: 64px; height: 64px" id="reviewProfilePicture" src="https://bulma.io/images/placeholders/96x96.png"
               alt="Placeholder image">
           </figure>
         </div>
@@ -59,8 +59,9 @@
         </div>
         <div class="content" id="reviewContent"></div>
       </div>
+    </div>
   </template>
-</div>
+
 
 <script>
   let formOpen = false

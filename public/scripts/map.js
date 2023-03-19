@@ -1,19 +1,72 @@
+function toBase64(arr) {
+    console.log(arr)
+    arr = new Uint8Array(arr)
+    return btoa(
+       arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
+    );
+    
+ }
+
+
+function convertRatingToStars(rating) {
+    let icons = ""
+
+    for (let i = 0; i < rating; i++) {
+        icons += `<span class="icon"><i class="fas fa-star"></i></span>`
+    }
+    return icons
+}
+
+function getAvgRating(ratings) {
+    let total = 0;
+    let count = 0;
+
+    ratings.forEach((item, index) => {
+        total += item
+        count += 1;
+    });
+
+    return total / count
+}
+
 async function getReviews(placeDetails) {
-    const reviews = await fetch(`http://localhost:3000/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}/reviews`)
+    const place = await fetch(`http://localhost:3000/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`)
+    if (place.status === 200) {
+        const placeJson = await place.json()
+  
+        const reviews = await fetch(`http://localhost:3000/api/places/${placeJson._id}/reviews`)
 
-    if (reviews.status === 200) {
-        const reviewsJson = await reviews.json()
-        const template = document.querySelector("#review")
-        const reviewDiv = document.querySelector("#reviewDiv")
+        if (reviews.status === 200) {
+            const reviewsJson = await reviews.json()
+            const template = document.querySelector("#review")
+            const reviewDiv = document.querySelector("#reviewDiv")
+            const ratings = []
 
-        for (const review of reviewsJson) {
-            let clone = template.content.cloneNode(true)
-            clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`
-            clone.getElementById("reviewContent").textContent = review.content
-            clone.getElementById("reviewRating").textContent = review.rating
-            clone.getElementById("reviewDate").textContent = review.date
-            reviewDiv.appendChild(clone)
+            console.log(reviewsJson)
+
+            // eslint-disable-next-line no-restricted-syntax
+            for (const review of reviewsJson) {
+                ratings.push(review.rating)
+                const clone = template.content.cloneNode(true)
+                clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`
+                clone.getElementById("reviewContent").textContent = review.content
+                clone.getElementById("reviewRating").innerHTML = convertRatingToStars(review.rating)
+                clone.getElementById("reviewDate").textContent = review.date
+
+                let profilepicture = await fetch(`http://localhost:3000/api/users/${review.user._id}/profilepicture`)
+                if (profilepicture.status === 200 || await profilepicture.json() === "") {
+                    profilepicture = await profilepicture.json()
+                    console.log(profilepicture)
+                    clone.getElementById("reviewProfilePicture").src = `data:${await profilepicture.contentType};base64,${(await profilepicture.data)}`
+                } else {
+                    clone.getElementById("reviewProfilePicture").src = "./images/placeholder.png"
+                }
+                reviewDiv.appendChild(clone)
+            }
+            const AvgRating = getAvgRating(ratings)
+            document.getElementById("placeRating").innerHTML = convertRatingToStars(AvgRating)
         }
+
     }
 }
 

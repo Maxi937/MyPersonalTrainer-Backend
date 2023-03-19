@@ -17,15 +17,6 @@ const placeSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
-    rating: {
-      type: Number,
-      required: false,
-    },
-    reviews: [{
-      type: Mongoose.SchemaTypes.ObjectId,
-      ref: "Review",
-      required: false,
-    }],
     serves: [{
       type: Object,
       required: false,
@@ -45,6 +36,14 @@ const placeSchema = new Mongoose.Schema(
   },
   { timestamps: true }
 );
+
+placeSchema.methods.getAvgRating = function () {
+  try {
+    console.log(this.reviews);
+  } catch (err) {
+    logger.error(err);
+  }
+};
 
 placeSchema.methods.addPlace = function () {
   try {

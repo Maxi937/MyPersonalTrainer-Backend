@@ -19,12 +19,31 @@ export const userApi = {
         }
     },
 
+    getProfilePicture: {
+      auth: false,
+      handler: async function (request, h) {
+        try {
+          const user = await db.User.findOne({_id: request.params.id})
+          const profilepicture = {
+            data: await user.profilepicture.data.toString("base64"),
+            contentType: await user.profilepicture.contentType
+          }
+          return JSON.stringify(profilepicture)
+        } catch (err) {
+          console.log(err)
+          return JSON.stringify("");
+        }
+      },
+      tags: ["api"],
+      description: "get a profile picture userApi",
+      notes: "All userApi removed from Playtime",
+  },
+
     getEsriKey: {
         auth: false,
         handler: async function (request, h) {
           try {
             const key = process.env.Esri_Api_Key
-            console.log("returning key")
             return JSON.stringify(key)
           } catch (err) {
             console.log(err)
@@ -35,4 +54,4 @@ export const userApi = {
         description: "Delete all userApi",
         notes: "All userApi removed from Playtime",
     }
-}
+};
