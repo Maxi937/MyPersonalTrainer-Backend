@@ -1,7 +1,54 @@
+async function getReviews(placeDetails) {
+    const reviews = await fetch(`http://localhost:3000/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}/reviews`)
+    const reviewsJson = await reviews.json()
+
+    const template = document.querySelector("#review")
+    const reviewDiv = document.querySelector("#reviewDiv")
+    
+
+    for (const review of reviewsJson) {
+        let clone = template.content.cloneNode(true)
+        clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`
+        clone.getElementById("reviewContent").textContent = review.content
+        clone.getElementById("reviewRating").textContent = review.rating
+        clone.getElementById("reviewDate").textContent = review.date
+        reviewDiv.appendChild(clone)
+    }
+    
+}
+    
+function loadPlaceDetails(placeDetails) {
+    document.getElementById("placeName").innerHTML = placeDetails.placeName
+    document.getElementById("placeAddress").innerHTML = placeDetails.placeAddress
+    document.getElementById("placeDetails").style.display = "block"
+    document.getElementById("lat").value = placeDetails.lat
+    document.getElementById("lng").value = placeDetails.lng
+    document.getElementById("formPlaceName").value = placeDetails.placeName
+    document.getElementById("formPlaceAddress").value = placeDetails.placeAddress
+    getReviews(placeDetails)
+}
+
+
+function onMarkerClick(searchResult) {
+    const reviewDiv = document.querySelector("#reviewDiv")
+    while (reviewDiv.lastElementChild) {
+        reviewDiv.removeChild(reviewDiv.lastElementChild);
+      }
+
+    const placeDetails = {
+        placeName: searchResult.properties.PlaceName,
+        placeAddress: searchResult.properties.Place_addr,
+        lat: searchResult.latlng.lat,
+        lng: searchResult.latlng.lng
+    }
+    loadPlaceDetails(placeDetails)
+}
+
+
 async function createMap() {
     // TODO: Add validators and error checking for the api key request
     // TODO: Dont forget to update the URL for the key request to your own url when this is hosted online
-    
+
     // Create Map object and set view to Ireland Center
     const keyrequest = await fetch("http://localhost:3000/api/users/esrikey")
     const apiKey = await keyrequest.json()
@@ -61,16 +108,17 @@ async function createMap() {
             .nearby(map.getCenter(), 10)
 
             .run((error, response) => {
-                console.log(response)
-
                 if (error) {
                     return;
                 }
 
                 response.results.forEach((searchResult) => {
-                    L.marker(searchResult.latlng)
-                        .addTo(layerGroup)
-                        .bindPopup(`<b>${searchResult.properties.PlaceName}</b></br>${searchResult.properties.Place_addr}`);
+                    const marker = L.marker(searchResult.latlng)
+                    marker.addTo(layerGroup)
+                    marker.bindPopup(`<b>${searchResult.properties.PlaceName}</b></br>${searchResult.properties.Place_addr}`)
+                    marker.on("click", () => {
+                        onMarkerClick(searchResult)
+                    });
                 });
             })
 
@@ -80,7 +128,6 @@ async function createMap() {
     select.addEventListener("change", () => {
         layerGroup.clearLayers();
         if (select.value !== "") {
-            console.log(select.value)
             showPlaces(select.value);
         }
     });
@@ -92,35 +139,34 @@ async function createMap() {
 
         providers: [
             L.esri.Geocoding.arcgisOnlineProvider({
-              apikey: apiKey,
-              nearby: {
-                lat: 53.44,
-                lng: -7.5
-              }
+                apikey: apiKey,
+                nearby: {
+                    lat: 53.44,
+                    lng: -7.5
+                }
             })
-          ]
-      }).addTo(map);
+        ]
+    }).addTo(map);
 
-      const results = L.layerGroup().addTo(map);
+    const results = L.layerGroup().addTo(map);
 
-      searchControl.on("results", (data) => {
+    searchControl.on("results", (data) => {
         console.log(data)
         results.clearLayers();
 
         for (let i = data.results.length - 1; i >= 0; i--) {
             const marker = L.marker(data.results[i].latlng);
 
-            const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${
-                Math.round(data.results[i].latlng.lat * 100000) / 100000
-              }`;
-              marker.bindPopup(`<b>${lngLatString}</b><p>${data.results[i].properties.LongLabel}</p>`);
-  
+            const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${Math.round(data.results[i].latlng.lat * 100000) / 100000
+                }`;
+            marker.bindPopup(`<b>${lngLatString}</b><p>${data.results[i].properties.LongLabel}</p>`);
+
             results.addLayer(marker);
 
             marker.openPopup();
-          }
+        }
 
-      });
+    });
 
     // sets the style of the Map
     L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -129,7 +175,6 @@ async function createMap() {
     }).addTo(map);
 
 
-    // On click event
     return map
 }
 

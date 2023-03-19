@@ -26,6 +26,20 @@ export const PlaceSpec = {
   county: countyValidator,
 };
 
+export const BeerSpec = {
+  beerName: Joi.string().required(),
+  beerType: Joi.string().required(),
+  beerAvgPrice: Joi.number().precision(2),
+  beerImage: Joi.allow()
+};
+
+export const BeerUpdateSpec = {
+  beerName: Joi.string().optional().allow(""),
+  beerType: Joi.string().optional().allow("larger","cider"),
+  beerAvgPrice: Joi.number().precision(2).optional().allow(""),
+  beerImage: Joi.allow().optional()
+};
+
 export const UserCredentialsSpec = {
   email: Joi.string().email().required(),
   password: Joi.string().required()

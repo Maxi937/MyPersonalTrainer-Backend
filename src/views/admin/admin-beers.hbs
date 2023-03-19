@@ -1,0 +1,33 @@
+{{> admin/adminmenu}}
+
+
+<section class="ui inverted Blue segment">
+  <span class="ui big white text"> Metrics </span>
+</section>
+
+<div class="block">
+  <div class="columns">
+    {{#each metrics}}
+    <div class="column">
+      {{> cards/card cardHeader=this.header cardData=this.data cardIcon=this.icon}}
+    </div>
+    {{/each}}
+  </div>
+</div>
+
+<section class="ui inverted segment">
+  <div class="columns">
+  <div class="column">
+    <span class="ui big white text"> Beers </span>
+  </div>
+  <div class="column">
+    {{> buttons/blue-button text="Add Beer" icon="fa-user" route="/admin/forms/new-beer"}}
+  </div>
+</div>
+</section>
+
+<div class="ui divider"></div>
+
+ <div style="width: auto;height:500px;overflow-x: hidden;overflow-y: visible;">
+  {{> admin/table items=beers route="/admin/beers/"}}
+ </div>

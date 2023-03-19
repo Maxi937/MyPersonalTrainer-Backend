@@ -13,14 +13,14 @@ const placeSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
-    address: {
-      type: Object,
+    placeAddress: {
+      type: String,
       required: true,
     },
-    ratings: [{
+    rating: {
       type: Number,
       required: false,
-    }],
+    },
     reviews: [{
       type: Mongoose.SchemaTypes.ObjectId,
       ref: "Review",
@@ -30,6 +30,18 @@ const placeSchema = new Mongoose.Schema(
       type: Object,
       required: false,
     }],
+    description: {
+      type: String,
+      required: false,
+    },
+    lat: {
+      type: String,
+      required: true
+    },
+    lng: {
+      type: String,
+      required: true
+    }
   },
   { timestamps: true }
 );
@@ -56,6 +68,15 @@ placeSchema.statics.findAll = function() {
 placeSchema.statics.byPlaceId = function(placeId) {
   try {
     return this.find({placeId}).lean() 
+  } catch (err) {
+    logger.error(err);
+    return None
+  }
+}
+
+placeSchema.statics.findByLatLng = function(lat, lng) {
+  try {
+    return this.findOne({lat: lat, lng: lng})
   } catch (err) {
     logger.error(err);
     return None

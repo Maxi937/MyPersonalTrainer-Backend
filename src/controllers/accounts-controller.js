@@ -1,7 +1,7 @@
 import { UserSpec, UserCredentialsSpec } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js";
 import createlogger from "../../config/logger.js";
-import { getLocationToAddress, GooglegetLocationToAddress } from "../utility/reverse-geocode-api.js";
+import * as geocode from "../utility/reverse-geocode-api.js";
 
 const logger = createlogger()
 
@@ -9,7 +9,7 @@ export const accountsController = {
   index: {
     auth: false,
     handler: async function (request, h) {
-    console.log(request)
+   
       return h.view("user/user-main", { title: "Welcome to Pint Accountant" });
     },
   },

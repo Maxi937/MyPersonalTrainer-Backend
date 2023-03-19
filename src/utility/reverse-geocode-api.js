@@ -3,7 +3,7 @@ import * as dotenv from "dotenv";
 dotenv.config({ path: "./config/config.env" });
 
 
-export async function GooglegetLocationToAddress(lat, lon){
+export async function GoogleGetLocationToAddress(lat, lon){
 	const googleApiKey = process.env.Google_Geo_Api_key
 
 	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleApiKey}`;
@@ -22,7 +22,7 @@ export async function GooglegetLocationToAddress(lat, lon){
 }
 
 
-export async function getLocationToAddress(lat, lon){
+export async function RapidGetLocationToAddress(lat, lon){
 	const options = {
 		method: "GET",
 		headers: {

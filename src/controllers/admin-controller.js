@@ -1,8 +1,9 @@
-// import { User } from "../models/mongo/User.js";
-import { UserSpec, PlaceSpec } from "../models/validation/joi-schemas.js";
+import fs from "fs"
+import { UserSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
 import { formatISOToDate } from "../utility/formatutils.js";
 import createlogger from "../../config/logger.js";
 import { db } from "../models/db.js"
+
 
 const logger = createlogger()
 
@@ -21,7 +22,7 @@ export const adminController = {
       for (const user of users) {
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
-        if (user.createdAt == formatISOToDate(Date.now())) {
+        if (user.createdAt === formatISOToDate(Date.now())) {
           usersAddedToday += 1
         }
       }
@@ -69,6 +70,13 @@ export const adminController = {
     },
   },
 
+  deleteUser: {
+    handler: async function (request, h) {
+      await db.User.findByIdAndDelete(request.params.id)
+      return h.redirect("/admin/users");
+    }
+  },
+
   places: {
     handler: async function (request, h) {
       const places = await db.Place.findAll()
@@ -77,7 +85,7 @@ export const adminController = {
       for (const place of places) {
         place.createdAt = formatISOToDate(place.createdAt)
         place.updatedAt = formatISOToDate(place.updatedAt)
-        if (place.createdAt == formatISOToDate(Date.now())) {
+        if (place.createdAt === formatISOToDate(Date.now())) {
           placesAddedToday += 1
         }
       }
@@ -136,4 +144,195 @@ export const adminController = {
       return h.redirect("/admin/places");
     },
   },
+
+  deletePlace: {
+    handler: async function (request, h) {
+      await db.Place.findByIdAndDelete(request.params.id)
+      return h.redirect("/admin/places");
+    }
+  },
+
+  beers: {
+    handler: async function (request, h) {
+      const beers = await db.Beer.findAll()
+      let beersAddedToday = 0
+
+      for (const beer of beers) {
+        beer.createdAt = formatISOToDate(beer.createdAt)
+        beer.updatedAt = formatISOToDate(beer.updatedAt)
+        if (beer.createdAt === formatISOToDate(Date.now())) {
+          beersAddedToday += 1
+        }
+      }
+
+      const metrics = {
+        totalBeers: {
+          data: beers.length,
+          header: "Total Beers",
+          icon: "fa-users"
+        },
+        beersAddedToday: {
+          header: "Beers Added Today",
+          data: beersAddedToday,
+          icon: "fa-user-plus"
+        }
+      }
+
+      const viewData = {
+        beers,
+        metrics
+      }
+      return h.view("admin/admin-beers", viewData);
+    },
+  },
+
+  openBeerForm: {
+    handler: async function (request, h) {
+      return h.view("forms/admin/new-beer");
+    },
+  },
+
+  createNewBeer: {
+    auth: false,
+    payload: {
+      maxBytes: 209715200,
+      output: "file",
+      parse: true,
+      multipart: true
+    },
+    validate: {
+      payload: BeerSpec,
+      failAction: function (request, h, error) {
+        console.log(request.payload)
+        logger.error("Form Submission Error")
+        return h.view("forms/admin/new-beer", { title: "Beer error", errors: error.details }).takeover().code(400);
+      },
+    },
+    handler: async function (request, h) {
+      const newBeer = {
+        beerName: request.payload.beerName,
+        beerType: request.payload.beerType,
+        beerImage: {
+          data: fs.readFileSync(request.payload.beerImage.path),
+          contentType: request.payload.beerImage.headers["content-type"]
+        }
+      }
+      const beer = await new db.Beer(newBeer)
+
+      if (request.payload.beerAvgPrice) {
+        beer.beerAvgPrice = request.payload.beerAvgPrice
+      } else {
+        beer.beerAvgPrice = 0
+      }
+      await beer.addBeer()
+      return h.redirect("/admin/beers");
+    },
+  },
+
+  updateBeer: {
+    auth: false,
+    payload: {
+      maxBytes: 209715200,
+      output: "file",
+      parse: true,
+      multipart: true
+    },
+    validate: {
+      payload: BeerUpdateSpec,
+      failAction: async function (request, h, error) {
+        console.log(request.payload)
+        logger.error("Form Submission Error")
+        const beer = await db.Beer.findById(request.params.id).lean()
+        beer.beerImage.data = beer.beerImage.data.toString("base64")
+        return h.view("admin/admin-beer", { beer: beer, title: "Beer error", errors: error.details }).takeover().code(400);
+      },
+    },
+    handler: async function (request, h) {
+      const beer = await db.Beer.findById(request.params.id)
+
+      if (request.payload.beerName) {
+        console.log("updating Name")
+        beer.beerName = request.payload.beerName
+      }
+
+      if (request.payload.beerAvgPrice) {
+        console.log("updating Avg")
+        beer.beerType = request.payload.beerAvgPrice
+      }
+
+      if (request.payload.beerType.toLowerCase() !== beer.beerType.toLowerCase()) {
+        console.log("updating Type")
+        beer.beerType = request.payload.beerType
+      }
+
+      if (request.payload.beerImage.bytes > 0) {
+        console.log("updating Image")
+        beer.beerImage = {
+          data: fs.readFileSync(request.payload.beerImage.path),
+          contentType: request.payload.beerImage.headers["content-type"]
+        }
+      }
+
+      await beer.save()
+
+      // console.log(beer)
+      return h.redirect(`/admin/beers/${request.params.id}`);
+    },
+  },
+
+  deleteBeer: {
+    handler: async function (request, h) {
+      await db.Beer.findByIdAndDelete(request.params.id)
+      return h.redirect("/admin/beers");
+    },
+  },
+
+  beer: {
+    handler: async function (request, h) {
+      console.log(request.params.id)
+      const beer = await db.Beer.findById(request.params.id).lean()
+
+      beer.beerImage.data = beer.beerImage.data.toString("base64")
+
+      const viewData = {
+        beer
+      }
+      return h.view("admin/admin-beer", viewData);
+    },
+  },
+
+  reviews: {
+    handler: async function (request, h) {
+      const reviews = await db.Review.findAll()
+      let reviewsAddedToday = 0
+
+      for (const review of reviews) {
+        review.createdAt = formatISOToDate(review.createdAt)
+        review.updatedAt = formatISOToDate(review.updatedAt)
+        if (review.createdAt === formatISOToDate(Date.now())) {
+          reviewsAddedToday += 1
+        }
+      }
+
+      const metrics = {
+        totalReviews: {
+          data: reviews.length,
+          header: "Total Reviews",
+          icon: "fa-users"
+        },
+        reviewsAddedToday: {
+          header: "Reviews Added Today",
+          data: reviewsAddedToday,
+          icon: "fa-user-plus"
+        }
+      }
+
+      const viewData = {
+        reviews,
+        metrics
+      }
+      return h.view("admin/admin-reviews", viewData);
+    },
+  },
+
 };
