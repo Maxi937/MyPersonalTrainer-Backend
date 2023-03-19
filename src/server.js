@@ -20,11 +20,22 @@ const __dirname = path.dirname(__filename);
 const logger = createlogger();
 
 // Load Config File
-const config = dotenv.config({ path: "./config/config.env" });
-if (config.error) {
-  logger.info(config.error.message);
-  process.exit(1);
+if (process.env.NODE_ENV === "development"){
+  const config = dotenv.config({ path: "./config/config.env" });
+  if (config.error) {
+    logger.info(config.error.message);
+    process.exit(1);
+  }
 }
+else {
+  const config = dotenv.config({ path: "config.env" });
+  if (config.error) {
+    logger.info(config.error.message);
+    process.exit(1);
+  }
+}
+
+
 
 const swaggerOptions = {
   info: {
