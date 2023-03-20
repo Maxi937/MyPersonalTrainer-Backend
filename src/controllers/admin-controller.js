@@ -1,6 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 import fs from "fs"
-import { UserSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
+import { UserSpec, UserUpdateSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
 import { formatISOToDate } from "../utility/formatutils.js";
 import { createlogger } from "../../config/logger.js";
 import { db } from "../models/db.js"
@@ -44,6 +44,63 @@ export const adminController = {
         metrics
       }
       return h.view("admin/admin-main", viewData);
+    },
+  },
+
+  user: {
+    handler: async function (request, h) {
+      const user = await db.User.find({ _id: request.params.id }).lean()
+
+      user.profilepicture.data = user.profilepicture.data.toString("base64")
+
+      const viewData = {
+        user
+      }
+      return h.view("admin/admin-user", viewData);
+    },
+  },
+
+  updateUser: {
+    auth: false,
+    payload: {
+      maxBytes: 209715200,
+      output: "file",
+      parse: true,
+      multipart: true
+    },
+    validate: {
+      payload: UserUpdateSpec,
+      failAction: async function (request, h, error) {
+        return h.redirect("admin/users", { title: "User error", errors: error.details }).takeover().code(400);
+      },
+    },
+    handler: async function (request, h) {
+      const user = await db.User.find({ id: request.params.id })
+
+      if (request.payload.fname) {
+        user.fname = request.payload.fname.toLowerCase()
+      }
+
+      if (request.payload.lname) {
+        user.fname = request.payload.lname.toLowerCase()
+      }
+
+      if (request.payload.email) {
+        user.email = request.payload.email.toLowerCase()
+      }
+
+      if (request.payload.password) {
+        user.fname = request.payload.password
+      }
+
+      if (request.payload.profilepicture.bytes > 0) {
+        user.profilepicture = {
+          data: fs.readFileSync(request.payload.profilepicture.path),
+          contentType: request.payload.profilepicture.headers["content-type"]
+        }
+      }
+      await user.save()
+      return h.redirect("/profile");
     },
   },
 
@@ -171,14 +228,6 @@ export const adminController = {
       },
     },
     handler: async function (request, h) {
-      const data = {
-        placeName: request.paylo,
-        placeAddress: "10 Victoria House, Tramore, Waterford",
-        lat: "56",
-        lng: "-7",
-      }
-
-      console.log(data)
       const place = new db.Place(request.payload)
       await place.addPlace()
       return h.redirect("/admin/places");
@@ -243,8 +292,6 @@ export const adminController = {
     validate: {
       payload: BeerSpec,
       failAction: function (request, h, error) {
-        console.log(request.payload)
-        logger.error("Form Submission Error")
         return h.view("forms/admin/new-beer", { title: "Beer error", errors: error.details }).takeover().code(400);
       },
     },

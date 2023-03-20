@@ -26,7 +26,9 @@ export const webRoutes = [
 
     // Admin
     { method: "GET", path: "/admin", config: adminController.index },
+    { method: "GET", path: "/admin/user", config: adminController.user },
     { method: "GET", path: "/admin/users", config: adminController.users },
+    { method: "POST", path: "/admin/users/{id}", config: adminController.updateUser },
     { method: "GET", path: "/admin/forms/newUser", config: adminController.openUserForm },
     { method: "POST", path: "/admin/newuser", config: adminController.createNewUser }, 
     { method: "GET", path: "/admin/users/delete/{id}", config: adminController.deleteUser },
