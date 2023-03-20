@@ -1,28 +1,35 @@
 import winston, { format } from "winston";
+import fs from "fs";
 
-const { combine, label, printf, timestamp, colorize} = format;
-const myFormat = printf( ({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
+const { combine, label, printf, timestamp, colorize } = format;
+const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
 
 export function createlogger() {
-  if (process.env.NODE_ENV === "development"){
-    const logger = winston.createLogger({
-      format: combine(
-        colorize({level: true}),
-        timestamp({format: "MMM D, YYYY HH:mm"}),
-        myFormat
-      ),
-      transports: [new winston.transports.Console()],
-    });
-    return logger
-  }
+  let transports = ""
 
-  return ""
+  if (process.env.NODE_ENV === "development") {
+    transports = new winston.transports.Console()
+  }
+  else {
+    transports = new winston.transports.File({
+      filename: "logs/serverLog.txt"
+    })
+  }
+  const logger = winston.createLogger({
+    format: combine(
+      colorize({ level: true }),
+      timestamp({ format: "MMM D, YYYY HH:mm" }),
+      myFormat
+    ),
+    transports: transports,
+  });
+  return logger
 }
-  
+
+
 
 export function validationError(request, h, error) {
   const logger = createlogger()
-  console.log(error)
-  //logger.error(error.message);
+  logger.error(error.message);
   return error
 }
