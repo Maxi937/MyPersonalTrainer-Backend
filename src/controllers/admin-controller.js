@@ -1,6 +1,5 @@
 /* eslint-disable no-restricted-syntax */
 import fs from "fs"
-import { indexOf } from "lodash";
 import { UserSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
 import { formatISOToDate } from "../utility/formatutils.js";
 import { createlogger } from "../../config/logger.js";
@@ -41,10 +40,8 @@ export const adminController = {
 
         }
       }
-
       const viewData = {
         metrics
-
       }
       return h.view("admin/admin-main", viewData);
     },
@@ -57,7 +54,7 @@ export const adminController = {
 
       for (const user of users) {
         if(user.role === "admin"){
-          delete users(indexOf(user))
+          delete users(users.indexOf("user"))
         }
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
