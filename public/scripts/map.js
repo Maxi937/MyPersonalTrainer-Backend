@@ -44,8 +44,10 @@ async function getProfilePicture(id) {
 
 async function populateProfilePictures() {
     const elements = document.querySelectorAll("#userId")
+    console.log(elements)
     elements.forEach((element) => {
         const profilepictureDiv = upTo(element, "reviewProfilePicture")
+        console.log(profilepictureDiv)
         const profilepicture = getProfilePicture(element.textContent)
         console.log(profilepicture);
         if (profilepicture === "") {

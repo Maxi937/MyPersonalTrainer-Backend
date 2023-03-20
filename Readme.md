@@ -26,11 +26,8 @@ View reviews for each pub or log in to leave your own.
 ### Reviews
 - Create, Delete Reviews
 
-
-
-
 ## **Known Issues**
-- No functionality for beer reviews implemented.
+- No functionality for beer prices implemented.
 - No photos for Places.
 - No Descriptions for places.
 - The Reviews do not load instantly when a marker is clicked
