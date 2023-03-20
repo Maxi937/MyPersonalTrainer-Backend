@@ -17,5 +17,7 @@ export function createlogger() {
 
 export function validationError(request, h, error) {
   const logger = createlogger()
-  logger.err(error.message);
+  console.log(error)
+  //logger.error(error.message);
+  return error
 }

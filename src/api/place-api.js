@@ -1,38 +1,12 @@
 import Boom from "@hapi/boom";
 import { db } from "../models/db.js";
+import { validationError, createlogger } from "../../config/logger.js";
+import { PlaceSpec, IdSpec, PlaceArray } from "../models/validation/joi-schemas.js";
 
 export const placeApi = {
-    find: {
-      auth: false,
-      handler: async function (request, h) {
-        try {
-          const places = await db.Place.findAll();
-          return places;
-        } catch (err) {
-          return Boom.serverUnavailable("Database Error");
-        }
-      },
-    },
-  
-    findOne: {
-      auth: false,
-      async handler(request) {
-        try {
-          const place = await db.Place.byPlaceId(request.params.id);
-          if (!place) {
-            return Boom.notFound("No Place with this id");
-          }
-          return place;
-        } catch (err) {
-          return Boom.serverUnavailable("No Place with this id");
-        }
-      },
-    },
-
     findbyLatLng: {
         auth: false,
         async handler(request) {
-          console.log(request.params.lat)
           try {
             const place = await db.Place.findByLatLng(request.params.lat,request.params.lng);
             if (!place) {
@@ -50,7 +24,6 @@ export const placeApi = {
         async handler(request) {
           try {
             const reviews = await db.Review.find(request.id).populate("user")
-            console.log(reviews)
             if(!reviews) {
               return JSON.stringify("")
             }
@@ -60,48 +33,97 @@ export const placeApi = {
           }
         },
       },
-  
-    create: {
+
+    find: {
       auth: false,
       handler: async function (request, h) {
         try {
-          const place = new db.Place(request.payload);
-          await place.addPlace();
-          if (place) {
-            return h.response(place).code(201);
-          }
-          return Boom.badImplementation("error creating place");
+          const places = await db.Place.find().lean();
+          return places;
         } catch (err) {
           return Boom.serverUnavailable("Database Error");
         }
       },
+      tags: ["api"],
+      description: "Get all placesApi",
+      notes: "Returns details of all placesApi",
+      response: { schema: PlaceArray, failAction: validationError },
     },
-  
-    deleteOne: {
+
+    findOne: {
       auth: false,
       handler: async function (request, h) {
         try {
-          const playlist = await db.playlistStore.getPlaylistById(request.params.id);
-          if (!playlist) {
-            return Boom.notFound("No Playlist with this id");
+          const place = await db.Place.findOne({id: request.params.id}).lean();
+          if (!place) {
+            return Boom.notFound("No User with this id");
           }
-          await db.playlistStore.deletePlaylistById(playlist._id);
-          return h.response().code(204);
+          return user;
         } catch (err) {
-          return Boom.serverUnavailable("No Playlist with this id");
+          return Boom.serverUnavailable("No User with this id");
         }
       },
+      tags: ["api"],
+      description: "Get a specific place",
+      notes: "Returns place details",
+      validate: { params: { id: IdSpec }, failAction: validationError },
+      response: { schema: PlaceSpec, failAction: validationError },
     },
+
+  create: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        
+        let place = await new db.Place(request.payload);
+        await place.save()
+        place = await db.Place.findOne({_id: place._id}).lean()
+        if (place) {
+          return h.response(place).code(201);
+        }
+        return Boom.badImplementation("error creating user");
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Create a Place",
+    notes: "Returns the newly created place",
+    validate: { payload: PlaceSpec, failAction: validationError },
+    response: { schema: PlaceSpec, failAction: validationError },
+  },
+
+  deleteAll: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        await db.Place.deleteMany({});
+        return h.response().code(204);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Delete all placesApi",
+    notes: "All places removed from db",
+  },
+
+  deleteOne: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        const place = await db.Place.findOne({id: request.params.id});
+        if (!place) {
+          return Boom.notFound("No Track with this id");
+        }
+        await db.Place.deleteOne({_id: review._id});
+        return h.response().code(204);
+      } catch (err) {
+        return Boom.serverUnavailable("No Place with this id");
+      }
+    },
+  },
+
+};
+
   
-    deleteAll: {
-      auth: false,
-      handler: async function (request, h) {
-        try {
-          await db.playlistStore.deleteAllPlaylists();
-          return h.response().code(204);
-        } catch (err) {
-          return Boom.serverUnavailable("Database Error");
-        }
-      },
-    },
-  };

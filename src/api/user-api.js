@@ -6,13 +6,12 @@ import { db } from "../models/db.js"
 
 const logger = createlogger()
 
-
 export const userApi = {
     find: {
       auth: false,
       handler: async function (request, h) {
         try {
-          const users = await db.User.find();
+          const users = await db.User.find().lean();
           return users;
         } catch (err) {
           return Boom.serverUnavailable("Database Error");
@@ -28,7 +27,8 @@ export const userApi = {
       auth: false,
       handler: async function (request, h) {
         try {
-          const user = await db.User.find({id: request.params.id});
+          const user = await db.User.findOne({_id: request.params.id}).lean();
+
           if (!user) {
             return Boom.notFound("No User with this id");
           }
@@ -43,9 +43,6 @@ export const userApi = {
       validate: { params: { id: IdSpec }, failAction: validationError },
       response: { schema: UserSpec, failAction: validationError },
     },
-  
-
-
 
     getProfilePicture: {
       auth: false,
@@ -64,7 +61,44 @@ export const userApi = {
       },
       tags: ["api"],
       description: "get a profile picture userApi",
-      notes: "All userApi removed from Playtime",
+      notes: "returns profile picture as base64 string",
+  },
+
+  create: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        let user = await new db.User(request.payload);
+        await user.save()
+        user = await db.User.findOne({_id: user._id}).lean()
+        if (user) {
+          return h.response(user).code(201);
+        }
+        return Boom.badImplementation("error creating user");
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Create a User",
+    notes: "Returns the newly created user",
+    validate: { payload: UserSpec, failAction: validationError },
+    response: { schema: UserSpec, failAction: validationError },
+  },
+
+  deleteAll: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        await db.User.deleteMany({});
+        return h.response().code(204);
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Delete all userApi",
+    notes: "All users removed from db",
   },
 
     getEsriKey: {
@@ -79,7 +113,7 @@ export const userApi = {
           }
         },
         tags: ["api"],
-        description: "Delete all userApi",
-        notes: "All userApi removed from Playtime",
+        description: "get key",
+        notes: "Gives a key",
     }
 };
