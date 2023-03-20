@@ -1,9 +1,11 @@
 /* eslint-disable no-restricted-syntax */
 import fs from "fs"
+import { indexOf } from "lodash";
 import { UserSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
 import { formatISOToDate } from "../utility/formatutils.js";
 import { createlogger } from "../../config/logger.js";
 import { db } from "../models/db.js"
+
 
 
 const logger = createlogger()
@@ -54,6 +56,9 @@ export const adminController = {
       let usersAddedToday = 0
 
       for (const user of users) {
+        if(user.role === "admin"){
+          delete users(indexOf(user))
+        }
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
         if (user.createdAt === formatISOToDate(Date.now())) {
