@@ -44,18 +44,18 @@ reviewSchema.methods.addReview = function () {
 };
 
 
-reviewSchema.statics.findAll = function() {
+reviewSchema.statics.findAll = function () {
   try {
-    return this.find({}).lean() 
+    return this.find({}).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-reviewSchema.statics.byReviewId = function(reviewId) {
+reviewSchema.statics.byReviewId = function (reviewId) {
   try {
-    return this.find({placeId}).lean() 
+    return this.find({ placeId }).lean()
   } catch (err) {
     logger.error(err);
     return None

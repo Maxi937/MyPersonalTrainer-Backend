@@ -20,8 +20,8 @@ const beerSchema = new Mongoose.Schema(
       required: false,
     },
     beerImage: {
-        data: Buffer, 
-        contentType: String,
+      data: Buffer,
+      contentType: String,
     },
   },
   { timestamps: true }
@@ -37,26 +37,26 @@ beerSchema.methods.addBeer = function () {
 };
 
 beerSchema.methods.deleteBeer = function (beer) {
-    try {
-      this.delete();
-      logger.info("Beer added Successfully");
-    } catch (err) {
-      logger.error(err);
-    }
-  };
-
-beerSchema.statics.findAll = function() {
   try {
-    return this.find({}).lean() 
+    this.delete();
+    logger.info("Beer added Successfully");
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
+beerSchema.statics.findAll = function () {
+  try {
+    return this.find({}).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-beerSchema.statics.getById = function(beerId) {
+beerSchema.statics.getById = function (beerId) {
   try {
-    return this.find({beerId}).lean() 
+    return this.find({ beerId }).lean()
   } catch (err) {
     logger.error(err);
     return None

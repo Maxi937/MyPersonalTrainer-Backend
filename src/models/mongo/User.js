@@ -30,7 +30,7 @@ const userSchema = new Mongoose.Schema(
       required: true
     },
     profilepicture: {
-      data: Buffer, 
+      data: Buffer,
       contentType: String,
     }
   },
@@ -47,26 +47,26 @@ userSchema.methods.addUser = function () {
   }
 };
 
-userSchema.statics.findAll = function() {
+userSchema.statics.findAll = function () {
   try {
-    return this.find({}).lean() 
+    return this.find({}).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-userSchema.statics.getById = async function(userId) {
+userSchema.statics.getById = async function (userId) {
   try {
-    return await this.findOne({_id: userId}).lean() 
+    return await this.findOne({ _id: userId }).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-userSchema.query.getByEmail = function(email) {
-  return this.findOne({ email: email}).lean()
+userSchema.query.getByEmail = function (email) {
+  return this.findOne({ email: email }).lean()
 }
 
 export const User = Mongoose.model("User", userSchema);

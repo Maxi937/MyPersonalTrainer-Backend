@@ -15,14 +15,14 @@ export const db = {
 
   init(dbtype) {
     switch (dbtype) {
-      case "mongo" :
+      case "mongo":
         this.Beer = Beer
         this.User = User
         this.Place = Place
         this.Review = Review
         connectMongo();
         break;
-      default :
+      default:
         logger.info("No Db Selected")
     }
   }

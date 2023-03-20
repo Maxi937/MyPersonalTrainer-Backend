@@ -7,7 +7,7 @@ if (process.env.NODE_ENV === "development") {
 	const config = dotenv.config({ path: "production.env" });
 }
 
-export async function GoogleGetLocationToAddress(lat, lon){
+export async function GoogleGetLocationToAddress(lat, lon) {
 	const googleApiKey = process.env.Google_Geo_Api_key
 	const url = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${lat},${lon}&key=${googleApiKey}`;
 	try {
@@ -16,13 +16,13 @@ export async function GoogleGetLocationToAddress(lat, lon){
 		console.log(json)
 		return response
 	}
-	catch(err) {
+	catch (err) {
 		console.log(err)
 		return "Unable to connect to Api"
 	}
 }
 
-export async function RapidGetLocationToAddress(lat, lon){
+export async function RapidGetLocationToAddress(lat, lon) {
 	const options = {
 		method: "GET",
 		headers: {
@@ -35,10 +35,10 @@ export async function RapidGetLocationToAddress(lat, lon){
 		const response = await fetch(url, options)
 		const json = await response.json()
 		console.log(json)
-		
+
 		return await json.features
 	}
-	catch(err) {
+	catch (err) {
 		console.log(err)
 		return "Unable to connect to Api"
 	}

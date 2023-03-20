@@ -53,27 +53,27 @@ placeSchema.methods.addPlace = function () {
   }
 };
 
-placeSchema.statics.findAll = function() {
+placeSchema.statics.findAll = function () {
   try {
-    return this.find({}).lean() 
+    return this.find({}).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-placeSchema.statics.byPlaceId = function(placeId) {
+placeSchema.statics.byPlaceId = function (placeId) {
   try {
-    return this.find({placeId}).lean() 
+    return this.find({ placeId }).lean()
   } catch (err) {
     logger.error(err);
     return None
   }
 }
 
-placeSchema.statics.findByLatLng = function(lat, lng) {
+placeSchema.statics.findByLatLng = function (lat, lng) {
   try {
-    return this.findOne({lat: lat, lng: lng})
+    return this.findOne({ lat: lat, lng: lng })
   } catch (err) {
     logger.error(err);
     return None

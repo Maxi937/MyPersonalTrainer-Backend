@@ -57,7 +57,7 @@ export const BeerSpec = {
 
 export const BeerUpdateSpec = {
   beerName: Joi.string().optional().allow(""),
-  beerType: Joi.string().optional().allow("larger","cider"),
+  beerType: Joi.string().optional().allow("larger", "cider"),
   beerAvgPrice: Joi.number().precision(2).optional().allow(""),
   beerImage: Joi.allow().optional()
 };

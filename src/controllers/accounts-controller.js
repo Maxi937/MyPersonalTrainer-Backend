@@ -10,7 +10,7 @@ export const accountsController = {
   index: {
     auth: false,
     handler: async function (request, h) {
-   
+
       return h.view("user/user-main", { title: "Welcome to Pint Accountant" });
     },
   },
@@ -50,7 +50,7 @@ export const accountsController = {
       } catch (err) {
         console.log(err)
       }
-      
+
       return h.redirect("/");
     },
   },
@@ -75,7 +75,7 @@ export const accountsController = {
       const { email, password } = request.payload;
       console.log(request.payload)
       const user = await db.User.find().getByEmail(email);
-     
+
       if (!user || user.password !== password) {
         return h.redirect("/");
       }
@@ -91,7 +91,7 @@ export const accountsController = {
       return h.redirect("/dashboard");
     },
   },
-  
+
   logout: {
     handler: function (request, h, session) {
       request.cookieAuth.clear();

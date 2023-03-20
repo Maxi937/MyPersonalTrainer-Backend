@@ -12,7 +12,7 @@ suite("User API tests", () => {
       testUsers[0] = await pintAccountantService.createUser(testUsers[i]);
     }
   });
-  teardown(async () => {});
+  teardown(async () => { });
 
   test("create a user", async () => {
     const newUser = await pintAccountantService.createUser(maggie);

@@ -11,8 +11,8 @@ export const profileController = {
         handler: async function (request, h) {
             const loggedInUser = request.auth.credentials;
             loggedInUser.profilepicture.data = loggedInUser.profilepicture.data.toString("base64")
-  
-            const reviews = await db.Review.find({user: loggedInUser._id}).populate("place").lean()
+
+            const reviews = await db.Review.find({ user: loggedInUser._id }).populate("place").lean()
 
             console.log(reviews)
             const viewData = {
@@ -79,8 +79,8 @@ export const profileController = {
 
     deleteReview: {
         handler: async function (request, h) {
-          await db.Review.findByIdAndDelete(request.params.id)
-          return h.redirect("/profile");
+            await db.Review.findByIdAndDelete(request.params.id)
+            return h.redirect("/profile");
         },
     },
 

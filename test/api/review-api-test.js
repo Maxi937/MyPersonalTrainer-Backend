@@ -20,7 +20,7 @@ suite("Review API tests", () => {
     aReviewFromMaggie.place = place._id
   });
 
-  teardown(async () => {});
+  teardown(async () => { });
 
   test("create review", async () => {
     const returnedReview = await pintAccountantService.createReview(aReviewFromMaggie);

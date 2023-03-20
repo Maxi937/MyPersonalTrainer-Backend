@@ -49,6 +49,6 @@ export const dashboardController = {
       await review.save()
 
       return h.redirect("/dashboard");
-      }
     }
+  }
 };

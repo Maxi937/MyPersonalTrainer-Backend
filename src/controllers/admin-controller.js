@@ -51,7 +51,7 @@ export const adminController = {
     handler: async function (request, h) {
       const users = await db.User.findAll()
       let usersAddedToday = 0
-      
+
       for (const user of users) {
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
@@ -138,7 +138,7 @@ export const adminController = {
         placesAddedToday: {
           header: "Places Added Today",
           data: placesAddedToday,
-          icon:  "fa-plus"
+          icon: "fa-plus"
         }
       }
 
