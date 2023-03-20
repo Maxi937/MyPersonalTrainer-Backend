@@ -144,3 +144,4 @@ async function createAdmin() {
 }
 
 init();
+createAdmin();
