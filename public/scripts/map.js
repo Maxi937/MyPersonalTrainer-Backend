@@ -37,13 +37,22 @@ function getAvgRating(ratings) {
 async function getProfilePicture(id) {
     const profilepicture = await fetch(`https://pintaccountant.onrender.com/api/users/${id}/profilepicture`);
     if (profilepicture.status === 200) {
-        return profilepicture.json()
+        const json = await profilepicture.json()
+        return json
     }
     return ""
 }
 
+async function getAndSetProfilePicture(id) {
+    const profilepicture = await getProfilePicture(id)
+    if (profilepicture === "") {
+        return "./images/placeholder.png";
+    }
+    return `data:${profilepicture.contentType};base64,${profilepicture.data}`;
+}
+
 async function populateProfilePictures() {
-    const elements = document.querySelectorAll("#userId")
+    const elements = document.querySelectorAll(".userId")
     console.log(elements)
     elements.forEach((element) => {
         const profilepictureDiv = upTo(element, "reviewProfilePicture")
@@ -74,7 +83,7 @@ async function getReviews(placeDetails) {
                 ratings.push(review.rating);
                 const clone = template.content.cloneNode(true);
                 clone.getElementById("userName").textContent = `${review.user.fname} ${review.user.lname}`;
-                clone.getElementById("userId").textContent = `${review.user._id}`;
+                clone.getElementById("reviewProfilePicture").src = await getAndSetProfilePicture(review.user._id)
                 clone.getElementById("reviewContent").textContent = review.content;
                 clone.getElementById("reviewRating").innerHTML = convertRatingToStars(review.rating);
                 clone.getElementById("reviewDate").textContent = review.date;
@@ -114,7 +123,6 @@ function onMarkerClick(searchResult) {
     };
     loadPlaceDetails(placeDetails);
     getReviews(placeDetails);
-    populateProfilePictures()
     if (document.querySelector("#new-review")) {
         loadReviewForm(placeDetails);
     }
