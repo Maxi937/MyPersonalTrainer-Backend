@@ -93,7 +93,7 @@ export const adminController = {
       }
 
       if (request.payload.lname) {
-        user.fname = request.payload.lname.toLowerCase()
+        user.lname = request.payload.lname.toLowerCase()
       }
 
       if (request.payload.email) {
@@ -101,7 +101,7 @@ export const adminController = {
       }
 
       if (request.payload.password) {
-        user.fname = request.payload.password
+        user.password = request.payload.password
       }
 
       if (request.payload.profilepicture.bytes > 0) {

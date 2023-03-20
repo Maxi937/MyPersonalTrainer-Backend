@@ -45,27 +45,22 @@ export const profileController = {
             const user = await db.User.findById(request.params.id)
 
             if (request.payload.fname) {
-                console.log("updating fname")
                 user.fname = request.payload.fname.toLowerCase()
             }
 
             if (request.payload.lname) {
-                console.log("updating fname")
-                user.fname = request.payload.lname.toLowerCase()
+                user.lname = request.payload.lname.toLowerCase()
             }
 
             if (request.payload.email) {
-                console.log("updating email")
                 user.email = request.payload.email.toLowerCase()
             }
 
             if (request.payload.password) {
-                console.log("updating password")
-                user.fname = request.payload.password
+                user.password = request.payload.password
             }
 
             if (request.payload.profilepicture.bytes > 0) {
-                console.log("updating Image")
                 user.profilepicture = {
                     data: fs.readFileSync(request.payload.profilepicture.path),
                     contentType: request.payload.profilepicture.headers["content-type"]
