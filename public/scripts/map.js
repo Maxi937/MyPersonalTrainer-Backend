@@ -98,7 +98,7 @@ async function createMap() {
     // TODO: Dont forget to update the URL for the key request to your own url when this is hosted online
 
     // Create Map object and set view to Ireland Center
-    const keyrequest = await fetch("http://localhost:3000/api/users/esrikey")
+    const keyrequest = await fetch("https://pintaccountant.onrender.com/api/users/esrikey")
     const apiKey = await keyrequest.json()
     const map = L.map("map").setView([53.44, -7.5], 6);
     const basemapEnum = "ArcGIS:Navigation";

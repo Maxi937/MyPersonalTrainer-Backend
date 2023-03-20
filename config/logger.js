@@ -2,6 +2,7 @@ import winston, { format } from "winston";
 import fs from "fs";
 
 const { combine, label, printf, timestamp, colorize } = format;
+// eslint-disable-next-line no-shadow
 const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
 
 export function createlogger() {
