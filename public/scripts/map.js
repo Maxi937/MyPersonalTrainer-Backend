@@ -20,11 +20,11 @@ function getAvgRating(ratings) {
 }
 
 async function getReviews(placeDetails) {
-    const place = await fetch(`http://localhost:3000/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`)
+    const place = await fetch(`https://pintaccountant.onrender.com/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`)
     if (place.status === 200) {
         const placeJson = await place.json()
   
-        const reviews = await fetch(`http://localhost:3000/api/places/${placeJson._id}/reviews`)
+        const reviews = await fetch(`https://pintaccountant.onrender.com/api/places/${placeJson._id}/reviews`)
 
         if (reviews.status === 200) {
             const reviewsJson = await reviews.json()
