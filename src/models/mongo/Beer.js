@@ -5,8 +5,6 @@ import { createlogger } from "../../../config/logger.js";
 
 const logger = createlogger()
 
-// TODO: Add Validators for inputs
-
 const beerSchema = new Mongoose.Schema(
   {
     beerName: {

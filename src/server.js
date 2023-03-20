@@ -27,11 +27,10 @@ if (process.env.NODE_ENV === "development"){
     logger.info(config.error.message);
     process.exit(1);
   }
-}
-
-else {
+} else {
   const config = dotenv.config({ path: "config.env" });
   if (config.error) {
+    console.log(config.error)
     logger.info(config.error.message);
     process.exit(1);
   }
@@ -103,7 +102,7 @@ async function init() {
   // Start Server
   await server.start();
   logger.info(`Server running on ${server.info.uri}`);
-  
+
   // Create an Admin User if one not there
     const admin = {
       "fname": "Matthew",

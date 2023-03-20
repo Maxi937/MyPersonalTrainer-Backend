@@ -1,13 +1,3 @@
-function toBase64(arr) {
-    console.log(arr)
-    arr = new Uint8Array(arr)
-    return btoa(
-       arr.reduce((data, byte) => data + String.fromCharCode(byte), '')
-    );
-    
- }
-
-
 function convertRatingToStars(rating) {
     let icons = ""
 
