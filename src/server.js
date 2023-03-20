@@ -4,7 +4,6 @@ import Inert from "@hapi/inert";
 import Cookie from "@hapi/cookie"
 import Handlebars from "handlebars";
 import HapiSwagger from "hapi-swagger"
-import axios from "axios";
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -127,21 +126,5 @@ process.on("unhandledRejection", (err) => {
   process.exit(1);
 });
 
-
-async function createAdmin() {
-  // Create an Admin User if one not there
-  const admin = {
-    "fname": "Matthew",
-    "lname": "Hornby",
-    "email": "mhornby123@gmail.com",
-    "password": "admin",
-    "role": "admin"
-  }
-  const adminUser = await db.User.findOne({ role: admin.role }).lean()
-  if (!adminUser) {
-    const res = await axios.post(`${process.env.url}/api/users`, admin);
-  }
-}
-
 init();
-createAdmin();
+
