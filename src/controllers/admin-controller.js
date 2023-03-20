@@ -101,7 +101,7 @@ export const adminController = {
         }
       }
       await user.save()
-      return h.redirect("/profile");
+      return h.redirect("/admin/users");
     },
   },
 
