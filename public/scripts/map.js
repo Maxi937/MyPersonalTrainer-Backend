@@ -37,7 +37,7 @@ function getAvgRating(ratings) {
 async function getProfilePicture(id) {
     const profilepicture = await fetch(`https://pintaccountant.onrender.com/api/users/${id}/profilepicture`);
     if (profilepicture.status === 200) {
-        return await profilepicture.json()
+        return profilepicture.json()
     }
     return ""
 }
@@ -77,10 +77,10 @@ async function getReviews(placeDetails) {
                 clone.getElementById("reviewContent").textContent = review.content;
                 clone.getElementById("reviewRating").innerHTML = convertRatingToStars(review.rating);
                 clone.getElementById("reviewDate").textContent = review.date;
+                reviewDiv.appendChild(clone)
             }
             const AvgRating = getAvgRating(ratings);
             document.getElementById("placeRating").innerHTML = convertRatingToStars(AvgRating);
-            reviewDiv.appendChild(clone)
         }
     }
 }
