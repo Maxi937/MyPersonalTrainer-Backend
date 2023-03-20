@@ -49,18 +49,14 @@ export const adminController = {
 
   users: {
     handler: async function (request, h) {
-      const users = await db.User.findAll()
+      const users = await db.User.find({ role: { $ne: "admin" } }).lean()
       let usersAddedToday = 0
 
       for (const user of users) {
-        if (user.role === "admin") {
-          delete users[users.indexOf(user)]
-        } else {
-          user.createdAt = formatISOToDate(user.createdAt)
-          user.updatedAt = formatISOToDate(user.updatedAt)
-          if (user.createdAt === formatISOToDate(Date.now())) {
-            usersAddedToday += 1
-          }
+        user.createdAt = formatISOToDate(user.createdAt)
+        user.updatedAt = formatISOToDate(user.updatedAt)
+        if (user.createdAt === formatISOToDate(Date.now())) {
+          usersAddedToday += 1
         }
       }
 
