@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 import fs from "fs"
 import { UserSpec, PlaceSpec, BeerSpec, BeerUpdateSpec } from "../models/validation/joi-schemas.js";
 import { formatISOToDate } from "../utility/formatutils.js";
