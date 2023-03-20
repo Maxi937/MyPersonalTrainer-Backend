@@ -23,7 +23,7 @@ export const placeApi = {
     auth: false,
     async handler(request) {
       try {
-        const reviews = await db.Review.find({ place: request.id }).populate("user")
+        const reviews = await db.Review.find({ place: request.params.id }).populate("user")
         if (!reviews) {
           return JSON.stringify("")
         }
