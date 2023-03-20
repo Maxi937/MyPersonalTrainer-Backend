@@ -57,7 +57,6 @@ async function populateProfilePictures() {
     })
 }
 
-
 async function getReviews(placeDetails) {
     const place = await fetch(`https://pintaccountant.onrender.com/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`);
     if (place.status === 200) {
@@ -82,6 +81,7 @@ async function getReviews(placeDetails) {
             const AvgRating = getAvgRating(ratings);
             document.getElementById("placeRating").innerHTML = convertRatingToStars(AvgRating);
         }
+        
     }
 }
 
@@ -112,6 +112,7 @@ function onMarkerClick(searchResult) {
     };
     loadPlaceDetails(placeDetails);
     getReviews(placeDetails);
+    populateProfilePictures()
     if (document.querySelector("#new-review")) {
         loadReviewForm(placeDetails);
     }
