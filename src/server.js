@@ -13,6 +13,7 @@ import { db } from "./models/db.js";
 import { createlogger } from "../config/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
+import { adminRoutes } from "./admin-routes.js";
 import { responseTimes } from "./utility/serverutils.js";
 import { accountsController } from "./controllers/accounts-controller.js";
 
@@ -113,6 +114,7 @@ async function init() {
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);
+  server.route(adminRoutes);
   console.log("Routes Configured")
 
   // Start Server

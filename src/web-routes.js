@@ -24,29 +24,5 @@ export const webRoutes = [
     { method: "POST", path: "/profile/{id}", config: profileController.updateProfile},
     { method: "GET", path: "/reviews/delete/{id}", config: profileController.deleteReview },
 
-    // Admin
-    { method: "GET", path: "/admin", config: adminController.index },
-    { method: "GET", path: "/admin/users/{id}", config: adminController.user },
-    { method: "GET", path: "/admin/users", config: adminController.users },
-    { method: "POST", path: "/admin/users/{id}", config: adminController.updateUser },
-    { method: "GET", path: "/admin/forms/newUser", config: adminController.openUserForm },
-    { method: "POST", path: "/admin/newuser", config: adminController.createNewUser }, 
-    { method: "GET", path: "/admin/users/delete/{id}", config: adminController.deleteUser },
-
-    { method: "GET", path: "/admin/places", config: adminController.places },
-    { method: "GET", path: "/admin/forms/new-place", config: adminController.openPlaceForm },
-    { method: "POST", path: "/admin/new-place", config: adminController.createNewPlace },
-    { method: "GET", path: "/admin/places/delete/{id}", config: adminController.deletePlace },
-
-    { method: "GET", path: "/admin/beers", config: adminController.beers },
-    { method: "GET", path: "/admin/forms/new-beer", config: adminController.openBeerForm },
-    { method: "POST", path: "/admin/new-beer", config: adminController.createNewBeer },
-    { method: "GET", path: "/admin/beers/delete/{id}", config: adminController.deleteBeer },
-    { method: "GET", path: "/admin/beers/{id}", config: adminController.beer },
-    { method: "POST", path: "/admin/beers/{id}", config: adminController.updateBeer },
-
-    { method: "GET", path: "/admin/reviews", config: adminController.reviews },
-    { method: "GET", path: "/admin/reviews/delete/{id}", config: adminController.deleteReview },
-
     { method: "GET", path: "/{param*}", handler: { directory: { path: "./public" } }, options: { auth: false } }
 ];
