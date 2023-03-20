@@ -4,6 +4,7 @@ import Inert from "@hapi/inert";
 import Cookie from "@hapi/cookie"
 import Handlebars from "handlebars";
 import HapiSwagger from "hapi-swagger"
+import axios from "axios";
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -27,6 +28,7 @@ if (process.env.NODE_ENV === "development"){
     process.exit(1);
   }
 }
+
 else {
   const config = dotenv.config({ path: "config.env" });
   if (config.error) {
@@ -34,8 +36,6 @@ else {
     process.exit(1);
   }
 }
-
-
 
 const swaggerOptions = {
   info: {
@@ -100,10 +100,22 @@ async function init() {
   server.route(webRoutes);
   server.route(apiRoutes);
 
-
   // Start Server
   await server.start();
   logger.info(`Server running on ${server.info.uri}`);
+  
+  // Create an Admin User if one not there
+    const admin = {
+      "fname": "Matthew",
+      "lname": "Hornby",
+      "email": "mhornby123@gmail.com",
+      "password": "admin",
+      "role": "admin"
+    }
+    const adminUser = await db.User.findOne({role: admin.role}).lean()
+    if (!adminUser) {
+      const res = await axios.post(`${process.env.url}/api/users`, admin);
+    }
 }
 
 process.on("unhandledRejection", (err) => {
