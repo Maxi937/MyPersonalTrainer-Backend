@@ -23,9 +23,9 @@ const logger = createlogger();
 // Load Config File
 let config = ""
 
-if (process.env.NODE_ENV === "development"){
+if (process.env.NODE_ENV === "development") {
   config = dotenv.config({ path: "./config/config.env" });
-} 
+}
 else if (process.env.NODE_ENV === "production") {
   config = dotenv.config({ path: "production.env" });
 }
@@ -34,9 +34,9 @@ else if (process.env.NODE_ENV === "devprod") {
 }
 
 if (config.error) {
-    console.log(config.error)
-    logger.info(config.error.message);
-    process.exit(1);
+  console.log(config.error)
+  logger.info(config.error.message);
+  process.exit(1);
 }
 
 console.log("Config Configured")
@@ -73,7 +73,7 @@ async function init() {
   server.validator(Joi);
 
   console.log("Plugins Registered")
-  
+
   // Views;
   server.views({
     engines: {
@@ -117,20 +117,8 @@ async function init() {
 
   // Start Server
   await server.start();
+  console.log("server started")
   logger.info(`Server running on ${server.info.uri}`);
-
-  // Create an Admin User if one not there
-    const admin = {
-      "fname": "Matthew",
-      "lname": "Hornby",
-      "email": "mhornby123@gmail.com",
-      "password": "admin",
-      "role": "admin"
-    }
-    const adminUser = await db.User.findOne({role: admin.role}).lean()
-    if (!adminUser) {
-      const res = await axios.post(`${process.env.url}/api/users`, admin);
-    }
 }
 
 process.on("unhandledRejection", (err) => {
@@ -138,4 +126,22 @@ process.on("unhandledRejection", (err) => {
   process.exit(1);
 });
 
+
+async function createAdmin() {
+   // Create an Admin User if one not there
+   const admin = {
+    "fname": "Matthew",
+    "lname": "Hornby",
+    "email": "mhornby123@gmail.com",
+    "password": "admin",
+    "role": "admin"
+  }
+  const adminUser = await db.User.findOne({ role: admin.role }).lean()
+  if (!adminUser) {
+    const res = await axios.post(`${process.env.url}/api/users`, admin);
+  }
+}
+
+console.log("initing")
 init();
+console.log("fin initing")

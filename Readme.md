@@ -1,12 +1,40 @@
 # **Description**
 
-Template for a node app.
+Hapi/Node webApp for reviewing pubs in Ireland.
 
-*Requires a config.env file in order to integrate the mongo database.
+View reviews for each pub or log in to leave your own.
+
+## **URL**
+<https://pintaccountant.onrender.com/>
+
+## **Feautures**
+
+### User
+- Signup
+- Login
+- Auth
+- Profile Pictures
+- Update Details
+
+### Admin
+- Create, Delete all resources
+
+### Places
+- Note: Places are every pub/hotel in Ireland, Places are only tracked when a review is left.
+- Places automatically create when a review is left.
+
+### Reviews
+- Create, Delete Reviews
 
 
 
-## **Stack**
+
+## **Known Issues**
+- No functionality for beer reviews implemented.
+- No photos for Places.
+- No Descriptions for places.
+
+## **Tech**
 
 ### **Database**
 
@@ -15,7 +43,7 @@ Template for a node app.
 ### **Backend**
 
 - Node
-- Express
+- Hapi
 - Mongoose
 
 ### **Logging**
@@ -29,7 +57,14 @@ Template for a node app.
 ### **CSS**
 
 - Fomantic UI
+- Bulma
 
 ### **Utility**
 
 - Nodemon
+- eslint
+
+### **Testing**
+
+- Mocha
+- Chai
