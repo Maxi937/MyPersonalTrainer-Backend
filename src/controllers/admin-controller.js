@@ -72,6 +72,8 @@ export const adminController = {
     validate: {
       payload: UserUpdateSpec,
       failAction: async function (request, h, error) {
+        logger.info("Form Error")
+        console.log(request.payload)
         return h.redirect("admin/users", { title: "User error", errors: error.details }).takeover().code(400);
       },
     },
