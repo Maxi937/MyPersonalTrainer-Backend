@@ -49,7 +49,7 @@ export const adminController = {
 
   user: {
     handler: async function (request, h) {
-      let user = await db.User.find({ _id: request.params.id }).lean()
+      let user = await db.User.find({ _id: request.params.id })
       const profilepicture = user.profilepicture.data.toString("base64")
       user = await db.User.find({ _id: request.params.id }).lean()
       user.profilepicture = profilepicture
