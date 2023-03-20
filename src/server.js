@@ -39,6 +39,8 @@ if (config.error) {
     process.exit(1);
 }
 
+console.log("Config Configured")
+
 
 const swaggerOptions = {
   info: {
@@ -46,6 +48,8 @@ const swaggerOptions = {
     version: "0.1",
   },
 };
+
+console.log("Swagger Configured")
 
 async function init() {
   const server = Hapi.server({
@@ -67,6 +71,8 @@ async function init() {
     },
   ]);
   server.validator(Joi);
+
+  console.log("Plugins Registered")
   
   // Views;
   server.views({
@@ -81,8 +87,11 @@ async function init() {
     isCached: false,
   });
 
+  console.log("View Engine Loaded")
+
   // Extend Server to get response time of a request and log to console
   responseTimes(server)
+  console.log("Response Times Loaded")
 
   // Set up Cookies
   server.auth.strategy("session", "cookie", {
@@ -95,13 +104,16 @@ async function init() {
     validate: accountsController.validate,
   });
   server.auth.default("session");
+  console.log("Auth Configured")
 
   // Connect to Mongo Database
   db.init("mongo")
+  console.log("DB Configured")
 
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);
+  console.log("Routes Configured")
 
   // Start Server
   await server.start();
