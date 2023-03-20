@@ -108,6 +108,10 @@ export const adminController = {
         lname: request.payload.lname,
         email: request.payload.email,
         password: request.payload.password,
+        profilepicture: {
+          data: fs.readFileSync("./public/images/placeholder.png"),
+          contentType: "image/png"
+        },
         role: "user"
       })
       user.addUser()
@@ -174,17 +178,14 @@ export const adminController = {
     },
     handler: async function (request, h) {
       const data = {
-        placeName: request.payload.placeName,
-        address: {
-          address1: request.payload.address1,
-          address2: request.payload.address2,
-          address3: request.payload.address3,
-          county: request.payload.county,
-        }
+        placeName: request.paylo,
+        placeAddress: "10 Victoria House, Tramore, Waterford",
+        lat: "56",
+        lng: "-7",
       }
 
       console.log(data)
-      const place = new db.Place(data)
+      const place = new db.Place(request.payload)
       await place.addPlace()
       return h.redirect("/admin/places");
     },

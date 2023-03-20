@@ -1,95 +1,43 @@
 {{> admin/adminmenu}}
 
 <form action="/admin/new-place" method="POST">
-    <div class="field">
-        <p class="control has-icons-left has-icons-right">
-            <input class="input" type="text" placeholder="Place Name" name="placeName">
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
-            <span class="icon is-small is-right">
-                <i class="fas fa-check"></i>
-            </span>
-        </p>
-    </div>
-    <div class="field">
-        <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Address" name="address1">
-            <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-            </span>
-        </p>
-    </div>
-    <div class="field">
-        <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Address" name="address2">
-            <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-            </span>
-        </p>
-    </div>
-    <div class="field">
-        <p class="control has-icons-left">
-            <input class="input" type="text" placeholder="Address" name="address3">
-            <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-            </span>
-        </p>
-    </div>
-    <div class="field">
-        <p class="control has-icons-left">
-            <span class="select">
-                <select name="county">
-                    <option selected>County</option>
-                    <option value="antrim">Antrim</option>
-                    <option value="armagh">Armagh</option>
-                    <option value="carlow">Carlow</option>
-                    <option value="cavan">Cavan</option>
-                    <option value="clare">Clare</option>
-                    <option value="cork">Cork</option>
-                    <option value="derry">Derry</option>
-                    <option value="donegal">Donegal</option>
-                    <option value="down">Down</option>
-                    <option value="dublin">Dublin</option>
-                    <option value="fermanagh">Fermanagh</option>
-                    <option value="galway">Galway</option>
-                    <option value="kerry">Kerry</option>
-                    <option value="kildare">Kildare</option>
-                    <option value="kilkenny">Kilkenny</option>
-                    <option value="laois">Laois</option>
-                    <option value="leitrim">Leitrim</option>
-                    <option value="limerick">Limerick</option>
-                    <option value="longford">Longford</option>
-                    <option value="louth">Louth</option>
-                    <option value="mayo">Mayo</option>
-                    <option value="meath">Meath</option>
-                    <option value="monaghan">Monaghan</option>
-                    <option value="offaly">Offaly</option>
-                    <option value="roscommon">Roscommon</option>
-                    <option value="sligo">Sligo</option>
-                    <option value="tipperary">Tipperary</option>
-                    <option value="tyrone">Tyrone</option>
-                    <option value="waterford">Waterford</option>
-                    <option value="westmeath">Westmeath</option>
-                    <option value="wexford">Wexford</option>
-                    <option value="wicklow">Wicklow</option>
-                </select>
-            </span>
-            <span class="icon is-small is-left">
-                <i class="fas fa-globe"></i>
-            </span>
-        </p>
-    </div>
-
-
-    <div class="field">
-        <p class="control">
-            <button class="button is-success">
-                Submit
-            </button>
-        </p>
-    </div>
+  <div class="field">
+    <p class="control has-icons-left has-icons-right">
+      <input class="input" type="text" placeholder="Place Name" name="placeName" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-house"></i>
+      </span>
+    </p>
+  </div>
+  <div class="field">
+    <p class="control has-icons-left">
+      <input class="input" type="text" placeholder="Address" name="placeAddress" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-map-marker"></i>
+      </span>
+    </p>
+  </div>
+  <div class="field">
+    <p class="control has-icons-left">
+      <input class="input" type="text" placeholder="latitude" name="lat" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-map"></i>
+      </span>
+    </p>
+  </div>
+  <div class="field">
+    <p class="control has-icons-left">
+      <input class="input" type="text" placeholder="longitude" name="lng" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-map"></i>
+      </span>
+    </p>
+  </div>
+  <div class="field">
+    <p class="control">
+      <button class="button is-success">
+        Submit
+      </button>
+    </p>
+  </div>
 </form>
-<script>
-
-</script>

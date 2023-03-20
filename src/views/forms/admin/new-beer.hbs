@@ -1,74 +1,67 @@
 {{> admin/adminmenu}}
 
 <form action="/admin/new-beer" method="POST" enctype="multipart/form-data">
-    <div class="field">
-        <p class="control has-icons-left has-icons-right">
-            <input class="input" type="text" placeholder="Beer Name" name="beerName">
-            <span class="icon is-small is-left">
-                <i class="fas fa-envelope"></i>
-            </span>
-        </p>
-    </div>
+  <div class="field">
+    <p class="control has-icons-left has-icons-right">
+      <input class="input" type="text" placeholder="Beer Name" name="beerName" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-beer"></i>
+      </span>
+    </p>
+  </div>
 
-    <div class="field">
-        <p class="control has-icons-left">
-            <input class="input" type="decimal" placeholder="Avg Price" name="beerAvgPrice">
-            <span class="icon is-small is-left">
-                <i class="fas fa-lock"></i>
-            </span>
-        </p>
-    </div>
+  <div class="field">
+    <p class="control has-icons-left">
+      <input class="input" type="decimal" placeholder="Avg Price" name="beerAvgPrice" />
+      <span class="icon is-small is-left">
+        <i class="fas fa-euro-sign"></i>
+      </span>
+    </p>
+  </div>
 
-    <div class="field">
-        <p class="control has-icons-left">
-            <span class="select">
-                <select name="beerType">
-                    <option selected>Type</option>
-                    <option value="cider">Cider</option>
-                    <option value="larger">Larger</option>
-                </select>
-            </span>
-            <span class="icon is-small is-left">
-                <i class="fas fa-globe"></i>
-            </span>
-        </p>
-    </div>
+  <div class="field">
+    <p class="control has-icons-left">
+      <span class="select">
+        <select name="beerType">
+          <option selected>Type</option>
+          <option value="cider">Cider</option>
+          <option value="larger">Larger</option>
+        </select>
+      </span>
+      <span class="icon is-small is-left">
+        <i class="fas fa-seedling"></i>
+      </span>
+    </p>
+  </div>
 
-    <div id="beerimage" class="file has-name">
-        <label class="file-label">
-            <input class="file-input" type="file" name="beerImage" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps">
-            <span class="file-cta">
-                <span class="file-icon">
-                    <i class="fas fa-upload"></i>
-                </span>
-                <span class="file-label">
-                    Choose a file…
-                </span>
-            </span>
-            <span class="file-name" id="beerimage-filename">
-                
-            </span>
-        </label>
-    </div>
+  <div id="beerimage" class="file has-name">
+    <label class="file-label">
+      <input class="file-input" type="file" name="beerImage" accept="image/jpeg,image/gif,image/png,application/pdf,image/x-eps" />
+      <span class="file-cta">
+        <span class="file-icon">
+          <i class="fas fa-upload"></i>
+        </span>
+        <span class="file-label">
+          Choose a file…
+        </span>
+      </span>
+      <span class="file-name" id="beerimage-filename">
+      </span>
+    </label>
+  </div>
 
-    <br>
+  <br />
 
-
-    <div class="field">
-        <p class="control">
-            <button class="button is-success">
-                Submit
-            </button>
-        </p>
-    </div>
+  <div class="field">
+    <p class="control">
+      <button class="button is-success">
+        Submit
+      </button>
+    </p>
+  </div>
 </form>
 
 <script>
-  const fileInput = document.querySelector('#beerimage input[type=file]');
-  fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-      const fileName = document.querySelector('#beerimage .file-name');
-      fileName.textContent = fileInput.files[0].name;
-    }
-  }
+  const fileInput = document.querySelector('#beerimage input[type=file]'); fileInput.onchange = () => { if (fileInput.files.length > 0) { const fileName =
+  document.querySelector('#beerimage .file-name'); fileName.textContent = fileInput.files[0].name; } }
 </script>
