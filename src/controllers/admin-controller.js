@@ -52,7 +52,7 @@ export const adminController = {
       let user = await db.User.find({ _id: request.params.id })
       const profilepicture = user.profilepicture.data.toString("base64")
       user = await db.User.find({ _id: request.params.id }).lean()
-      user.profilepicture = profilepicture
+      user.profilepicture.data = profilepicture
 
       const reviews = await db.Review.find({ user: request.params.id }).populate("place").lean()
  
