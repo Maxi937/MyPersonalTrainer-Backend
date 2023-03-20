@@ -72,13 +72,11 @@ export const adminController = {
     validate: {
       payload: UserUpdateSpec,
       failAction: async function (request, h, error) {
-        logger.info("Form Error")
-        console.log(request.payload)
         return h.redirect("admin/users", { title: "User error", errors: error.details }).takeover().code(400);
       },
     },
     handler: async function (request, h) {
-      const user = await db.User.findOne({ id: request.params.id })
+      const user = await db.User.findOne({ _id: request.params.id })
 
       if (request.payload.fname) {
         user.fname = request.payload.fname.toLowerCase()
