@@ -54,7 +54,8 @@ export const adminController = {
       user.profilepicture.data = user.profilepicture.data.toString("base64")
 
       const viewData = {
-        user
+        user,
+        reviews
       }
       return h.view("admin/admin-user", viewData);
     },
