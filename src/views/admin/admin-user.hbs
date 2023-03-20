@@ -110,26 +110,26 @@
 
 
 <script>
-const fileInput = document.querySelector('#profilepicture input[type=file]');
-fileInput.onchange = () => {
-    if (fileInput.files.length > 0) {
-        const fileName = document.querySelector('#profilepicture .file-name');
-        fileName.textContent = fileInput.files[0].name;
+    const fileInput = document.querySelector('#profilepicture input[type=file]');
+    fileInput.onchange = () => {
+        if (fileInput.files.length > 0) {
+            const fileName = document.querySelector('#profilepicture .file-name');
+            fileName.textContent = fileInput.files[0].name;
+        }
     }
-}
 
-function convertRatingToStars(rating) {
-    let icons = ""
+    function convertRatingToStars(rating) {
+        let icons = ""
 
-    for (let i = 0; i < rating; i++) {
-        icons += `<span class="icon"><i class="fas fa-star"></i></span>`
+        for (let i = 0; i < rating; i++) {
+            icons += `<span class="icon"><i class="fas fa-star"></i></span>`
+        }
+        return icons
     }
-    return icons
-}
 
-const reviewRatings = document.querySelectorAll(".reviewRating")
+    const reviewRatings = document.querySelectorAll(".reviewRating")
 
-reviewRatings.forEach((reviewRating) => {
-    reviewRating.innerHTML = convertRatingToStars(reviewRating.textContent)
-})
+    reviewRatings.forEach((reviewRating) => {
+        reviewRating.innerHTML = convertRatingToStars(reviewRating.textContent)
+    })
 </script>
