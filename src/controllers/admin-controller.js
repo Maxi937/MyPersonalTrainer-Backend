@@ -173,7 +173,8 @@ export const adminController = {
 
   deleteUser: {
     handler: async function (request, h) {
-      await db.User.findByIdAndDelete(request.params.id)
+      await db.User.deleteOne({_id: request.params.id})
+      await db.Review.deleteMany({user: request.params.id})
       return h.redirect("/admin/users");
     }
   },
