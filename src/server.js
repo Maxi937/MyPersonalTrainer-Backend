@@ -35,12 +35,12 @@ else if (process.env.NODE_ENV === "devprod") {
 }
 
 if (config.error) {
-  console.log(config.error)
+  logger.error(config.error)
   logger.info(config.error.message);
   process.exit(1);
 }
 
-console.log("Config Configured")
+logger.info("Config Configured")
 
 
 const swaggerOptions = {
@@ -50,7 +50,7 @@ const swaggerOptions = {
   },
 };
 
-console.log("Swagger Configured")
+logger.info("Swagger Configured")
 
 async function init() {
   const server = Hapi.server({
@@ -73,7 +73,7 @@ async function init() {
   ]);
   server.validator(Joi);
 
-  console.log("Plugins Registered")
+  logger.info("Plugins Registered")
 
   // Views;
   server.views({
@@ -88,11 +88,11 @@ async function init() {
     isCached: false,
   });
 
-  console.log("View Engine Loaded")
+  logger.info("View Engine Loaded")
 
   // Extend Server to get response time of a request and log to console
   responseTimes(server)
-  console.log("Response Times Loaded")
+  logger.info("Response Times Loaded")
 
   // Set up Cookies
   server.auth.strategy("session", "cookie", {
@@ -105,33 +105,32 @@ async function init() {
     validate: accountsController.validate,
   });
   server.auth.default("session");
-  console.log("Auth Configured")
+  logger.info("Auth Configured")
 
   // Connect to Mongo Database
   db.init("mongo")
-  console.log("DB Configured")
+  logger.info("DB Configured")
 
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);
   server.route(adminRoutes);
-  console.log("Routes Configured")
+  logger.info("Routes Configured")
 
   // Start Server
   await server.start();
-  console.log("server started")
   logger.info(`Server running on ${server.info.uri}`);
 }
 
 process.on("unhandledRejection", (err) => {
-  logger.error(err);
+  logger.error(err.message);
   process.exit(1);
 });
 
 
 async function createAdmin() {
-   // Create an Admin User if one not there
-   const admin = {
+  // Create an Admin User if one not there
+  const admin = {
     "fname": "Matthew",
     "lname": "Hornby",
     "email": "mhornby123@gmail.com",
@@ -144,6 +143,4 @@ async function createAdmin() {
   }
 }
 
-console.log("initing")
 init();
-console.log("fin initing")
