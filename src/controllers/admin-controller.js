@@ -49,13 +49,10 @@ export const adminController = {
 
   user: {
     handler: async function (request, h) {
-      let user = await db.User.find({ _id: request.params.id })
-      const profilepicture = user.profilepicture.data.toString("base64")
-      user = await db.User.find({ _id: request.params.id }).lean()
-      user.profilepicture.data = profilepicture
-
+      const user = await db.User.findOne({ _id: request.params.id }).lean()
       const reviews = await db.Review.find({ user: request.params.id }).populate("place").lean()
- 
+      user.profilepicture.data = user.profilepicture.data.toString("base64")
+
       const viewData = {
         user,
         reviews
