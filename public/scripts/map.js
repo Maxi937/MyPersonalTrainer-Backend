@@ -92,7 +92,7 @@ async function getReviews(placeDetails) {
             const AvgRating = getAvgRating(ratings);
             document.getElementById("placeRating").innerHTML = convertRatingToStars(AvgRating);
         }
-        
+
     }
 }
 
