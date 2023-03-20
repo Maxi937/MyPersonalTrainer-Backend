@@ -33,7 +33,9 @@ View reviews for each pub or log in to leave your own.
 - No functionality for beer reviews implemented.
 - No photos for Places.
 - No Descriptions for places.
-
+- The Reviews do not load instantly when a marker is clicked
+- About page incomplete
+  
 ## **Tech**
 
 ### **Database**
