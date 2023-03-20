@@ -1,5 +1,5 @@
 import Mongoose from "mongoose";
-import createlogger from "../../../config/logger.js";
+import { createlogger } from "../../../config/logger.js";
 
 const logger = createlogger()
 

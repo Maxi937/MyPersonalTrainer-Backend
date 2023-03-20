@@ -8,6 +8,8 @@ const countyValidator = (value, helpers) => {
   return value;
 };
 
+export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
+
 export const UserSpec = {
   fname: Joi.string().required(),
   lname: Joi.string().required(),
@@ -15,6 +17,8 @@ export const UserSpec = {
   password: Joi.string().required(),
   profilepicture: Joi.allow()
 };
+
+export const UserArray = Joi.array().items(UserSpec).label("UserArray");
 
 export const UserUpdateSpec = {
   fname: Joi.string().allow(""),

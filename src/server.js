@@ -9,7 +9,7 @@ import * as dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { db } from "./models/db.js";
-import createlogger from "../config/logger.js";
+import { createlogger } from "../config/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
 import { responseTimes } from "./utility/serverutils.js";

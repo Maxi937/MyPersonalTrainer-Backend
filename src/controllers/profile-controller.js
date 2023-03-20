@@ -1,7 +1,6 @@
 import fs from "fs"
-import { UserSpec, PlaceSpec, BeerSpec, UserUpdateSpec } from "../models/validation/joi-schemas.js";
-import { formatISOToDate } from "../utility/formatutils.js";
-import createlogger from "../../config/logger.js";
+import { UserUpdateSpec } from "../models/validation/joi-schemas.js";
+import { createlogger } from "../../config/logger.js";
 import { db } from "../models/db.js"
 
 const logger = createlogger()

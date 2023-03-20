@@ -1,23 +1,51 @@
 import Boom from "@hapi/boom";
-import createlogger from "../../config/logger.js";
+import { validationError, createlogger } from "../../config/logger.js";
+import { UserSpec, IdSpec, UserArray } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js"
+
 
 const logger = createlogger()
 
 
 export const userApi = {
     find: {
-        auth: false,
-        handler:async function (request, h) {
-            try {
-                const users = await db.User.find()
-                console.log(users)
-            } 
-            catch (err){
-                logger.error(err)
-            }
+      auth: false,
+      handler: async function (request, h) {
+        try {
+          const users = await db.User.find();
+          return users;
+        } catch (err) {
+          return Boom.serverUnavailable("Database Error");
         }
+      },
+      tags: ["api"],
+      description: "Get all userApi",
+      notes: "Returns details of all userApi",
+      response: { schema: UserArray, failAction: validationError },
     },
+
+    findOne: {
+      auth: false,
+      handler: async function (request, h) {
+        try {
+          const user = await db.User.find({id: request.params.id});
+          if (!user) {
+            return Boom.notFound("No User with this id");
+          }
+          return user;
+        } catch (err) {
+          return Boom.serverUnavailable("No User with this id");
+        }
+      },
+      tags: ["api"],
+      description: "Get a specific user",
+      notes: "Returns user details",
+      validate: { params: { id: IdSpec }, failAction: validationError },
+      response: { schema: UserSpec, failAction: validationError },
+    },
+  
+
+
 
     getProfilePicture: {
       auth: false,

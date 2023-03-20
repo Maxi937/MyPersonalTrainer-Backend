@@ -1,7 +1,7 @@
 import fetch from "node-fetch";
 import * as dotenv from "dotenv";
-dotenv.config({ path: "./config/config.env" });
 
+dotenv.config({ path: "./config/config.env" });
 
 export async function GoogleGetLocationToAddress(lat, lon){
 	const googleApiKey = process.env.Google_Geo_Api_key

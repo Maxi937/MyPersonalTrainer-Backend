@@ -1,10 +1,9 @@
 import winston, { format } from "winston";
 
 const { combine, label, printf, timestamp, colorize} = format;
-
 const myFormat = printf( ({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
 
-export default function createlogger() {
+export function createlogger() {
   const logger = winston.createLogger({
     format: combine(
       colorize({level: true}),
@@ -14,4 +13,9 @@ export default function createlogger() {
     transports: [new winston.transports.Console()],
   });
   return logger
+}
+
+export function validationError(request, h, error) {
+  const logger = createlogger()
+  logger.err(error.message);
 }

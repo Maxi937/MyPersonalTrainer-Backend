@@ -1,7 +1,7 @@
 // This is an example model from the Deed-Box webApp
 
 import Mongoose from "mongoose";
-import createlogger from "../../../config/logger.js";
+import { createlogger } from "../../../config/logger.js";
 
 const logger = createlogger()
 
