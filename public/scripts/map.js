@@ -1,8 +1,9 @@
+/* eslint-disable no-await-in-loop */
 function convertRatingToStars(rating) {
   let icons = "";
 
   for (let i = 0; i < rating; i += 1) {
-    icons += '<span class="icon"><i class="fas fa-star"></i></span>';
+    icons += "<span class=\"icon\"><i class=\"fas fa-star\"></i></span>";
   }
   return icons;
 }
@@ -43,7 +44,7 @@ async function getReviews(placeDetails) {
         clone.getElementById("reviewRating").innerHTML = convertRatingToStars(review.rating);
         clone.getElementById("reviewDate").textContent = review.date;
 
-        let profilepicture = await fetch(`http://localhost:3000/api/users/${review.user._id}/profilepicture`);
+        let profilepicture = await fetch(`https://pintaccountant.onrender.com/api/users/${review.user._id}/profilepicture`);
         if (profilepicture.status === 200 || (await profilepicture.json()) === "") {
           profilepicture = await profilepicture.json();
           console.log(profilepicture);
