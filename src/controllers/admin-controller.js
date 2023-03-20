@@ -47,6 +47,16 @@ export const adminController = {
     },
   },
 
+  dropDB: {
+    handler: async function (request, h) {
+      await db.User.deleteMany({})
+      await db.Place.deleteMany({})
+      await db.Beer.deleteMany({})
+      await db.Review.deleteMany({})
+      return h.redirect("/admin");
+    },
+  },
+
   user: {
     handler: async function (request, h) {
       const user = await db.User.findOne({ _id: request.params.id }).lean()

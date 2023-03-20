@@ -25,6 +25,8 @@ export const adminRoutes = [
     // Reviews
     { method: "GET", path: "/admin/reviews", config: adminController.reviews },
     { method: "GET", path: "/admin/reviews/delete/{id}", config: adminController.deleteReview },
+    // DB
+    { method: "GET", path: "/admin/dropdb", config: adminController.dropDB },
 
 ];
 
