@@ -76,7 +76,7 @@ export const adminController = {
       },
     },
     handler: async function (request, h) {
-      const user = await db.User.find({ id: request.params.id })
+      const user = await db.User.findOne({ id: request.params.id })
 
       if (request.payload.fname) {
         user.fname = request.payload.fname.toLowerCase()
