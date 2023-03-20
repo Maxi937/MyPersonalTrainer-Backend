@@ -12,7 +12,7 @@ const logger = createlogger()
 export const adminController = {
   index: {
     handler: async function (request, h) {
-      const users = await db.User.findAll()
+      const users = await db.User.find({ role: { $ne: "admin" } }).lean()
       const places = await db.Place.findAll()
       const beers = await db.Beer.findAll()
       const reviews = await db.Review.findAll()
