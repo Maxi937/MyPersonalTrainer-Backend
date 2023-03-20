@@ -1,8 +1,8 @@
 function convertRatingToStars(rating) {
     let icons = ""
 
-    for (let i = 0; i < rating; i++) {
-        icons += `<span class="icon"><i class="fas fa-star"></i></span>`
+    for (let i = 0; i < rating; i+=1) {
+        icons += "<span class=\"icon\"><i class=\"fas fa-star\"></i></span>"
     }
     return icons
 }
@@ -95,7 +95,6 @@ function onMarkerClick(searchResult) {
 
 
 async function createMap() {
-    // TODO: Add validators and error checking for the api key request
     // TODO: Dont forget to update the URL for the key request to your own url when this is hosted online
 
     // Create Map object and set view to Ireland Center
@@ -123,7 +122,7 @@ async function createMap() {
             select.setAttribute("style", "font-size: 16px;padding:4px 8px;");
 
             placeCategories.forEach((category) => {
-                let option = L.DomUtil.create("option");
+                const option = L.DomUtil.create("option");
                 option.value = category[0];
                 option.innerHTML = category[1];
                 select.appendChild(option);
@@ -203,7 +202,7 @@ async function createMap() {
         console.log(data)
         results.clearLayers();
 
-        for (let i = data.results.length - 1; i >= 0; i--) {
+        for (let i = data.results.length - 1; i >= 0; i-=1) {
             const marker = L.marker(data.results[i].latlng);
 
             const lngLatString = `${Math.round(data.results[i].latlng.lng * 100000) / 100000}, ${Math.round(data.results[i].latlng.lat * 100000) / 100000
