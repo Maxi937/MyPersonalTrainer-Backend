@@ -54,7 +54,7 @@ export const adminController = {
 
       for (const user of users) {
         if(user.role === "admin"){
-          delete users(users.indexOf("user"))
+          delete users(users.indexOf(user))
         }
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
