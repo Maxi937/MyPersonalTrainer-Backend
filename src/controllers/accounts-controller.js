@@ -34,9 +34,9 @@ export const accountsController = {
     },
     handler: async function (request, h) {
       const user = new db.User({
-        fname: request.payload.fname,
-        lname: request.payload.lname,
-        email: request.payload.email,
+        fname: request.payload.fname.toLowerCase(),
+        lname: request.payload.lname.toLowerCase(),
+        email: request.payload.email.toLowerCase(),
         password: request.payload.password,
         profilepicture: {
           data: fs.readFileSync("./public/images/placeholder.png"),
