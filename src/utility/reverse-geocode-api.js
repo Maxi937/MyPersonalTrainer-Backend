@@ -4,7 +4,7 @@ import * as dotenv from "dotenv";
 if (process.env.NODE_ENV === "development") {
 	const config = dotenv.config({ path: "./config/config.env" });
 } else {
-	const config = dotenv.config({ path: "config.env" });
+	const config = dotenv.config({ path: "production.env" });
 }
 
 export async function GoogleGetLocationToAddress(lat, lon){

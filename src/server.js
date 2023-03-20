@@ -21,20 +21,24 @@ const __dirname = path.dirname(__filename);
 const logger = createlogger();
 
 // Load Config File
+let config = ""
+
 if (process.env.NODE_ENV === "development"){
-  const config = dotenv.config({ path: "./config/config.env" });
-  if (config.error) {
-    logger.info(config.error.message);
-    process.exit(1);
-  }
-} else {
-  const config = dotenv.config({ path: "config.env" });
-  if (config.error) {
+  config = dotenv.config({ path: "./config/config.env" });
+} 
+else if (process.env.NODE_ENV === "production") {
+  config = dotenv.config({ path: "production.env" });
+}
+else if (process.env.NODE_ENV === "devprod") {
+  config = dotenv.config({ path: "./config/production.env" });
+}
+
+if (config.error) {
     console.log(config.error)
     logger.info(config.error.message);
     process.exit(1);
-  }
 }
+
 
 const swaggerOptions = {
   info: {
