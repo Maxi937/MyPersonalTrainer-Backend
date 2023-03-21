@@ -4,8 +4,7 @@
       <div class="media">
         <div class="media-left">
           <figure class="image is-128x128">
-            <img class="is-rounded" id="placeImage"
-              src="https://bulma.io/images/placeholders/96x96.png"
+            <img class="is-rounded" id="placeImage" src="https://bulma.io/images/placeholders/96x96.png"
               alt="Placeholder image">
           </figure>
         </div>
@@ -43,26 +42,39 @@
 
 
   <template id="review" src="review.html">
-    <div class="card">
-      <div class="card-content">
-        <div class="media">
-          <div class="media-left">
-            <figure class="image is-64x64">
-              <img class="is-rounded" style="width: 64px; height: 64px"
-                id="reviewProfilePicture"
-                src="https://bulma.io/images/placeholders/96x96.png"
-                alt="Placeholder image">
-            </figure>
-          </div>
-          <div class="media-content">
-            <p class="title is-4" id="userName"></p>
-            <p class="subtitle is-6" id="reviewRating"></p>
-            <p class="userId" hidden="hidden"></p>
-          </div>
-          <div class="content" id="reviewDate"></div>
+  <div class="card">
+    <div class="card-content">
+      <div class="media">
+        <div class="media-left">
+          <figure class="image is-64x64">
+            <img class="is-rounded" style="width: 64px; height: 64px" id="reviewProfilePicture" src="https://bulma.io/images/placeholders/96x96.png"
+              alt="Placeholder image">
+          </figure>
+        </div>
+        <div class="media-content">
+          <p class="title is-4" id="userName"></p>
+          <p class="subtitle is-6" id="reviewRating"></p>
+          <p class="userId" hidden="hidden"></p>
+        </div>
+        <div class="content" id="reviewDate"></div>
         </div>
         <div class="content" id="reviewContent"></div>
       </div>
     </div>
   </template>
 </div>
+
+
+<script>
+  let formOpen = false
+
+  function openReviewForm() {
+    if (formOpen) {
+      document.getElementById("new-review").style.display = "none"
+      formOpen = false
+    } else {
+      document.getElementById("new-review").style.display = "block"
+      formOpen = true
+    }
+  }
+</script>

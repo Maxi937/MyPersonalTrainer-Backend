@@ -11,17 +11,3 @@
 </script>
 
 {{> user/dashboard-place}}
-
-<script>
-  let formOpen = false
-
-  function openPlace() {
-    if (formOpen) {
-      document.getElementById("new-review").style.display = "none"
-      formOpen = false
-    } else {
-      document.getElementById("new-review").style.display = "block"
-      formOpen = true
-    }
-  }
-</script>
