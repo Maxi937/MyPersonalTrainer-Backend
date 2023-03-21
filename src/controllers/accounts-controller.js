@@ -32,9 +32,9 @@ export const accountsController = {
       },
     },
     handler: async function (request, h) {
-      const signuperror = {
+      const signuperror = [{
         message: "There is already a user with the email"
-      }
+      }]
 
       const user = new db.User({
         fname: request.payload.fname.toLowerCase(),
