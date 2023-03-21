@@ -28,7 +28,6 @@ export const accountsController = {
       payload: UserSpec,
       options: { abortEarly: false },
       failAction: function (request, h, error) {
-        logger.error("form submission error")
         return h.view("forms/user/user-signup", { title: "Sign up error", errors: error.details }).takeover().code(400);
       },
     },
@@ -45,13 +44,12 @@ export const accountsController = {
         role: "user"
       })
       console.log(user)
-      try {
+      const userWithThisEmail = db.User.find().getByEmail(user.email)
+      if (!userWithThisEmail) {
         await user.save();
-      } catch (err) {
-        console.log(err)
+        return h.redirect("/");
       }
-
-      return h.redirect("/");
+      return h.view("forms/user/user-signup", { title: "Sign up error", errors: "There is already a user with the email" }).takeover().code(400)
     },
   },
 
