@@ -12,7 +12,7 @@ View reviews for each pub or log in to leave your own.
 ### No Account
 
 - The map will load on first entry, pick a category from the top right of the map.
-- Some markere will populate on the map (based around your viewpoint).
+- Some markers will populate on the map (based around your viewpoint).
 - click a marker - If there are reviews, they will load in eventually.
 
 ### Account
