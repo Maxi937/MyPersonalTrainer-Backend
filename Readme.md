@@ -3,7 +3,6 @@
 Hapi/Node webApp for reviewing pubs in Ireland.
 View reviews for each pub or log in to leave your own.
 
-
 ## **URL**
 
 <https://pintaccountant.onrender.com/>
