@@ -1,10 +1,11 @@
 {{#if errors}}
-  <div class="box content">
-    <p> There was a problem... </p>
-    <ul>
-      {{#each errors}}
-        <li>{{message}}</li>
-      {{/each}}
-    </ul>
-  </div>
+<br>
+<div class="box has-text-white has-background-black">
+  <p> Something went Wrong... </p>
+  <ul>
+    {{#each errors}}
+    <li>{{message}}</li>
+    {{/each}}
+  </ul>
+</div>
 {{/if}}
