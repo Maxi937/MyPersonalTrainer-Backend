@@ -32,6 +32,10 @@ export const accountsController = {
       },
     },
     handler: async function (request, h) {
+      const signuperror = {
+        message: "There is already a user with the email"
+      }
+
       const user = new db.User({
         fname: request.payload.fname.toLowerCase(),
         lname: request.payload.lname.toLowerCase(),
@@ -49,7 +53,7 @@ export const accountsController = {
         await user.save();
         return h.redirect("/");
       }
-      return h.view("forms/user/user-signup", { title: "Sign up error", errors: "There is already a user with the email" }).takeover().code(400)
+      return h.view("forms/user/user-signup", { title: "Sign up error", errors: signuperror }).takeover().code(400)
     },
   },
 
