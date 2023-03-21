@@ -39,16 +39,16 @@
 
   <div class="ui horizontal divider"></div>
   <div id="reviewDiv" class="mb-6"></div>
+</div>
 
-
-  <template id="review" src="review.html">
+<template id="review" src="review.html">
   <div class="card">
     <div class="card-content">
       <div class="media">
         <div class="media-left">
           <figure class="image is-64x64">
-            <img class="is-rounded" style="width: 64px; height: 64px" id="reviewProfilePicture" src="https://bulma.io/images/placeholders/96x96.png"
-              alt="Placeholder image">
+            <img class="is-rounded" style="width: 64px; height: 64px" id="reviewProfilePicture"
+              src="https://bulma.io/images/placeholders/96x96.png" alt="Placeholder image">
           </figure>
         </div>
         <div class="media-content">
@@ -57,13 +57,11 @@
           <p class="userId" hidden="hidden"></p>
         </div>
         <div class="content" id="reviewDate"></div>
-        </div>
-        <div class="content" id="reviewContent"></div>
       </div>
+      <div class="content" id="reviewContent"></div>
     </div>
-  </template>
-</div>
-
+  </div>
+</template>
 
 <script>
   let formOpen = false
