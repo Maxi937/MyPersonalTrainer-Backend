@@ -1,43 +1,26 @@
 # **Description**
 
 Hapi/Node webApp for reviewing pubs in Ireland.
-
 View reviews for each pub or log in to leave your own.
+
+## **Usage**
+
+### No Account
+
+- The map will load on first entry, pick a category from the top right of the map.
+- Some markere will populate on the map (based around your viewpoint).
+- click a marker - If there are reviews, they will load in eventually.
+
+### Account
+
+- The map is on the dashboard page.
+- Click a marker to load a place.
+- Click "Review" to leave a review.
+- You can also access your profile page to update your picture or see all your reviews.
 
 ## **URL**
 
 <https://pintaccountant.onrender.com/>
-
-## **Feautures**
-
-### User
-
-- Signup
-- Login
-- Auth
-- Profile Pictures
-- Update Details
-
-### Admin
-
-- Create, Delete all resources
-
-### Places
-
-- Note: Places are every pub/hotel in Ireland, Places are only tracked when a review is left.
-- Places automatically create when a review is left.
-
-### Reviews
-
-- Create, Delete Reviews
-
-## **Known Issues**
-
-- No functionality for beer prices implemented.
-- No photos for Places.
-- No Descriptions for places.
-- The Reviews do not load instantly when a marker is clicked
-- About page incomplete
 
 ## Sources
 
