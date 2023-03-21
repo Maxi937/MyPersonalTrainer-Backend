@@ -248,7 +248,8 @@ export const adminController = {
 
   deletePlace: {
     handler: async function (request, h) {
-      await db.Place.findByIdAndDelete(request.params.id)
+      await db.Place.deleteOne({ _id: request.params.id})
+      await db.Review.deleteMany({place: request.params.id})
       return h.redirect("/admin/places");
     }
   },
