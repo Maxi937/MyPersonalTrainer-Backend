@@ -53,13 +53,14 @@ View reviews for each pub or log in to leave your own.
 
 ### **CSS**
 
-- Fomantic UI
+- Semantic UI
 - Bulma
 
 ### **Utility**
 
 - Nodemon
 - eslint
+- prettier
 
 ### **Testing**
 
