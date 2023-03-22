@@ -1,17 +1,6 @@
 /* eslint-disable no-restricted-syntax */
 /* eslint-disable prefer-destructuring */
 /* eslint-disable no-await-in-loop */
-function upTo(el, tagName) {
-    tagName = tagName.toLowerCase();
-
-    while (el && el.parentNode) {
-        el = el.parentNode;
-        if (el.tagName && el.tagName.toLowerCase() == tagName) {
-            return el;
-        }
-    }
-    return null;
-}
 
 function convertRatingToStars(rating) {
     let icons = "";
@@ -255,23 +244,6 @@ async function createMap() {
     return map;
 }
 
-function addMarker(map) {
-    const clickMarker = L.marker([51.5, -0.09]).addTo(map);
-
-    const htmlContent = `
-    <div class="ui left labeled button" tabindex="0">
-        <a class="ui basic right pointing label">
-        <section>
-        <b>Lat</b>: Latitude, <b>Lng:</b>Longitude
-        </section>
-        </a>
-        <button>
-        Copy
-        </button>
-    </div>`;
-
-    clickMarker.bindPopup(htmlContent);
-}
 
 function copyLatLng(lat, lng) {
     document.getElementById("stationLatitude").value = lat;
