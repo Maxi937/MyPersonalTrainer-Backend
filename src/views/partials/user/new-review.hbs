@@ -3,7 +3,7 @@
 <div class="box has-background-info-light">
 
   <form action="/dashboard/review" method="POST">
-    <div class="columns is-centered is-multiline">
+    <div class="columns is-centered is-multiline is-narrow">
       {{#each beers}}
       <div class="column">
         {{> user/beer-review beerImage = this.beerImage.data contentType = this.beerImage.contentType}}
