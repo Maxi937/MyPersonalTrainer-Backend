@@ -38,7 +38,7 @@ export const db = {
         this.Place = Place
         this.Review = Review
         connectMongo();
-        createAdmin()
+        // createAdmin()
         break;
       default:
         logger.info("No Db Selected")
