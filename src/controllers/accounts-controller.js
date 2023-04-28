@@ -50,7 +50,7 @@ export const accountsController = {
         role: "user"
       })
       console.log(user)
-      const userWithThisEmail = db.User.find().getByEmail(user.email)
+      const userWithThisEmail = await db.User.find().getByEmail(user.email)
       if (!userWithThisEmail) {
         await user.save();
         return h.redirect("/");
