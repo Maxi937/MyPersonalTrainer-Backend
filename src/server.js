@@ -23,7 +23,7 @@ const logger = createlogger();
 // Load Config File
 let config = ""
 
-if (process.env.NODE_ENV === "development") {
+if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "aws") {
   config = dotenv.config({ path: "./config/config.env" });
 }
 else if (process.env.NODE_ENV === "production") {
@@ -39,8 +39,8 @@ if (config.error) {
   process.exit(1);
 }
 
+logger.info(new Date().getDate())
 logger.info("Config Configured")
-
 
 const swaggerOptions = {
   info: {
