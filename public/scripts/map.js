@@ -24,7 +24,7 @@ function getAvgRating(ratings) {
 }
 
 async function getProfilePicture(id) {
-    const profilepicture = await fetch(`${url}/api/users/${id}/profilepicture`);
+    const profilepicture = await fetch(`${window.location.origin}/api/users/${id}/profilepicture`);
     if (profilepicture.status === 200) {
         const json = await profilepicture.json()
         return json
@@ -58,10 +58,10 @@ async function populateProfilePictures() {
 }
 
 async function getReviews(placeDetails) {
-    const place = await fetch(`${url}/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`);
+    const place = await fetch(`${window.location.origin}/api/places/lat=${placeDetails.lat}lng=${placeDetails.lng}`);
     if (place.status === 200) {
         const placeJson = await place.json();
-        const reviews = await fetch(`${url}/api/places/${placeJson._id}/reviews`);
+        const reviews = await fetch(`${window.location.origin}/api/places/${placeJson._id}/reviews`);
 
         if (reviews.status === 200) {
             const reviewsJson = await reviews.json();
@@ -118,10 +118,8 @@ function onMarkerClick(searchResult) {
 }
 
 async function createMap() {
-    // TODO: Dont forget to update the URL for the key request to your own url when this is hosted online
-
     // Create Map object and set view to Ireland Center
-    const keyrequest = await fetch(`${url}/api/users/esrikey`);
+    const keyrequest = await fetch(`${window.location.origin}/api/users/esrikey`);
     const apiKey = await keyrequest.json();
     const map = L.map("map").setView([53.44, -7.5], 6);
     const basemapEnum = "ArcGIS:Navigation";
