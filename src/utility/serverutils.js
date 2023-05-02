@@ -18,7 +18,7 @@ export function responseTimes(server) {
         .header("x-req-start", start)
         .header("x-res-end", end)
         .header("x-response-time", end - start)
-        .header("Server:", os.hostname)
+        .header("Server", os.hostname())
       logger.info(`${request.method.toUpperCase()}: ${request.path} - ${request.response.headers["x-response-time"]} ms`)
     }
     return h.continue;
