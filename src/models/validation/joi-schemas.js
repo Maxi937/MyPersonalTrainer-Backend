@@ -64,9 +64,9 @@ export const BeerUpdateSpec = {
 
 export const ReviewSpec = Joi.object().keys({
   date: Joi.date().required(),
-  content: Joi.string().required(),
-  user: IdSpec,
-  place: IdSpec,
+  content: Joi.required(),
+  user: Joi.required(),
+  place: Joi.required(),
   rating: Joi.number().required(),
   _id: IdSpec,
   __v: Joi.number(),
