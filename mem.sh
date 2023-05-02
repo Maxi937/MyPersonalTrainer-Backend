@@ -13,8 +13,3 @@ aws cloudwatch put-metric-data --metric-name TCP_connection_on_port_80 --dimensi
 
 aws cloudwatch put-metric-data --metric-name IO_WAIT --dimensions Instance=$INSTANCE_ID --namespace "Custom" --value $IO_WAIT
 
-chmod +x mem.sh
-
-env EDITOR=nano crontab -e
-
-*/1 * * * * /home/ec2-user/mem.sh
