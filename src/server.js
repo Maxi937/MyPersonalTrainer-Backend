@@ -4,6 +4,7 @@ import Inert from "@hapi/inert";
 import Cookie from "@hapi/cookie"
 import Handlebars from "handlebars";
 import HapiSwagger from "hapi-swagger"
+import fs from "fs";
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -55,6 +56,10 @@ async function init() {
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,
+    tls: {
+      key: fs.readFileSync("./config/keys/private/webserver.key"),
+      cert: fs.readFileSync("./config/keys/webserver.crt")
+    }
   });
 
   // Plugins
