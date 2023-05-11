@@ -30,16 +30,17 @@ export const UserUpdateSpec = {
   lname: Joi.string().allow(""),
   email: Joi.string().email().allow(""),
   password: Joi.string().allow(""),
-  profilepicture: Joi.allow(),
 };
 
 export const PlaceSpec = Joi.object().keys({
   placeName: Joi.string().required(),
-  placeAddress: Joi.string().required(),
+  address: Joi.string().required(),
+  category: Joi.string().required(),
   serves: Joi.array(),
   description: Joi.string(),
-  lat: Joi.string().required(),
-  lng: Joi.string().required(),
+  lat: Joi.number().required(),
+  lng: Joi.number().required(),
+  picture: Joi.allow(),
   _id: IdSpec,
   __v: Joi.number(),
   createdAt: Joi.date(),
@@ -63,7 +64,7 @@ export const BeerUpdateSpec = {
 };
 
 export const ReviewSpec = Joi.object().keys({
-  date: Joi.date().required(),
+  date: Joi.string().required(),
   content: Joi.required(),
   user: Joi.required(),
   place: Joi.required(),

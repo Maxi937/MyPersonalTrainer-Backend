@@ -1,16 +1,20 @@
 import Boom from "@hapi/boom";
-import { validationError } from "../../config/logger.js";
+import { validationError, createlogger } from "../../config/logger.js";
 import { ReviewSpec, ReviewArray } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js"
 
+const logger = createlogger()
+
 export const reviewApi = {
-  find: {
+  get: {
+    cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
-        const reviews = await db.Reviews.find().lean();
-        return reviews;
+        const reviews = await db.Review.getAll();
+        return h.response(reviews);
       } catch (err) {
+        logger.error(err.message)
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -30,6 +34,7 @@ export const reviewApi = {
         }
         return user;
       } catch (err) {
+        logger.error(err.message)
         return Boom.serverUnavailable("No Review with this id");
       }
     },
@@ -77,6 +82,7 @@ export const reviewApi = {
   },
 
   deleteOne: {
+    cors: true,
     auth: false,
     handler: async function (request, h) {
       try {

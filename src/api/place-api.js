@@ -1,10 +1,14 @@
 import Boom from "@hapi/boom";
+import fs from "fs"
 import { db } from "../models/db.js";
 import { validationError, createlogger } from "../../config/logger.js";
 import { PlaceSpec, IdSpec, PlaceArray } from "../models/validation/joi-schemas.js";
 
+const logger = createlogger();
+
 export const placeApi = {
   findbyLatLng: {
+    cors: true,
     auth: false,
     async handler(request) {
       try {
@@ -23,9 +27,9 @@ export const placeApi = {
     auth: false,
     async handler(request) {
       try {
-        const reviews = await db.Review.find({ place: request.params.id }).populate("user")
+        const reviews = await db.Review.find({ place: request.params.id }).populate("user");
         if (!reviews) {
-          return JSON.stringify("")
+          return JSON.stringify("");
         }
         return JSON.stringify(reviews);
       } catch (err) {
@@ -36,6 +40,7 @@ export const placeApi = {
 
   find: {
     auth: false,
+    cors: true,
     handler: async function (request, h) {
       try {
         const places = await db.Place.find().lean();
@@ -71,26 +76,60 @@ export const placeApi = {
   },
 
   create: {
+    cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
-
-        let place = await new db.Place(request.payload);
-        await place.save()
-        place = await db.Place.findOne({ _id: place._id }).lean()
-        if (place) {
-          return h.response(place).code(201);
+        const place = new db.Place(request.payload);
+        if (!place) {
+          return Boom.badRequest();
         }
-        return Boom.badImplementation("error creating user");
+        await place.save();
+        return h.response(200);
       } catch (err) {
+        logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
       }
     },
     tags: ["api"],
     description: "Create a Place",
-    notes: "Returns the newly created place",
+    notes: "Creates a new place",
     validate: { payload: PlaceSpec, failAction: validationError },
-    response: { schema: PlaceSpec, failAction: validationError },
+  },
+
+  addPlacePhoto: {
+    cors: true,
+    auth: false,
+    payload: {
+      maxBytes: 209715200,
+      parse: true,
+      multipart: true,
+      output: "file",
+    },
+    handler: async function (request, h) {
+      try {
+        console.log(request.payload)
+        const place = await db.Place.findOne({ _id: request.params.id });
+
+        if (!place || request.payload.bytes <= 0) {
+          return Boom.badRequest("Bad Request");
+        }
+
+        place.picture = {
+          data: fs.readFileSync(request.payload.path),
+          contentType: request.headers["content-type"],
+        };
+
+        await place.save();
+        return h.response(200);
+      } catch (err) {
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Create a Place",
+    notes: "Creates a new place",
   },
 
   deleteAll: {
@@ -123,7 +162,4 @@ export const placeApi = {
       }
     },
   },
-
 };
-
-

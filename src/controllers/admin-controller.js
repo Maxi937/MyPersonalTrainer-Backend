@@ -123,6 +123,7 @@ export const adminController = {
       for (const user of users) {
         user.createdAt = formatISOToDate(user.createdAt)
         user.updatedAt = formatISOToDate(user.updatedAt)
+        delete user.password
         if (user.createdAt === formatISOToDate(Date.now())) {
           usersAddedToday += 1
         }

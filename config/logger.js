@@ -27,10 +27,13 @@ export function createlogger() {
   return logger
 }
 
-
-
-export function validationError(request, h, error) {
+export async function validationError(request, h, error) {
   const logger = createlogger()
-  logger.error(error.message);
+
+  console.log( await request.payload)
+  console.log( await typeof(request.payload))
+  logger.warn(`JOI Validation error: ${error.message}`);
+
+
   return error
 }

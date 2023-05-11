@@ -1,7 +1,10 @@
 import Boom from "@hapi/boom";
 import { validationError, createlogger } from "../../config/logger.js";
-import { UserSpec, IdSpec, UserArray } from "../models/validation/joi-schemas.js";
+import { UserSpec, IdSpec, UserArray, UserUpdateSpec } from "../models/validation/joi-schemas.js";
+import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
+import { createToken } from "./jwt-utils.js";
 import { db } from "../models/db.js"
+
 
 
 const logger = createlogger()
@@ -44,23 +47,83 @@ export const userApi = {
     response: { schema: UserSpec, failAction: validationError },
   },
 
-  getProfilePicture: {
+  update: {
     auth: false,
+    payload: {
+        maxBytes: 209715200,
+        output: "file",
+        parse: true,
+        multipart: true
+    },
+    validate: {
+        payload: UserUpdateSpec,
+        failAction: async function (request, h, error) {
+            logger.error("Form Submission Error")
+            return Boom.badRequest("Bad Request")
+        },
+    },
+    handler: async function (request, h) {
+        const user = await db.User.findById(request.params.id)
+
+        if (request.payload.fname) {
+            user.fname = request.payload.fname.toLowerCase()
+        }
+
+        if (request.payload.lname) {
+            user.lname = request.payload.lname.toLowerCase()
+        }
+
+        if (request.payload.email) {
+            user.email = request.payload.email.toLowerCase()
+        }
+
+        if (request.payload.password) {
+            user.password = request.payload.password
+        }
+
+        if (request.payload.profilepicture.bytes > 0) {
+            user.profilepicture = {
+                data: fs.readFileSync(request.payload.profilepicture.path),
+                contentType: request.payload.profilepicture.headers["content-type"]
+            }
+        }
+
+        await user.save()
+        return h.redirect("/profile");
+    },
+    tags: ["api"],
+    description: "get a profile picture userApi",
+    notes: "returns profile picture as base64 string",
+  },
+
+  getUserProfile: {
+    auth: false,
+    cors: true,
     handler: async function (request, h) {
       try {
         const user = await db.User.findOne({ _id: request.params.id })
+
+        if (!user) {
+          return Boom.unauthorized("User not found")
+        }
+
+        const userName = `${user.fname} ${user.lname}`
         const profilepicture = {
           data: await user.profilepicture.data.toString("base64"),
           contentType: await user.profilepicture.contentType
         }
-        return JSON.stringify(profilepicture)
+
+        const userProfile = {
+          userName,
+          profilepicture
+        }
+        return h.response(userProfile)
       } catch (err) {
-        console.log(err)
-        return JSON.stringify("");
+        return Boom.serverUnavailable("Database not available");
       }
     },
     tags: ["api"],
-    description: "get a profile picture userApi",
+    description: "get a profile picture and username",
     notes: "returns profile picture as base64 string",
   },
 
@@ -76,6 +139,7 @@ export const userApi = {
         }
         return Boom.badImplementation("error creating user");
       } catch (err) {
+        logger.error(err.message)
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -108,12 +172,41 @@ export const userApi = {
         const key = process.env.Esri_Api_Key
         return JSON.stringify(key)
       } catch (err) {
-        console.log(err)
+        logger.error(err)
         return "";
       }
     },
     tags: ["api"],
     description: "get key",
     notes: "Gives a key",
+  },
+
+  authenticate: {
+    auth: false,
+    cors: true,
+    handler: async function (request, h) {
+      try {
+        
+        const { email, password } = request.payload;
+        const user = await db.User.find().getByEmail(email);
+
+        if (!user) {
+          return Boom.unauthorized("User not found");
+        }
+
+        if (await unencryptPassword(password, user.password) === false) {
+          logger.info("Login Failed, bad credentials")
+          return Boom.unauthorized("Invalid password");
+        }
+
+        const token = createToken(user);
+        return h.response({ success: true, token: token }).code(201);
+
+      } catch (err) {
+        logger.error(err)
+        return Boom.serverUnavailable("Database Error");
+      }
+    }
   }
-};
+}
+

@@ -23,6 +23,7 @@ export const webRoutes = [
     { method: "GET", path: "/profile", config: profileController.index },
     { method: "POST", path: "/profile/{id}", config: profileController.updateProfile},
     { method: "GET", path: "/reviews/delete/{id}", config: profileController.deleteReview },
+    
 
     { method: "GET", path: "/{param*}", handler: { directory: { path: "./public" } }, options: { auth: false } }
 ];

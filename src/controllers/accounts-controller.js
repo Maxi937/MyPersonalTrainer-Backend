@@ -2,6 +2,7 @@ import fs from "fs"
 import { UserSpec, UserCredentialsSpec } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js";
 import { createlogger } from "../../config/logger.js";
+import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
 
 
 const logger = createlogger()
@@ -42,7 +43,7 @@ export const accountsController = {
         fname: request.payload.fname.toLowerCase(),
         lname: request.payload.lname.toLowerCase(),
         email: request.payload.email.toLowerCase(),
-        password: request.payload.password,
+        password: await encryptPassword(request.payload.password),
         profilepicture: {
           data: fs.readFileSync("./public/images/placeholder.png"),
           contentType: "image/png"
@@ -77,10 +78,9 @@ export const accountsController = {
     },
     handler: async function (request, h) {
       const { email, password } = request.payload;
-      console.log(request.payload)
       const user = await db.User.find().getByEmail(email);
 
-      if (!user || user.password !== password) {
+      if (!user || await unencryptPassword(password, user.password) === false) {
         return h.redirect("/");
       }
 

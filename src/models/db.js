@@ -5,6 +5,7 @@ import { User } from "./mongo/User.js"
 import { Place } from "./mongo/Place.js"
 import { Beer } from "./mongo/Beer.js"
 import { Review } from "./mongo/Review.js"
+import { encryptPassword } from "../utility/encrypt.js";
 
 const logger = createlogger()
 
@@ -13,7 +14,7 @@ async function createAdmin() {
     "fname": "Matthew",
     "lname": "Hornby",
     "email": "mhornby123@gmail.com",
-    "password": "admin",
+    "password": await encryptPassword("admin"),
     "role": "admin"
   }
 

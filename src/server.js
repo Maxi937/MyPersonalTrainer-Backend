@@ -2,13 +2,16 @@ import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
 import Inert from "@hapi/inert";
 import Cookie from "@hapi/cookie"
+import Bell from "@hapi/bell"
 import Handlebars from "handlebars";
+import jwt from "hapi-auth-jwt2";
 import HapiSwagger from "hapi-swagger"
 import fs from "fs";
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
+import { validate } from "./api/jwt-utils.js";
 import { db } from "./models/db.js";
 import { createlogger } from "../config/logger.js";
 import { webRoutes } from "./web-routes.js";
@@ -40,7 +43,7 @@ if (config.error) {
   process.exit(1);
 }
 
-logger.info(new Date().getDate())
+logger.info(`Server started: ${new Date()}`)
 logger.info("Config Configured")
 
 const swaggerOptions = {
@@ -56,16 +59,14 @@ async function init() {
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,
-    tls: {
-      key: fs.readFileSync("./config/keys/private/webserver.key"),
-      cert: fs.readFileSync("./config/keys/webserver.crt")
-    }
   });
 
   // Plugins
-  await server.register(Inert)
+  await server.register(Inert);
   await server.register(Vision);
   await server.register(Cookie);
+  await server.register(Bell);
+  await server.register(jwt);
 
   await server.register([
     Inert,
@@ -98,7 +99,7 @@ async function init() {
   responseTimes(server)
   logger.info("Response Times Loaded")
 
-  // Set up Cookies
+  // Set up Cookie auth
   server.auth.strategy("session", "cookie", {
     cookie: {
       name: process.env.cookie_name,
@@ -108,8 +109,28 @@ async function init() {
     redirectTo: "/",
     validate: accountsController.validate,
   });
+  
+
+  // Set up Bell auth
+  const bellAuthOptions = {
+    provider: "github",
+    password: "github-encryption-password-secure",
+    clientId: process.env.CLIENT_ID,      
+    clientSecret: process.env.BELL_SECRET,
+    isSecure: false,    
+  };
+
+  server.auth.strategy("github-oauth", "bell", bellAuthOptions);
+
+  // Set up JWT auth
+  server.auth.strategy("jwt", "jwt", {
+    key: process.env.cookie_password,
+    validate: validate,
+    verifyOptions: { algorithms: ["HS256"] },
+  });
+
   server.auth.default("session");
-  logger.info("Auth Configured")
+
 
   // Connect to Mongo Database
   db.init("mongo")

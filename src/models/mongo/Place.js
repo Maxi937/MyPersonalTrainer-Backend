@@ -11,7 +11,11 @@ const placeSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
-    placeAddress: {
+    category: {
+      type: String,
+      required: true,
+    },
+    address: {
       type: String,
       required: true,
     },
@@ -24,12 +28,17 @@ const placeSchema = new Mongoose.Schema(
       required: false,
     },
     lat: {
-      type: String,
+      type: Number,
       required: true
     },
     lng: {
-      type: String,
+      type: Number,
       required: true
+    },
+    picture: {
+      data: Buffer,
+      contentType: String,
+      required: false
     }
   },
   { timestamps: true }
