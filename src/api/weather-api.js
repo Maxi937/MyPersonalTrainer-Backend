@@ -15,17 +15,21 @@ export const weatherApi = {
         const lon = parseFloat(request.params.lng)
         const ApiKey = process.env.APP_ID
         
-        const reading = await axios.get(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${44.34}&lon=${10.99}&appid=${ApiKey}&units=metric`)
+        console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ApiKey}&units=metric`)
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${44.34}&lon=${10.99}&appid=${ApiKey}&units=metric`)
         
+        const reading = response.data
+
         const weather = {
-          windspeed: reading.wind.speed,
-          weather: reading[0].weather.main,
-          weatherdescription: reading[0].weather.description,
-          temperature: reading[0].main.temp,
-          icon: `https://openweathermap.org/img/wn/${reading[0].weather.icon}@2x.png`,
+          wind: reading.wind,
+          weather: reading.weather[0].main,
+          weatherdescription: reading.weather[0].description,
+          temperature: reading.main.temp,
+          icon: `https://openweathermap.org/img/wn/${reading.weather[0].icon}@2x.png`,
         }
         return weather
       } catch (err) {
+        console.log(err.message)
         return Boom.serverUnavailable("Database Error");
       }
     },
