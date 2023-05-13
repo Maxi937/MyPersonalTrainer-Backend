@@ -3,6 +3,7 @@ import { placeApi } from "./api/place-api.js";
 import { reviewApi } from "./api/review-api.js";
 import { profileApi } from "./api/profile-api.js";
 import { likeApi } from "./api/like-api.js";
+import { weatherApi } from "./api/weather-api.js";
 
 export const apiRoutes = [
   // Users
@@ -43,4 +44,8 @@ export const apiRoutes = [
   // Likes
   { method: "POST", path: "/api/likes/{id}", config: likeApi.create },
   { method: "GET", path: "/api/likes/{id}", config: likeApi.get },
+
+  // Weather
+  { method: "GET", path: "/api/weather/lat={lat}lng={lng}", config: weatherApi.get },
+
 ];
