@@ -13,7 +13,7 @@ export const weatherApi = {
       try {
         const lat = parseFloat(request.params.lat)
         const lon = parseFloat(request.params.lng)
-        const ApiKey = "50985fceed325b8f869e78d691c82cd8"
+        const ApiKey = process.env.APP_ID
         
         const reading = await axios.get(`https://cors-anywhere.herokuapp.com/https://api.openweathermap.org/data/2.5/weather?lat=${44.34}&lon=${10.99}&appid=${ApiKey}&units=metric`)
         
