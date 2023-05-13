@@ -38,8 +38,7 @@ else if (process.env.NODE_ENV === "devprod") {
 }
 
 if (config.error) {
-  logger.error(config.error)
-  logger.info(config.error.message);
+  console.log(config.error)
   process.exit(1);
 }
 
