@@ -1,4 +1,5 @@
 import Boom from "@hapi/boom";
+import fs from "fs"
 import { validationError, createlogger } from "../../config/logger.js";
 import { UserSpec, IdSpec, UserArray, UserUpdateSpec } from "../models/validation/joi-schemas.js";
 import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
@@ -128,16 +129,25 @@ export const userApi = {
   },
 
   create: {
+    cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
-        let user = await new db.User(request.payload);
-        await user.save()
-        user = await db.User.findOne({ _id: user._id }).lean()
-        if (user) {
-          return h.response(user).code(201);
+        const duplicateUser = await db.User.findOne({ email: request.payload.email})
+
+        if (duplicateUser) {
+          return Boom.badRequest("Duplicate")
         }
-        return Boom.badImplementation("error creating user");
+        const user = await new db.User(request.payload);
+        user.password = await encryptPassword(user.password)
+        user.role = "user"
+        user.profilepicture = {
+            data: fs.readFileSync("./public/images/placeholder.png"),
+            contentType: "image/png"
+        }
+        await user.save()
+        logger.info("user created")
+        return h.response(200)
       } catch (err) {
         logger.error(err.message)
         return Boom.serverUnavailable("Database Error");
@@ -147,7 +157,6 @@ export const userApi = {
     description: "Create a User",
     notes: "Returns the newly created user",
     validate: { payload: UserSpec, failAction: validationError },
-    response: { schema: UserSpec, failAction: validationError },
   },
 
   deleteAll: {

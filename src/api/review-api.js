@@ -1,6 +1,7 @@
 import Boom from "@hapi/boom";
 import { validationError, createlogger } from "../../config/logger.js";
 import { ReviewSpec, ReviewArray } from "../models/validation/joi-schemas.js";
+import { checkTokenExpired, decodeToken, getTokenFromRequest, getUserIdFromRequest } from "./jwt-utils.js";
 import { db } from "../models/db.js"
 
 const logger = createlogger()
@@ -45,17 +46,17 @@ export const reviewApi = {
   },
 
   create: {
+    cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
-        let review = await new db.Review(request.payload);
+        const user = getUserIdFromRequest(request)
+        const review = await new db.Review(request.payload);
+        review.user = user
         await review.save()
-        review = await db.Review.findOne({ _id: review._id }).lean()
-        if (review) {
-          return h.response(review).code(201);
-        }
-        return Boom.badImplementation("error creating user");
+        return h.response(200)
       } catch (err) {
+        logger.error(err.message)
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -63,7 +64,6 @@ export const reviewApi = {
     description: "Create a Review",
     notes: "Returns the newly created review",
     validate: { payload: ReviewSpec, failAction: validationError },
-    response: { schema: ReviewSpec, failAction: validationError },
   },
 
   deleteAll: {
@@ -87,6 +87,23 @@ export const reviewApi = {
     handler: async function (request, h) {
       try {
         const review = await db.Review.findOne({ _id: request.params.id });
+        if (!review) {
+          return Boom.notFound("No Review with this id");
+        }
+        await db.Review.deleteOne({ _id: review._id });
+        return h.response().code(204);
+      } catch (err) {
+        return Boom.serverUnavailable("No Review with this id");
+      }
+    },
+  },
+
+  like: {
+    cors: true,
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        const like = new db.Like(request.payload);
         if (!review) {
           return Boom.notFound("No Review with this id");
         }

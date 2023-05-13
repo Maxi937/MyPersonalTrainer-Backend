@@ -10,28 +10,43 @@ export const placeApi = {
   findbyLatLng: {
     cors: true,
     auth: false,
-    async handler(request) {
+    async handler(request, h) {
       try {
+
         const place = await db.Place.findByLatLng(request.params.lat, request.params.lng);
         if (!place) {
+          logger.info("No Place with this lat long")
           return Boom.notFound("No Place with this id");
         }
-        return JSON.stringify(place);
+
+        console.log(place)
+
+        if (place.picture) {
+          place.picture = {
+            data: await place.picture.data.toString("base64"),
+            contentType: await place.picture.contentType,
+          };
+        }
+
+
+        return h.response(place);
       } catch (err) {
+        logger.error(err.message)
         return Boom.serverUnavailable("No Place with this latlon");
       }
     },
   },
 
-  getAllReviews: {
+  getPlaceReviews: {
+    cors: true,
     auth: false,
-    async handler(request) {
+    async handler(request, h) {
       try {
-        const reviews = await db.Review.find({ place: request.params.id }).populate("user");
+        const reviews = await db.Review.find({ place: request.params.id }).populate("place");
         if (!reviews) {
-          return JSON.stringify("");
+          return h.response([]);
         }
-        return JSON.stringify(reviews);
+        return h.response(reviews);
       } catch (err) {
         return Boom.serverUnavailable("No Place with this latlon");
       }
@@ -81,10 +96,12 @@ export const placeApi = {
     handler: async function (request, h) {
       try {
         const place = new db.Place(request.payload);
+        console.log(place)
         if (!place) {
           return Boom.badRequest();
         }
         await place.save();
+        logger.info("New Place created")
         return h.response(200);
       } catch (err) {
         logger.error(err.message);
@@ -109,7 +126,7 @@ export const placeApi = {
     handler: async function (request, h) {
       try {
         console.log(request.payload)
-        const place = await db.Place.findOne({ _id: request.params.id });
+        const place = await db.Place.findById(request.params.id);
 
         if (!place || request.payload.bytes <= 0) {
           return Boom.badRequest("Bad Request");

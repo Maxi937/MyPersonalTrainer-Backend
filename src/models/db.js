@@ -5,6 +5,7 @@ import { User } from "./mongo/User.js"
 import { Place } from "./mongo/Place.js"
 import { Beer } from "./mongo/Beer.js"
 import { Review } from "./mongo/Review.js"
+import { Like } from "./mongo/Like.js"
 import { encryptPassword } from "../utility/encrypt.js";
 
 const logger = createlogger()
@@ -30,6 +31,8 @@ export const db = {
   User: null,
   Place: null,
   Beer: null,
+  Like: null,
+  Review: null,
 
   init(dbtype) {
     switch (dbtype) {
@@ -38,6 +41,7 @@ export const db = {
         this.User = User
         this.Place = Place
         this.Review = Review
+        this.Like = Like
         connectMongo();
         createAdmin()
         break;

@@ -81,7 +81,7 @@ placeSchema.statics.byPlaceId = function (placeId) {
 }
 
 placeSchema.statics.findByLatLng = function (lat, lng) {
-    return this.findOne({ lat: lat, lng: lng })
+    return this.findOne({ lat: lat, lng: lng }).lean()
 }
 
 export const Place = Mongoose.model("Place", placeSchema);

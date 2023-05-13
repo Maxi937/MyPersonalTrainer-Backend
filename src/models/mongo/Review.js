@@ -29,6 +29,10 @@ const reviewSchema = new Mongoose.Schema(
       ref: "Place",
       required: true,
     },
+    likes: {
+      type: Number,
+      required: false,
+    }
   },
   { timestamps: true }
 );

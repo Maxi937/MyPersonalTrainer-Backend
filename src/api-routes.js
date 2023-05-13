@@ -2,6 +2,7 @@ import { userApi } from "./api/user-api.js";
 import { placeApi } from "./api/place-api.js";
 import { reviewApi } from "./api/review-api.js";
 import { profileApi } from "./api/profile-api.js";
+import { likeApi } from "./api/like-api.js";
 
 export const apiRoutes = [
   // Users
@@ -27,14 +28,19 @@ export const apiRoutes = [
   { method: "DELETE", path: "/api/reviews", config: reviewApi.deleteAll },
   { method: "GET", path: "/api/reviews/{id}", config: reviewApi.findOne },
   { method: "DELETE", path: "/api/reviews/{id}", config: reviewApi.deleteOne },
+  { method: "POST", path: "/api/reviews/{id}/like", config: reviewApi.like },
 
   // Places
   { method: "POST", path: "/api/places", config: placeApi.create },
   { method: "DELETE", path: "/api/places", config: placeApi.deleteAll },
   { method: "GET", path: "/api/places", config: placeApi.find },
   { method: "GET", path: "/api/places/lat={lat}lng={lng}", config: placeApi.findbyLatLng },
-  { method: "GET", path: "/api/places/{id}/reviews", config: placeApi.getAllReviews },
   { method: "GET", path: "/api/places/{id}", config: placeApi.findOne },
   { method: "DELETE", path: "/api/places/{id}", config: placeApi.deleteOne },
   { method: "POST", path: "/api/places/{id}/photos", config: placeApi.addPlacePhoto },
+  { method: "GET", path: "/api/places/{id}/reviews", config: placeApi.getPlaceReviews },
+
+  // Likes
+  { method: "POST", path: "/api/likes/{id}", config: likeApi.create },
+  { method: "GET", path: "/api/likes/{id}", config: likeApi.get },
 ];

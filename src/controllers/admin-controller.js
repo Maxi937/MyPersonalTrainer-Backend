@@ -15,7 +15,7 @@ export const adminController = {
       const users = await db.User.find({ role: { $ne: "admin" } }).lean()
       const places = await db.Place.findAll()
       const beers = await db.Beer.findAll()
-      const reviews = await db.Review.findAll()
+      const reviews = await db.Review.getAll()
 
       const metrics = {
         totalUsers: {
@@ -404,7 +404,7 @@ export const adminController = {
 
   reviews: {
     handler: async function (request, h) {
-      const reviews = await db.Review.findAll()
+      const reviews = await db.Review.getAll()
       let reviewsAddedToday = 0
 
       for (const review of reviews) {
