@@ -1,12 +1,11 @@
 import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
 import Inert from "@hapi/inert";
-import Cookie from "@hapi/cookie"
-import Bell from "@hapi/bell"
+import Cookie from "@hapi/cookie";
+import Bell from "@hapi/bell";
 import Handlebars from "handlebars";
 import jwt from "hapi-auth-jwt2";
-import HapiSwagger from "hapi-swagger"
-import fs from "fs";
+import HapiSwagger from "hapi-swagger";
 import Joi from "joi";
 import * as dotenv from "dotenv";
 import path from "path";
@@ -25,25 +24,23 @@ const __dirname = path.dirname(__filename);
 const logger = createlogger();
 
 // Load Config File
-let config = ""
+let config = "";
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "aws") {
   config = dotenv.config({ path: "./config/config.env" });
-}
-else if (process.env.NODE_ENV === "production") {
+} else if (process.env.NODE_ENV === "production") {
   config = dotenv.config({ path: "production.env" });
-}
-else if (process.env.NODE_ENV === "devprod") {
+} else if (process.env.NODE_ENV === "devprod") {
   config = dotenv.config({ path: "./config/production.env" });
 }
 
 if (config.error) {
-  console.log(config.error)
+  console.log(config.error);
   process.exit(1);
 }
 
-logger.info(`Server started: ${new Date()}`)
-logger.info("Config Configured")
+logger.info(`Server started: ${new Date()}`);
+logger.info("Config Configured");
 
 const swaggerOptions = {
   info: {
@@ -52,7 +49,7 @@ const swaggerOptions = {
   },
 };
 
-logger.info("Swagger Configured")
+logger.info("Swagger Configured");
 
 async function init() {
   const server = Hapi.server({
@@ -77,12 +74,12 @@ async function init() {
   ]);
   server.validator(Joi);
 
-  logger.info("Plugins Registered")
+  logger.info("Plugins Registered");
 
   // Views;
   server.views({
     engines: {
-      hbs: Handlebars
+      hbs: Handlebars,
     },
     relativeTo: __dirname,
     path: "./views",
@@ -92,11 +89,11 @@ async function init() {
     isCached: false,
   });
 
-  logger.info("View Engine Loaded")
+  logger.info("View Engine Loaded");
 
   // Extend Server to get response time of a request and log to console
-  responseTimes(server)
-  logger.info("Response Times Loaded")
+  responseTimes(server);
+  logger.info("Response Times Loaded");
 
   // Set up Cookie auth
   server.auth.strategy("session", "cookie", {
@@ -108,15 +105,14 @@ async function init() {
     redirectTo: "/",
     validate: accountsController.validate,
   });
-  
 
   // Set up Bell auth
   const bellAuthOptions = {
     provider: "github",
     password: "github-encryption-password-secure",
-    clientId: process.env.CLIENT_ID,      
+    clientId: process.env.CLIENT_ID,
     clientSecret: process.env.BELL_SECRET,
-    isSecure: false,    
+    isSecure: false,
   };
 
   server.auth.strategy("github-oauth", "bell", bellAuthOptions);
@@ -130,16 +126,15 @@ async function init() {
 
   server.auth.default("session");
 
-
   // Connect to Mongo Database
-  db.init("mongo")
-  logger.info("DB Configured")
+  db.init("mongo");
+  logger.info("DB Configured");
 
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);
   server.route(adminRoutes);
-  logger.info("Routes Configured")
+  logger.info("Routes Configured");
 
   // Start Server
   await server.start();
@@ -152,4 +147,3 @@ process.on("unhandledRejection", (err) => {
 });
 
 init();
-
