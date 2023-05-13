@@ -16,7 +16,7 @@ export const weatherApi = {
         const ApiKey = process.env.APP_ID
         
         console.log(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ApiKey}&units=metric`)
-        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${44.34}&lon=${10.99}&appid=${ApiKey}&units=metric`)
+        const response = await axios.get(`https://api.openweathermap.org/data/2.5/weather?lat=${lat}&lon=${lon}&appid=${ApiKey}&units=metric`)
         
         const reading = response.data
 
