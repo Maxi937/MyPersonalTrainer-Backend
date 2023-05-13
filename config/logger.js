@@ -8,7 +8,7 @@ const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${leve
 export function createlogger() {
   let transports = ""
 
-  if (process.env.NODE_ENV === "production") {
+  if (process.env.NODE_ENV === "development") {
     transports = new winston.transports.Console()
   }
   else {
