@@ -1,32 +1,23 @@
 # **Description**
 
-Hapi/Node webApp for reviewing pubs in Ireland.
-View reviews for each pub or log in to leave your own.
+Hapi/Node Backend for Beerconomy. Input validation & data sanitisation for connected mongo database.
+API's for using Beerconomy services. API to connect and get weather readings for locations.
 
 ## **URL**
 
-<https://pintaccountant.onrender.com/>
+<BeerconomyLoadBalancer-1208767955.us-east-1.elb.amazonaws.com>
 
 ## **Usage**
 
-### No Account
+### Admin
 
-- The map will load on first entry, pick a category from the top right of the map.
-- Some markers will populate on the map (based around your viewpoint).
-- Click a marker - If there are reviews, they will load in eventually.
-
-### Account
-
-- The map is on the dashboard page.
-- Click a marker to load a place.
-- Click "Review" to leave a review.
-- You can also access your profile page to update your picture or see all your reviews.
+- Admin has CRUD control over app.
+- Admin can see stats on Database items
 
 ## Sources
 
 | Source                                                                                      | Description                                      |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------ |
-| <https://developers.arcgis.com/esri-leaflet/geocode-and-search/>                            | For the map                                      |
 | <https://stackoverflow.com/questions/66694654/how-to-convert-image-png-to-binary-in-nodejs> | Binary to string for the images stored in the db |
 
 
@@ -45,15 +36,6 @@ View reviews for each pub or log in to leave your own.
 ### **Logging**
 
 - Winston
-
-### **Frontend**
-
-- Handlebars Templating
-
-### **CSS**
-
-- Semantic UI
-- Bulma
 
 ### **Utility**
 
