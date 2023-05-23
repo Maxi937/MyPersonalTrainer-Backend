@@ -22,6 +22,7 @@ export const apiRoutes = [
   { method: "GET", path: "/api/profile/profilepicture", config: profileApi.getProfilePicture },
   { method: "GET", path: "/api/profile/reviews", config: profileApi.getProfileReviews },
   { method: "POST", path: "/api/profile/checkToken", config: profileApi.checkToken },
+  { method: "POST", path: "/api/profile/favourites", config: profileApi.addFavourite },
 
   // Reviews
   { method: "GET", path: "/api/reviews", config: reviewApi.get },

@@ -4,7 +4,7 @@ import { createlogger } from "../../config/logger.js";
 
 const logger = createlogger()
 
-export function responseTimes(server) {
+export async function responseTimes(server) {
   server.ext("onRequest", (request, h) => {
     request.headers["x-req-start"] = (new Date()).getTime();
     return h.continue;

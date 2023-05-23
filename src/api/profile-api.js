@@ -4,6 +4,7 @@ import { validationError, createlogger } from "../../config/logger.js";
 import { UserUpdateSpec } from "../models/validation/joi-schemas.js";
 import { checkTokenExpired, decodeToken, getTokenFromRequest, getUserIdFromRequest } from "./jwt-utils.js";
 import { db } from "../models/db.js";
+import { time } from "console";
 
 const logger = createlogger();
 
@@ -77,7 +78,10 @@ export const profileApi = {
     cors: true,
     handler: async function (request, h) {
       try {
-        const user = await db.User.findOne({ _id: getUserIdFromRequest(request) });
+        const user = await db.User.getProfile({ _id: getUserIdFromRequest(request) });
+        const reviews = await db.Review.find({ user: user._id }).populate("place").lean();
+        user.reviews = reviews
+        
         return h.response(user).code(201);
       } catch (err) {
         logger.error(err.message);
@@ -169,5 +173,26 @@ export const profileApi = {
     tags: ["api"],
     description: "get a profile picture userApi",
     notes: "returns profile picture as base64 string",
+  },
+
+  addFavourite: {
+    auth: {
+      strategy: "jwt",
+    },
+    cors: true,
+    handler: async function (request, h) {
+      try {
+        const favourite = request.payload
+        const user = await db.User.findOne({ _id: getUserIdFromRequest(request)});
+        user.addFavourite(favourite)
+        return h.response(200);
+      } catch (err) {
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database unavailable");
+      }
+    },
+    tags: ["api"],
+    description: "add a favourite",
+    notes: "requires JWT auth",
   },
 };

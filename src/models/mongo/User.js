@@ -30,6 +30,11 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true
     },
+    favourites: [{
+      type: Mongoose.SchemaTypes.ObjectId,
+      ref: "Place",
+      required: false,
+    }],
     profilepicture: {
       data: Buffer,
       contentType: String,
@@ -48,6 +53,15 @@ userSchema.methods.addUser = function () {
   }
 };
 
+userSchema.methods.addFavourite = function (favourite) {
+  try {
+    this.favourites.addToSet(favourite)
+    this.save();
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
 userSchema.statics.findAll = function () {
   try {
     return this.find({}).lean()
@@ -60,6 +74,15 @@ userSchema.statics.findAll = function () {
 userSchema.statics.getById = async function (userId) {
   try {
     return await this.findOne({ _id: userId }).lean()
+  } catch (err) {
+    logger.error(err);
+    return None
+  }
+}
+
+userSchema.statics.getProfile = async function (userId) {
+  try {
+    return await this.findOne({ _id: userId }).select(["-password", "-updatedAt", "-__v"]).populate("favourites").lean()
   } catch (err) {
     logger.error(err);
     return None
