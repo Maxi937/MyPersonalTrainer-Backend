@@ -53,8 +53,9 @@ export const reviewApi = {
         const user = getUserIdFromRequest(request)
         const review = await new db.Review(request.payload);
         review.user = user
+        console.log(review)
         await review.save()
-        return h.response(200)
+        return h.response(review)
       } catch (err) {
         logger.error(err.message)
         return Boom.serverUnavailable("Database Error");

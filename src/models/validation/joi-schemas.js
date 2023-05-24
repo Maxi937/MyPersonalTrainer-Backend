@@ -15,6 +15,7 @@ export const UserSpec = Joi.object().keys({
   lname: Joi.string().required(),
   email: Joi.string().email().required(),
   password: Joi.string().required(),
+  favourites: Joi.array().allow(),
   profilepicture: Joi.allow().optional(),
   role: Joi.string().optional(),
   _id: IdSpec,

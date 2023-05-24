@@ -10,23 +10,6 @@ import { encryptPassword } from "../utility/encrypt.js";
 
 const logger = createlogger()
 
-async function createAdmin() {
-  const admin = {
-    "fname": "Matthew",
-    "lname": "Hornby",
-    "email": "mhornby123@gmail.com",
-    "password": await encryptPassword("admin"),
-    "role": "admin"
-  }
-
-  const adminUser = await User.findOne({ role: admin.role })
-  if (!adminUser) {
-    logger.info("admin created")
-    const response = await axios.post(`${process.env.url}/api/users`, admin);
-    logger.info(response.status)
-  }
-}
-
 export const db = {
   User: null,
   Place: null,
@@ -43,7 +26,6 @@ export const db = {
         this.Review = Review
         this.Like = Like
         connectMongo();
-        createAdmin()
         break;
       default:
         logger.info("No Db Selected")

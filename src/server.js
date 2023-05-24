@@ -16,7 +16,7 @@ import { createlogger } from "../config/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
 import { adminRoutes } from "./admin-routes.js";
-import { responseTimes } from "./utility/serverutils.js";
+import { createAdmin, responseTimes } from "./utility/serverutils.js";
 import { accountsController } from "./controllers/accounts-controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -139,6 +139,7 @@ async function init() {
   // Start Server
   await server.start();
   logger.info(`Server running on ${server.info.uri}`);
+  await createAdmin()
 }
 
 process.on("unhandledRejection", (err) => {

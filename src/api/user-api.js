@@ -15,6 +15,7 @@ export const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
+        console.log("here")
         const users = await db.User.find().lean();
         return users;
       } catch (err) {
@@ -147,7 +148,7 @@ export const userApi = {
         }
         await user.save()
         logger.info("user created")
-        return h.response(200)
+        return h.response(user)
       } catch (err) {
         logger.error(err.message)
         return Boom.serverUnavailable("Database Error");

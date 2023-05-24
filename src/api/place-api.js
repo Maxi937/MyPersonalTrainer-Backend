@@ -102,7 +102,7 @@ export const placeApi = {
         }
         await place.save();
         logger.info("New Place created")
-        return h.response(200);
+        return h.response(place);
       } catch (err) {
         logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
