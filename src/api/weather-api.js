@@ -28,7 +28,7 @@ export const weatherApi = {
           icon: `https://openweathermap.org/img/wn/${reading.weather[0].icon}@2x.png`,
         }
 
-        //await new Promise(resolve => setTimeout(resolve, 15000));
+        
         return weather
 
       } catch (err) {

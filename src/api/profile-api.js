@@ -195,4 +195,25 @@ export const profileApi = {
     description: "add a favourite",
     notes: "requires JWT auth",
   },
+
+  deleteFavourite: {
+    auth: {
+      strategy: "jwt",
+    },
+    cors: true,
+    handler: async function (request, h) {
+      try {
+        console.log(request.params.id)
+        const user = await db.User.findOne({ _id: getUserIdFromRequest(request)});
+        await user.deleteFavourite(request.params.id)
+        return h.response(200);
+      } catch (err) {
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database unavailable");
+      }
+    },
+    tags: ["api"],
+    description: "add a favourite",
+    notes: "requires JWT auth",
+  },
 };

@@ -62,6 +62,15 @@ userSchema.methods.addFavourite = function (favourite) {
   }
 };
 
+userSchema.methods.deleteFavourite = function (favouriteId) {
+  try {
+    this.favourites.pull({ _id: favouriteId})
+    this.save();
+  } catch (err) {
+    logger.error(err);
+  }
+};
+
 userSchema.statics.findAll = function () {
   try {
     return this.find({}).lean()
