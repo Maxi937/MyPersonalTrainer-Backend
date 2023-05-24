@@ -5,7 +5,7 @@ API's for using Beerconomy services. API to connect and get weather readings for
 
 ## **URL**
 
-<BeerconomyLoadBalancer-1208767955.us-east-1.elb.amazonaws.com>
+<https://beerconomyloadbalancer-2033382464.us-east-1.elb.amazonaws.com/>
 
 ## **Usage**
 
