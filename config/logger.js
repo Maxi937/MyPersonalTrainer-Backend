@@ -1,29 +1,33 @@
 import winston, { format } from "winston";
-import fs from "fs";
 
 const { combine, label, printf, timestamp, colorize } = format;
 // eslint-disable-next-line no-shadow
 const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
 
 export function createlogger() {
-  let transports = ""
+  let logger = {}
 
   if (process.env.NODE_ENV === "development") {
-    transports = new winston.transports.Console()
+    logger = winston.createLogger({
+      format: combine(
+        colorize({ level: true }),
+        timestamp({ format: "MMM D, YYYY HH:mm" }),
+        myFormat
+      ),
+      transports: new winston.transports.Console(),
+    });
   }
   else {
-    transports = new winston.transports.File({
-      filename: "logs/serverLog.txt"
-    })
+    logger = winston.createLogger({
+      format: combine(
+        timestamp({ format: "MMM D, YYYY HH:mm" }),
+        myFormat
+      ),
+      transports: new winston.transports.File({
+        filename: "logs/serverLog.txt"
+      }),
+    });
   }
-  const logger = winston.createLogger({
-    format: combine(
-      colorize({ level: true }),
-      timestamp({ format: "MMM D, YYYY HH:mm" }),
-      myFormat
-    ),
-    transports: transports,
-  });
   return logger
 }
 

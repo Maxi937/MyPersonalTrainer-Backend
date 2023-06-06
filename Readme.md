@@ -1,6 +1,6 @@
 # **Description**
 
-Hapi/Node Backend for Beerconomy. Input validation & data sanitisation for connected mongo database.
+Hapi/Node Backend for MyPersonalTrainer. Input validation & data sanitisation for connected mongo database.
 API's for using Beerconomy services. API to connect and get weather readings for locations.
 
 ## **URL**
