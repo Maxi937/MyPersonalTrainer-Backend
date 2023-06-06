@@ -1,4 +1,6 @@
-export const serviceUrl = "http://localhost:4000";
+const config = dotenv.config({ path: "./config/config.env" });
+
+export const serviceUrl = process.env.url;
 
 export const maggie = {
   fname: "Maggie",
@@ -39,18 +41,3 @@ export const testUsers = [
     role: "user"
   }
 ];
-
-
-export const aReviewFromMaggie = {
-  content: "good time",
-  rating: 3,
-  date: new Date(),
-};
-
-export const victoriaHouse = {
-  placeName: "Victoria House",
-  address: "10 Victoria House, Tramore, Waterford",
-  category: "bar",
-  lat: "56",
-  lng: "-7",
-};

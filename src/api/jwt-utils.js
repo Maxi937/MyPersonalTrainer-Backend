@@ -5,7 +5,7 @@ import { createlogger } from "../../config/logger.js";
 
 const logger = createlogger()
 
-const result = dotenv.config();
+// const result = dotenv.config();
 
 export function createToken(user) {
   const payload = {
