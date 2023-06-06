@@ -1,5 +1,4 @@
 import os from "os";
-import axios from "axios";
 import { db } from "../models/db.js"
 import { createlogger } from "../../config/logger.js";
 import { encryptPassword } from "./encrypt.js";
@@ -18,7 +17,7 @@ export async function createAdmin() {
 
   const duplicate = await db.User.findOne({ role: adminDetails.role })
   if (!duplicate) {
-    logger.info("creating admin user")
+    logger.info("Creating admin user")
     const admin = await new db.User(adminDetails);
     admin.save()
   }

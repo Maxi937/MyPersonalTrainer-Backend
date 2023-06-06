@@ -1,13 +1,5 @@
 import Joi from "joi";
 
-// If Value is County return err
-const countyValidator = (value, helpers) => {
-  if (value === "County") {
-    return helpers.error("any.invalid");
-  }
-  return value;
-};
-
 export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
 
 export const UserSpec = Joi.object().keys({
@@ -25,58 +17,6 @@ export const UserSpec = Joi.object().keys({
 }).label("UserDetails");
 
 export const UserArray = Joi.array().items(UserSpec).label("UserArray");
-
-export const UserUpdateSpec = {
-  fname: Joi.string().allow(""),
-  lname: Joi.string().allow(""),
-  email: Joi.string().email().allow(""),
-  password: Joi.string().allow(""),
-};
-
-export const PlaceSpec = Joi.object().keys({
-  placeName: Joi.string().required(),
-  address: Joi.string().required(),
-  category: Joi.string().required(),
-  serves: Joi.array(),
-  description: Joi.string(),
-  lat: Joi.number().required(),
-  lng: Joi.number().required(),
-  picture: Joi.allow(),
-  _id: IdSpec,
-  __v: Joi.number(),
-  createdAt: Joi.date(),
-  updatedAt: Joi.date(),
-}).label("PlaceDetails");
-
-export const PlaceArray = Joi.array().items(PlaceSpec).label("PlaceArray");
-
-export const BeerSpec = {
-  beerName: Joi.string().required(),
-  beerType: Joi.string().required(),
-  beerAvgPrice: Joi.number().precision(2),
-  beerImage: Joi.allow()
-};
-
-export const BeerUpdateSpec = {
-  beerName: Joi.string().optional().allow(""),
-  beerType: Joi.string().optional().allow("larger", "cider"),
-  beerAvgPrice: Joi.number().precision(2).optional().allow(""),
-  beerImage: Joi.allow().optional()
-};
-
-export const ReviewSpec = Joi.object().keys({
-  date: Joi.string().required(),
-  content: Joi.required(),
-  user: Joi.required(),
-  place: Joi.required(),
-  rating: Joi.number().required(),
-  _id: IdSpec,
-  __v: Joi.number(),
-  createdAt: Joi.date(),
-  updatedAt: Joi.date(),
-}).label("ReviewDetails");
-
-export const ReviewArray = Joi.array().items(ReviewSpec).label("ReviewArray");
 
 export const UserCredentialsSpec = {
   email: Joi.string().email().required(),

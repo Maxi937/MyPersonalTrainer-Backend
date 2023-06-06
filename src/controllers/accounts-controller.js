@@ -12,7 +12,7 @@ export const accountsController = {
     auth: false,
     handler: async function (request, h) {
 
-      return h.view("user/user-login", { title: "Welcome to Pint Accountant" });
+      return h.view("admin/admin-login", { title: "Welcome to My Personal Trainer" });
     },
   },
 

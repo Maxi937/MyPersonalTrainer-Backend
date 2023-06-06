@@ -44,7 +44,7 @@ logger.info("Config Configured");
 
 const swaggerOptions = {
   info: {
-    title: "PintAccountant API",
+    title: "MyPersonalTrainer API",
     version: "0.1",
   },
 };

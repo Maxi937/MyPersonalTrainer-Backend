@@ -1,7 +1,7 @@
 import Boom from "@hapi/boom";
 import fs from "fs"
 import { validationError, createlogger } from "../../config/logger.js";
-import { UserSpec, IdSpec, UserArray, UserUpdateSpec } from "../models/validation/joi-schemas.js";
+import { UserSpec, IdSpec, UserArray } from "../models/validation/joi-schemas.js";
 import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
 import { createToken } from "./jwt-utils.js";
 import { db } from "../models/db.js"
@@ -56,13 +56,6 @@ export const userApi = {
         output: "file",
         parse: true,
         multipart: true
-    },
-    validate: {
-        payload: UserUpdateSpec,
-        failAction: async function (request, h, error) {
-            logger.error("Form Submission Error")
-            return Boom.badRequest("Bad Request")
-        },
     },
     handler: async function (request, h) {
         const user = await db.User.findById(request.params.id)
