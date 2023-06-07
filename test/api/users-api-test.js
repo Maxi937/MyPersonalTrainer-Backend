@@ -1,23 +1,21 @@
 import { assert } from "chai";
 import { assertSubset } from "../test-utils.js";
 import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
-import { maggie, maggieCredentials, testUsers } from "../fixtures.js";
+import { maggie, adminUser, testUsers } from "../fixtures.js";
 
 const users = new Array(testUsers.length);
+
 
 suite("User API tests", () => {
   setup(async () => {
     myPersonalTrainerService.clearAuth();
-    await myPersonalTrainerService.createUser(maggie);
-    await myPersonalTrainerService.authenticate(maggieCredentials);
+    await myPersonalTrainerService.authenticate(adminUser);
     await myPersonalTrainerService.deleteAllUsers();
 
     for (let i = 0; i < testUsers.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       users[0] = await myPersonalTrainerService.createUser(testUsers[i]); 
     }
-    await myPersonalTrainerService.createUser(maggie);
-    await myPersonalTrainerService.authenticate(maggie);
   });
   teardown(async () => { });
 
@@ -29,12 +27,10 @@ suite("User API tests", () => {
 
   test("delete all user", async () => {
     let returnedUsers = await myPersonalTrainerService.getAllUsers();
-    assert.equal(returnedUsers.length, 4);
+    assert.equal(returnedUsers.length, 3);
     await myPersonalTrainerService.deleteAllUsers();
-    await myPersonalTrainerService.createUser(maggie);
-    await myPersonalTrainerService.authenticate(maggie);
     returnedUsers = await myPersonalTrainerService.getAllUsers();
-    assert.equal(returnedUsers.length, 1);
+    assert.equal(returnedUsers.length, 0);
   });
 
   test("get a user", async () => {

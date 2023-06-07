@@ -12,7 +12,9 @@ const logger = createlogger()
 
 export const userApi = {
   find: {
-    auth: false,
+    auth: {
+      strategy: "jwt"
+    },
     handler: async function (request, h) {
       try {
         const users = await db.User.getAll();
@@ -28,7 +30,9 @@ export const userApi = {
   },
 
   findOne: {
-    auth: false,
+    auth: {
+      strategy: "jwt"
+    },
     handler: async function (request, h) {
       try {
         const user = await db.User.findOne({ _id: request.params.id }).lean();
@@ -159,9 +163,11 @@ export const userApi = {
     },
     handler: async function (request, h) {
       try {
-        await db.User.deleteMany({});
+        await db.User.deleteAll();
+        console.log(await db.User.find({}))
         return h.response().code(204);
       } catch (err) {
+        console.log(err)
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -191,6 +197,7 @@ export const userApi = {
     cors: true,
     handler: async function (request, h) {
       try {
+   
         const { email, password } = request.payload;
         const user = await db.User.find().getByEmail(email);
 
@@ -202,7 +209,6 @@ export const userApi = {
           logger.error("Login Failed, bad credentials")
           return Boom.unauthorized("Invalid password");
         }
-
         const token = createToken(user);
         return h.response({ success: true, token: token }).code(201);
       } catch (err) {

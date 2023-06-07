@@ -4,6 +4,11 @@ const config = dotenv.config({ path: "./config/dev.env" });
 
 export const serviceUrl = process.env.url;
 
+export const adminUser = {
+  email: process.env.ADMINISTRATOR_EMAIL,
+  password: process.env.ADMINISTRATOR_PASSWORD
+}
+
 export const maggie = {
   fname: "Maggie",
   lname: "Simpson",

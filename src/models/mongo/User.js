@@ -79,6 +79,16 @@ userSchema.statics.getAll = function () {
   }
 }
 
+userSchema.statics.deleteAll = async function () {
+  try {
+    await this.deleteMany({ "role": { $ne: "admin"}})
+    return true
+  } catch (err) {
+    console.log(err);
+    return err
+  }
+}
+
 userSchema.statics.getById = async function (userId) {
   try {
     return await this.findOne({ _id: userId }).lean()

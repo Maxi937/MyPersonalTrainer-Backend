@@ -1,11 +1,8 @@
 import jwt from "jsonwebtoken";
-import dotenv from "dotenv";
 import { db } from "../models/db.js";
 import { createlogger } from "../../config/logger.js";
 
 const logger = createlogger()
-
-// const result = dotenv.config();
 
 export function createToken(user) {
   const payload = {
