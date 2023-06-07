@@ -17,19 +17,6 @@ export const maggie = {
   role: "user"
 };
 
-export const maggieCredentials = {
-  email: "maggie@simpson.com",
-  password: "secret",
-};
-
-export const barry = {
-  fname: "Barry",
-  lname: "Block",
-  email: "barry@simpson.com",
-  password: "secret",
-  role: "user"
-};
-
 export const testUsers = [
   {
     fname: "Homer",

@@ -25,7 +25,20 @@ suite("User API tests", () => {
     assert.isDefined(newUser._id);
   });
 
-  test("delete all user", async () => {
+  test("create a user - duplicate email", async () => {
+    try {
+      const newUser = await myPersonalTrainerService.createUser(maggie);
+      const duplicate = await myPersonalTrainerService.createUser(maggie);
+      console.log(duplicate)
+      assert.fail("AxiosError: Request failed with status code 400");
+    }
+    catch(error) {
+      assert(error.response.data.message === "Duplicate email");
+      assert.equal(error.response.data.statusCode, 400);
+    }
+  });
+
+  test("delete all users", async () => {
     let returnedUsers = await myPersonalTrainerService.getAllUsers();
     assert.equal(returnedUsers.length, 3);
     await myPersonalTrainerService.deleteAllUsers();

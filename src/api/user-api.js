@@ -134,8 +134,9 @@ export const userApi = {
 
         if (duplicateUser) {
           logger.error(`Duplicate User Email: ${duplicateUser.email}`)
-          // return Boom.badRequest("Duplicate")
+          return Boom.badRequest("Duplicate email")
         }
+        
         const user = await new db.User(request.payload);
         user.password = await encryptPassword(user.password)
         user.role = "user"
@@ -164,7 +165,6 @@ export const userApi = {
     handler: async function (request, h) {
       try {
         await db.User.deleteAll();
-        console.log(await db.User.find({}))
         return h.response().code(204);
       } catch (err) {
         console.log(err)
