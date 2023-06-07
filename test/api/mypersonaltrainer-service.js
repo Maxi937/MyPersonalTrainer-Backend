@@ -1,6 +1,8 @@
 import axios from "axios";
 import { serviceUrl } from "../fixtures.js";
 
+console.log(serviceUrl)
+
 export const myPersonalTrainerService = {
   url: serviceUrl,
 
@@ -22,5 +24,15 @@ export const myPersonalTrainerService = {
   async deleteAllUsers() {
     const res = await axios.delete(`${this.url}/api/users`);
     return res.data;
+  },
+
+  async authenticate(user) {
+    const res = await axios.post(`${this.url}/api/users/authenticate`, user);
+    axios.defaults.headers.common.Authorization = `Bearer ${res.data.token}`;
+    return res.data;
+  },
+
+  async clearAuth() {
+    axios.defaults.headers.common.Authorization = "";
   },
 };

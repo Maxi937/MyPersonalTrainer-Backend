@@ -3,15 +3,14 @@ import { db } from "../models/db.js"
 import { createlogger } from "../../config/logger.js";
 import { encryptPassword } from "./encrypt.js";
 
-
 const logger = createlogger()
 
 export async function createAdmin() {
   const adminDetails = {
-    "fname": "Matthew",
-    "lname": "Hornby",
-    "email": "mhornby123@gmail.com",
-    "password": await encryptPassword("admin"),
+    "fname": process.env.ADMINISTRATOR_FNAME,
+    "lname": process.env.ADMINISTRATOR_LNAME,
+    "email": process.env.ADMINISTRATOR_EMAIL,
+    "password": await encryptPassword(process.env.ADMINISTRATOR_PASSWORD),
     "role": "admin"
   }
 

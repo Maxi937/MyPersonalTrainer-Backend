@@ -27,7 +27,7 @@ const logger = createlogger();
 let config = "";
 
 if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "aws") {
-  config = dotenv.config({ path: "./config/config.env" });
+  config = dotenv.config({ path: "./config/dev.env" });
 } else if (process.env.NODE_ENV === "production") {
   config = dotenv.config({ path: "production.env" });
 } else if (process.env.NODE_ENV === "devprod") {

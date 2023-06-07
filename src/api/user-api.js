@@ -15,8 +15,7 @@ export const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        console.log("here")
-        const users = await db.User.find().lean();
+        const users = await db.User.getAll();
         return users;
       } catch (err) {
         return Boom.serverUnavailable("Database Error");
@@ -130,7 +129,8 @@ export const userApi = {
         const duplicateUser = await db.User.findOne({ email: request.payload.email})
 
         if (duplicateUser) {
-          return Boom.badRequest("Duplicate")
+          logger.error(`Duplicate User Email: ${duplicateUser.email}`)
+          // return Boom.badRequest("Duplicate")
         }
         const user = await new db.User(request.payload);
         user.password = await encryptPassword(user.password)
@@ -154,7 +154,9 @@ export const userApi = {
   },
 
   deleteAll: {
-    auth: false,
+    auth: {
+      strategy: "jwt"
+    },
     handler: async function (request, h) {
       try {
         await db.User.deleteMany({});
@@ -189,7 +191,6 @@ export const userApi = {
     cors: true,
     handler: async function (request, h) {
       try {
-        
         const { email, password } = request.payload;
         const user = await db.User.find().getByEmail(email);
 
@@ -198,13 +199,12 @@ export const userApi = {
         }
 
         if (await unencryptPassword(password, user.password) === false) {
-          logger.info("Login Failed, bad credentials")
+          logger.error("Login Failed, bad credentials")
           return Boom.unauthorized("Invalid password");
         }
 
         const token = createToken(user);
         return h.response({ success: true, token: token }).code(201);
-
       } catch (err) {
         logger.error(err)
         return Boom.serverUnavailable("Database Error");

@@ -1,4 +1,6 @@
-const config = dotenv.config({ path: "./config/config.env" });
+import * as dotenv from "dotenv";
+
+const config = dotenv.config({ path: "./config/dev.env" });
 
 export const serviceUrl = process.env.url;
 
@@ -8,6 +10,11 @@ export const maggie = {
   email: "maggie@simpson.com",
   password: "secret",
   role: "user"
+};
+
+export const maggieCredentials = {
+  email: "maggie@simpson.com",
+  password: "secret",
 };
 
 export const barry = {

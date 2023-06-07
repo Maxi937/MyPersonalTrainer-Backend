@@ -70,12 +70,12 @@ userSchema.methods.deleteFavourite = function (favouriteId) {
   }
 };
 
-userSchema.statics.findAll = function () {
+userSchema.statics.getAll = function () {
   try {
-    return this.find({}).lean()
+    return this.find({ "role": { $ne: "admin"}}).lean()
   } catch (err) {
     logger.error(err);
-    return None
+    return []
   }
 }
 
