@@ -4,8 +4,10 @@ Hapi/Node Backend for MyPersonalTrainer. Input validation & data sanitisation fo
 API's for using Beerconomy services. API to connect and get weather readings for locations.
 
 ## **URL**
+<URL>
 
-<https://beerconomyloadbalancer-2033382464.us-east-1.elb.amazonaws.com/>
+## **Documentation**
+<URL/documentation>
 
 ## **Usage**
 
