@@ -27,6 +27,13 @@ const myFormat = format.combine(
   winston.format.printf(msg => 
     `${colorizer.colorize("timestamp", msg.timestamp)} [${msg.level}]: ${msg.message}`)
   )
+
+const myTestFormat = format.combine(
+    winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
+    winston.format.printf(msg => 
+      `[${msg.level}]: ${msg.message}`)
+    )
+
 export function createlogger() {
   let logger = {}
 
@@ -50,7 +57,7 @@ export function createlogger() {
 
 export function createTestLogger() {
   const logger = winston.createLogger({
-      format: myFormat,
+      format: myTestFormat,
       transports: new winston.transports.Console(),
     });
   return logger
