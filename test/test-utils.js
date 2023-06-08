@@ -1,3 +1,5 @@
+import winston, { format } from "winston";
+
 export function assertSubset(subset, superset) {
   if (typeof superset !== "object" || superset === null || typeof subset !== "object" || subset === null) return false;
 
@@ -12,4 +14,20 @@ export function assertSubset(subset, superset) {
 
     return true;
   });
+}
+
+export function createTestLogger() {
+  const { combine, label, printf, timestamp, colorize } = format;
+  // eslint-disable-next-line no-shadow
+  const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
+  
+  const logger = winston.createLogger({
+      format: combine(
+        colorize({ level: true }),
+        timestamp({ format: "MMM D, YYYY HH:mm" }),
+        myFormat
+      ),
+      transports: new winston.transports.Console(),
+    });
+  return logger
 }

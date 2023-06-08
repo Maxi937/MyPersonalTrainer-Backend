@@ -10,7 +10,7 @@
     "devprod": "cross-env NODE_ENV=devprod node src/server.js",
     "dev": "cross-env NODE_ENV=development nodemon .src/server.js",
     "aws": "cross-env NODE_ENV=aws nodemon .src/server.js",
-    "test": "mocha --ui tdd test/**/*.js -exit",
+    "test": "cross-env NODE_ENV=development mocha --ui tdd test/**/*.js -exit",
     "testmodels": "mocha --ui tdd test/models/**/*.js -exit",
     "testapi": "mocha --ui tdd test/api/**/*.js -exit",
     "lint": "eslint . --ext .js"
