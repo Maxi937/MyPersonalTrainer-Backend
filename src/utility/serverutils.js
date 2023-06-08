@@ -25,30 +25,10 @@ export async function createAdmin() {
 export async function responseTimes(server) {
   server.ext("onRequest", (request, h) => {
     request.headers["x-req-start"] = (new Date()).getTime();
-
-    const {routes} = server._core.router
-
-    const jwtRoutes = []
-
-    routes.forEach((map, method) => {
-      map.routes.forEach((route) => {
-        if (route.route.public.settings.auth) {
-          const authstrategies = route.route.public.settings.auth.strategies
-          jwtRoutes.push({
-            "method": method,
-            "route": route.path,
-            "strategy": authstrategies[0]
-          })
-        }
-      })
-    })
-
-    console.log(jwtRoutes)
     return h.continue;
   });
 
   server.ext("onPreResponse", (request, h) => {
-    //console.log(request.auth)
     const start = parseInt(request.headers["x-req-start"], 10);
     const end = (new Date()).getTime();
     if (!request.response.isBoom) {

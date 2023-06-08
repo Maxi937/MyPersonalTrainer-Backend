@@ -44,3 +44,35 @@ suite("Authentication API tests", async () => {
     }
   });
 });
+
+// TODO: Add test to check that JWT is on the right routes - in some manner 
+/*
+Example code for gettings the jwt routes from the server.
+
+Requires the server object - originally ran in the preResponse extension  in serverutils.
+
+There is a guide on Hapi for adding init() and start() functions to the server instead automatically starting
+it open for HTTP requests. I am thinking the server should be setup this way and the tests should initialise
+server in this manner:
+  - Means seperate process for the server does not have to be started locally.
+  - Means I can access the server object and run the below from test suite.
+
+
+    const {routes} = server._core.router
+    const jwtRoutes = []
+
+    routes.forEach((map, method) => {
+      map.routes.forEach((route) => {
+        if (route.route.public.settings.auth) {
+          const authstrategies = route.route.public.settings.auth.strategies
+          jwtRoutes.push({
+            "method": method,
+            "route": route.path,
+            "strategy": authstrategies[0]
+          })
+        }
+      })
+    })
+
+    console.log(jwtRoutes)
+  */
