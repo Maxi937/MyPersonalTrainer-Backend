@@ -49,3 +49,5 @@ API's for using Beerconomy services. API to connect and get weather readings for
 
 - Mocha
 - Chai
+
+commit test
