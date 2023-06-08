@@ -1,7 +1,10 @@
 import axios from "axios";
 import { serviceUrl } from "../fixtures.js";
+import { createlogger } from "../../src/utility/logger.js";
 
-console.log(serviceUrl)
+const logger = createlogger()
+
+logger.info(`Service Url: ${serviceUrl}`)
 
 export const myPersonalTrainerService = {
   url: serviceUrl,
