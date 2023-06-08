@@ -17,17 +17,15 @@ export function assertSubset(subset, superset) {
 }
 
 export function createTestLogger() {
-  const { combine, label, printf, timestamp, colorize } = format;
+  const { combine, printf } = format;
   // eslint-disable-next-line no-shadow
-  const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
+  const myFormat = printf(({ level, message }) => `[${level}]: ${message}`);
   
   const logger = winston.createLogger({
       format: combine(
-        colorize({ level: true }),
-        timestamp({ format: "MMM D, YYYY HH:mm" }),
         myFormat
       ),
-      transports: new winston.transports.Console({format: colorize()}),
+      transports: new winston.transports.Console(),
     });
   return logger
 }
