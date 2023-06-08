@@ -28,6 +28,10 @@ const myLoggerFormats = {
     winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
     winston.format.printf((msg) => `${colorizer.colorize("timestamp", msg.timestamp)} [${msg.level}]: ${msg.message}`)
   ),
+  serverLog: winston.format.combine(
+    winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
+    winston.format.printf((msg) => `${msg.timestamp} [${msg.level}]: ${msg.message}`)
+  ),
   testing: format.combine(
     winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
     winston.format.printf((msg) => `[${msg.level}]: ${msg.message}`)
@@ -36,11 +40,14 @@ const myLoggerFormats = {
 
 export function createlogger() {
   let myTransport
+  let myFormat
 
   if (process.env.NODE_ENV === "development") {
+    myFormat = myLoggerFormats.standard
     myTransport = new winston.transports.Console({ level: "error" })
   } 
   else {
+    myFormat = myLoggerFormats.serverLog
     myTransport = new winston.transports.File({
       filename: "logs/serverLog.txt",
     })
@@ -48,7 +55,7 @@ export function createlogger() {
 
   const logger = winston.createLogger({
       levels: myLevels.levels,
-      format: myLoggerFormats.standard,
+      format: myFormat,
       transports: myTransport,
     });
 
