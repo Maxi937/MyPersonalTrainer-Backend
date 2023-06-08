@@ -85,7 +85,6 @@ export const accountsController = {
       request.cookieAuth.set({ id: user._id });
 
       if (user.role === "admin") {
-        console.log("is admin");
         return h.redirect("/admin");
       }
 
