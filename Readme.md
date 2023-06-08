@@ -11,10 +11,6 @@ API's for using Beerconomy services. API to connect and get weather readings for
 
 <URL/documentation>
 
-## **Testing**
-
-Mocha used for testing. Testing is set up to run on a pre-commit. All tests must pass in order for code to be commited.
-
 ### Admin
 
 - Admin has CRUD control over app.
@@ -50,7 +46,9 @@ Mocha used for testing. Testing is set up to run on a pre-commit. All tests must
 
 ### **Testing**
 
+Testing is automated to run on a pre-commit. Commit will fail if tests fail.
+
 - Mocha
 - Chai
 
-commit testtttttt66666
+

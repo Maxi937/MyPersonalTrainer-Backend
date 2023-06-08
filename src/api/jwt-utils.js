@@ -53,6 +53,7 @@ export function getTokenFromRequest(request) {
   let token = {};
   try {
     const { authorization } = request.headers;
+    // eslint-disable-next-line prefer-destructuring
     token = authorization.split(" ")[1];
     return token;
   } catch (e) {
