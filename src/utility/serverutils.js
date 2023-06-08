@@ -15,10 +15,18 @@ export async function createAdmin() {
   };
 
   const duplicate = await db.User.findOne({ role: adminDetails.role });
+
   if (!duplicate) {
-    logger.info("Creating admin user");
+    logger.warn("No Database Administrator Found. Creating deafult admin user.");
     const admin = await new db.User(adminDetails);
-    admin.save();
+
+    try {
+      admin.save();
+    }
+    catch (err) {
+      logger.error("Unable to create admin user")
+      console.log(err.message)
+    }
   }
 }
 

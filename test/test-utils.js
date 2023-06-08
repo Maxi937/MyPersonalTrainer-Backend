@@ -15,17 +15,3 @@ export function assertSubset(subset, superset) {
     return true;
   });
 }
-
-export function createTestLogger() {
-  const { combine, printf } = format;
-  // eslint-disable-next-line no-shadow
-  const myFormat = printf(({ level, message }) => `[${level}]: ${message}`);
-  
-  const logger = winston.createLogger({
-      format: combine(
-        myFormat
-      ),
-      transports: new winston.transports.Console(),
-    });
-  return logger
-}

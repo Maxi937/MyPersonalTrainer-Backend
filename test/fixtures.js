@@ -1,9 +1,7 @@
 import * as dotenv from "dotenv";
-import { init } from "../src/server.js"
+import { start } from "../src/server.js"
 
-const config = dotenv.config({ path: "./config/dev.env" });
-
-export const server = init()
+export const server = await start()
 export const serviceUrl = process.env.url;
 
 export const adminUser = {

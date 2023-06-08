@@ -1,16 +1,32 @@
 import winston, { format } from "winston";
 
-const { combine, label, printf, timestamp, colorize } = format;
-// eslint-disable-next-line no-shadow
-const myFormat = printf(({ level, message, timestamp }) => `${timestamp} [${level}]: ${message} `);
+const myLevels = {
+  levels: {
+    notice: 0,
+    info: 1,
+    warn: 2,
+    error: 3
+  },
+  colors: {
+    notice: "blue",
+    info: "green",
+    warn: "yellow",
+    error: "red"
+  }
+}
+
 
 export function createlogger() {
+  const { combine, label, printf, timestamp, colorize } = format;
+  const myFormat = printf((msg) => `${msg.timestamp} [${msg.level}]: ${msg.message} `);
+
   let logger = {}
 
   if (process.env.NODE_ENV === "development") {
     logger = winston.createLogger({
+      levels: myLevels.levels,
       format: combine(
-        colorize({ level: true }),
+        colorize(),
         timestamp({ format: "MMM D, YYYY HH:mm" }),
         myFormat
       ),
@@ -30,6 +46,20 @@ export function createlogger() {
   }
   return logger
 }
+
+export function createTestLogger() {
+  const { combine, printf } = format;
+  const myFormat = printf(({ level, message }) => `[${level}]: ${message}`);
+  
+  const logger = winston.createLogger({
+      format: combine(
+        myFormat
+      ),
+      transports: new winston.transports.Console(),
+    });
+  return logger
+}
+
 
 export async function validationError(request, h, error) {
   const logger = createlogger()

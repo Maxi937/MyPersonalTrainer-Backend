@@ -5,7 +5,6 @@ import { maggie, adminUser, testUsers } from "../fixtures.js";
 
 const users = new Array(testUsers.length);
 
-
 suite("User API tests", () => {
   setup(async () => {
     myPersonalTrainerService.clearAuth();

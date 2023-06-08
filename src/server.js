@@ -1,3 +1,4 @@
+import * as dotenv from "dotenv";
 import Hapi from "@hapi/hapi";
 import Vision from "@hapi/vision";
 import Inert from "@hapi/inert";
@@ -7,7 +8,6 @@ import Handlebars from "handlebars";
 import jwt from "hapi-auth-jwt2";
 import HapiSwagger from "hapi-swagger";
 import Joi from "joi";
-import * as dotenv from "dotenv";
 import path from "path";
 import { fileURLToPath } from "url";
 import { validate } from "./api/jwt-utils.js";
@@ -16,7 +16,7 @@ import { createlogger } from "./utility/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
 import { adminRoutes } from "./admin-routes.js";
-import { createAdmin, responseTimes } from "./utility/serverutils.js";
+import { responseTimes } from "./utility/serverutils.js";
 import { accountsController } from "./controllers/accounts-controller.js";
 
 const __filename = fileURLToPath(import.meta.url);
@@ -24,23 +24,25 @@ const __dirname = path.dirname(__filename);
 const logger = createlogger();
 
 // Load Config File
+const enviroment = process.env.NODE_ENV
+
 let config = "";
 
-if (process.env.NODE_ENV === "development" || process.env.NODE_ENV === "aws") {
-  config = dotenv.config({ path: "./config/dev.env" });
-} else if (process.env.NODE_ENV === "production") {
-  config = dotenv.config({ path: "production.env" });
-} else if (process.env.NODE_ENV === "devprod") {
-  config = dotenv.config({ path: "./config/production.env" });
+switch(enviroment) {
+  case "production":
+    config = dotenv.config({ path: "production.env" });
+    break;
+  case "devprod":
+    config = dotenv.config({ path: "./config/production.env" });
+    break;
+  default:
+    config = dotenv.config({ path: "./config/dev.env" });
 }
 
-if (config.error) {
-  console.log(config.error);
+if (config.error || config === "" ) {
+  console.log("Config Error");
   process.exit(1);
 }
-
-logger.info(`Server started: ${new Date()}`);
-logger.info("Config Configured");
 
 const swaggerOptions = {
   info: {
@@ -49,102 +51,88 @@ const swaggerOptions = {
   },
 };
 
-logger.info("Swagger Configured");
+const bellAuthOptions = {
+  provider: "github",
+  password: "github-encryption-password-secure",
+  clientId: process.env.CLIENT_ID,
+  clientSecret: process.env.BELL_SECRET,
+  isSecure: false,
+};
 
-export async function init() {
-  const server = Hapi.server({
-    port: process.env.PORT,
-    host: process.env.HOST,
-  });
+const server = Hapi.server({
+  port: process.env.PORT,
+  host: process.env.HOST,
+});
 
-  // Plugins
-  await server.register(Inert);
-  await server.register(Vision);
-  await server.register(Cookie);
-  await server.register(Bell);
-  await server.register(jwt);
+// Plugins
+await server.register(Inert);
+await server.register(Vision);
+await server.register(Cookie);
+await server.register(Bell);
+await server.register(jwt);
+await server.register([
+  Inert,
+  Vision,
+  {
+    plugin: HapiSwagger,
+    options: swaggerOptions,
+  },
+]);
+server.validator(Joi);
 
-  await server.register([
-    Inert,
-    Vision,
-    {
-      plugin: HapiSwagger,
-      options: swaggerOptions,
-    },
-  ]);
-  server.validator(Joi);
+// Views;
+server.views({
+  engines: {
+    hbs: Handlebars,
+  },
+  relativeTo: __dirname,
+  path: "./views",
+  layoutPath: "./views/layouts",
+  partialsPath: "./views/partials",
+  layout: true,
+  isCached: false,
+});
 
-  logger.info("Plugins Registered");
+// Extend Server to get add response time to headers
+responseTimes(server);
+logger.info("Response Times Loaded");
 
-  // Views;
-  server.views({
-    engines: {
-      hbs: Handlebars,
-    },
-    relativeTo: __dirname,
-    path: "./views",
-    layoutPath: "./views/layouts",
-    partialsPath: "./views/partials",
-    layout: true,
-    isCached: false,
-  });
-
-  logger.info("View Engine Loaded");
-
-  // Extend Server to get response time of a request and log to console
-  responseTimes(server);
-  logger.info("Response Times Loaded");
-
-  // Set up Cookie auth
-  server.auth.strategy("session", "cookie", {
-    cookie: {
-      name: process.env.cookie_name,
-      password: process.env.cookie_password,
-      isSecure: false,
-    },
-    redirectTo: "/",
-    validate: accountsController.validate,
-  });
-
-  // Set up Bell auth
-  const bellAuthOptions = {
-    provider: "github",
-    password: "github-encryption-password-secure",
-    clientId: process.env.CLIENT_ID,
-    clientSecret: process.env.BELL_SECRET,
+// Set up Cookie auth
+server.auth.strategy("session", "cookie", {
+  cookie: {
+    name: process.env.cookie_name,
+    password: process.env.cookie_password,
     isSecure: false,
-  };
+  },
+  redirectTo: "/",
+  validate: accountsController.validate,
+});
 
-  server.auth.strategy("github-oauth", "bell", bellAuthOptions);
+server.auth.strategy("github-oauth", "bell", bellAuthOptions);
 
-  // Set up JWT auth
-  server.auth.strategy("jwt", "jwt", {
-    key: process.env.cookie_password,
-    validate: validate,
-    verifyOptions: { algorithms: ["HS256"] },
-  });
+// Set up JWT auth
+server.auth.strategy("jwt", "jwt", {
+  key: process.env.cookie_password,
+  validate: validate,
+  verifyOptions: { algorithms: ["HS256"] },
+});
 
-  server.auth.default("session");
+server.auth.default("session");
 
-  // Connect to Mongo Database
-  db.init("mongo");
-  logger.info("DB Configured");
+// Connect to Mongo Database
+db.init("mongo");
 
-  // Set Routes
-  server.route(webRoutes);
-  server.route(apiRoutes);
-  server.route(adminRoutes);
-  logger.info("Routes Configured");
-
-  // Start Server
-  await server.start();
-  logger.info(`Server running on ${server.info.uri}`);
-  await createAdmin();
-}
+// Set Routes
+server.route(webRoutes);
+server.route(apiRoutes);
+server.route(adminRoutes);
 
 process.on("unhandledRejection", (err) => {
   logger.error(err.message);
   process.exit(1);
 });
 
-init();
+export async function start() {
+  await server.start();
+  return server;
+}
