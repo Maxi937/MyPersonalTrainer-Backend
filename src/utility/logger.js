@@ -14,59 +14,60 @@ const myLevels = {
     http: "bold magenta",
     warn: "bold yellow",
     error: "bold red",
-    timestamp: "gray"
-  }
-}
+    timestamp: "gray",
+  },
+};
 
 winston.addColors(myLevels.colors);
 
 const colorizer = winston.format.colorize();
-const myFormat = format.combine(
-  winston.format.colorize(),
-  winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
-  winston.format.printf(msg => 
-    `${colorizer.colorize("timestamp", msg.timestamp)} [${msg.level}]: ${msg.message}`)
-  )
 
-const myTestFormat = format.combine(
+const myLoggerFormats = {
+  standard: winston.format.combine(
+    winston.format.colorize(),
     winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
-    winston.format.printf(msg => 
-      `[${msg.level}]: ${msg.message}`)
-    )
+    winston.format.printf((msg) => `${colorizer.colorize("timestamp", msg.timestamp)} [${msg.level}]: ${msg.message}`)
+  ),
+  testing: format.combine(
+    winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
+    winston.format.printf((msg) => `[${msg.level}]: ${msg.message}`)
+  )
+};
 
 export function createlogger() {
-  let logger = {}
+  let myTransport
 
   if (process.env.NODE_ENV === "development") {
-    logger = winston.createLogger({
-      levels: myLevels.levels,
-      format: myFormat,
-      transports: new winston.transports.Console({level:"error"}),
-    });
-  }
+    myTransport = new winston.transports.Console({ level: "error" })
+  } 
   else {
-    logger = winston.createLogger({
-      format: myFormat,
-      transports: new winston.transports.File({
-        filename: "logs/serverLog.txt"
-      }),
-    });
+    myTransport = new winston.transports.File({
+      filename: "logs/serverLog.txt",
+    })
   }
-  return logger
+
+  const logger = winston.createLogger({
+      levels: myLevels.levels,
+      format: myLoggerFormats.standard,
+      transports: myTransport,
+    });
+
+  return logger;
 }
 
 export function createTestLogger() {
   const logger = winston.createLogger({
-      format: myTestFormat,
-      transports: new winston.transports.Console(),
-    });
-  return logger
+    levels: myLevels.levels,
+    format: myLoggerFormats.testing,
+    transports: new winston.transports.Console(),
+  });
+  return logger;
 }
 
 export async function validationError(request, h, error) {
-  const logger = createlogger()
-  console.log( await request.payload)
-  console.log( await typeof(request.payload))
+  const logger = createlogger();
+  console.log(await request.payload);
+  console.log(await typeof request.payload);
   logger.warn(`JOI Validation error: ${error.message}`);
-  return error
+  return error;
 }
