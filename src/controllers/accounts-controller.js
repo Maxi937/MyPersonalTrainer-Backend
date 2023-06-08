@@ -1,17 +1,15 @@
-import fs from "fs"
+import fs from "fs";
 import { UserSpec, UserCredentialsSpec } from "../models/validation/joi-schemas.js";
 import { db } from "../models/db.js";
-import { createlogger } from "../../config/logger.js";
-import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
+import { createlogger } from "../utility/logger.js";
+import { encryptPassword, unencryptPassword } from "../utility/encrypt.js";
 
-
-const logger = createlogger()
+const logger = createlogger();
 
 export const accountsController = {
   index: {
     auth: false,
     handler: async function (request, h) {
-
       return h.view("admin/admin-login", { title: "Welcome to My Personal Trainer" });
     },
   },
@@ -35,9 +33,9 @@ export const accountsController = {
     handler: async function (request, h) {
       const errors = {
         userwithemail: {
-          message: "There is already a user with the email"
-        }
-      }
+          message: "There is already a user with the email",
+        },
+      };
 
       const user = new db.User({
         fname: request.payload.fname.toLowerCase(),
@@ -46,17 +44,17 @@ export const accountsController = {
         password: await encryptPassword(request.payload.password),
         profilepicture: {
           data: fs.readFileSync("./public/images/placeholder.png"),
-          contentType: "image/png"
+          contentType: "image/png",
         },
-        role: "user"
-      })
-      console.log(user)
-      const userWithThisEmail = await db.User.find().getByEmail(user.email)
+        role: "user",
+      });
+      console.log(user);
+      const userWithThisEmail = await db.User.find().getByEmail(user.email);
       if (!userWithThisEmail) {
         await user.save();
         return h.redirect("/");
       }
-      return h.view("forms/user/user-signup", { title: "Sign up error", errors: errors }).takeover().code(400)
+      return h.view("forms/user/user-signup", { title: "Sign up error", errors: errors }).takeover().code(400);
     },
   },
 
@@ -80,18 +78,18 @@ export const accountsController = {
       const { email, password } = request.payload;
       const user = await db.User.find().getByEmail(email);
 
-      if (!user || await unencryptPassword(password, user.password) === false) {
+      if (!user || (await unencryptPassword(password, user.password)) === false) {
         return h.redirect("/");
       }
 
       request.cookieAuth.set({ id: user._id });
 
       if (user.role === "admin") {
-        console.log("is admin")
-        return h.redirect("/admin")
+        console.log("is admin");
+        return h.redirect("/admin");
       }
 
-      logger.info("login success")
+      logger.info("login success");
       return h.redirect("/dashboard");
     },
   },

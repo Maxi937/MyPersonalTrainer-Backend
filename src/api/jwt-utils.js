@@ -1,8 +1,8 @@
 import jwt from "jsonwebtoken";
 import { db } from "../models/db.js";
-import { createlogger } from "../../config/logger.js";
+import { createlogger } from "../utility/logger.js";
 
-const logger = createlogger()
+const logger = createlogger();
 
 export function createToken(user) {
   const payload = {
@@ -15,7 +15,6 @@ export function createToken(user) {
   };
   return jwt.sign(payload, process.env.cookie_password, options);
 }
-
 
 export function decodeToken(token) {
   const userInfo = {};
@@ -30,7 +29,7 @@ export function decodeToken(token) {
 }
 
 export async function validate(decoded) {
-  const user = await db.User.findOne({ _id: decoded.id} );
+  const user = await db.User.findOne({ _id: decoded.id });
   if (!user) {
     return { isValid: false };
   }
@@ -51,11 +50,11 @@ export function getUserIdFromRequest(request) {
 }
 
 export function getTokenFromRequest(request) {
-  let token = {}
+  let token = {};
   try {
     const { authorization } = request.headers;
     token = authorization.split(" ")[1];
-    return token
+    return token;
   } catch (e) {
     return token;
   }
@@ -64,12 +63,11 @@ export function getTokenFromRequest(request) {
 export async function checkTokenExpired(token) {
   try {
     if (decodeToken(token) === "jwt expired") {
-      return true
-    } 
-    return false
+      return true;
+    }
+    return false;
   } catch (e) {
     logger.error(e.message);
-    return true
+    return true;
   }
-
 }

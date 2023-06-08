@@ -1,10 +1,9 @@
 // This is an example model from the Deed-Box webApp
 
 import Mongoose from "mongoose";
-import { createlogger } from "../../../config/logger.js";
+import { createlogger } from "../../utility/logger.js";
 
-const logger = createlogger()
-
+const logger = createlogger();
 
 const userSchema = new Mongoose.Schema(
   {
@@ -27,17 +26,19 @@ const userSchema = new Mongoose.Schema(
     },
     role: {
       type: String,
-      required: true
+      required: true,
     },
-    favourites: [{
-      type: Mongoose.SchemaTypes.ObjectId,
-      ref: "Place",
-      required: false,
-    }],
+    favourites: [
+      {
+        type: Mongoose.SchemaTypes.ObjectId,
+        ref: "Place",
+        required: false,
+      },
+    ],
     profilepicture: {
       data: Buffer,
       contentType: String,
-    }
+    },
   },
   { timestamps: true }
 );
@@ -54,7 +55,7 @@ userSchema.methods.addUser = function () {
 
 userSchema.methods.addFavourite = function (favourite) {
   try {
-    this.favourites.addToSet(favourite)
+    this.favourites.addToSet(favourite);
     this.save();
   } catch (err) {
     logger.error(err);
@@ -63,7 +64,7 @@ userSchema.methods.addFavourite = function (favourite) {
 
 userSchema.methods.deleteFavourite = function (favouriteId) {
   try {
-    this.favourites.pull({ _id: favouriteId})
+    this.favourites.pull({ _id: favouriteId });
     this.save();
   } catch (err) {
     logger.error(err);
@@ -72,46 +73,43 @@ userSchema.methods.deleteFavourite = function (favouriteId) {
 
 userSchema.statics.getAll = function () {
   try {
-    return this.find({ "role": { $ne: "admin"}}).lean()
+    return this.find({ role: { $ne: "admin" } }).lean();
   } catch (err) {
     logger.error(err);
-    return []
+    return [];
   }
-}
+};
 
 userSchema.statics.deleteAll = async function () {
   try {
-    await this.deleteMany({ "role": { $ne: "admin"}})
-    return true
+    await this.deleteMany({ role: { $ne: "admin" } });
+    return true;
   } catch (err) {
     console.log(err);
-    return err
+    return err;
   }
-}
+};
 
 userSchema.statics.getById = async function (userId) {
   try {
-    return await this.findOne({ _id: userId }).lean()
+    return await this.findOne({ _id: userId }).lean();
   } catch (err) {
     logger.error(err);
-    return None
+    return None;
   }
-}
+};
 
 userSchema.statics.getProfile = async function (userId) {
   try {
-    return await this.findOne({ _id: userId }).select(["-password", "-updatedAt", "-__v"]).populate("favourites").lean()
+    return await this.findOne({ _id: userId }).select(["-password", "-updatedAt", "-__v"]).populate("favourites").lean();
   } catch (err) {
     logger.error(err);
-    return None
+    return None;
   }
-}
+};
 
 userSchema.query.getByEmail = function (email) {
-  return this.findOne({ email: email }).lean()
-}
+  return this.findOne({ email: email }).lean();
+};
 
 export const User = Mongoose.model("User", userSchema);
-
-
-

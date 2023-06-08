@@ -1,19 +1,17 @@
 import Boom from "@hapi/boom";
-import fs from "fs"
-import { validationError, createlogger } from "../../config/logger.js";
+import fs from "fs";
+import { validationError, createlogger } from "../utility/logger.js";
 import { UserSpec, IdSpec, UserArray } from "../models/validation/joi-schemas.js";
-import { encryptPassword, unencryptPassword } from "../utility/encrypt.js"
+import { encryptPassword, unencryptPassword } from "../utility/encrypt.js";
 import { createToken } from "./jwt-utils.js";
-import { db } from "../models/db.js"
+import { db } from "../models/db.js";
 
-
-
-const logger = createlogger()
+const logger = createlogger();
 
 export const userApi = {
   find: {
     auth: {
-      strategy: "jwt"
+      strategy: "jwt",
     },
     handler: async function (request, h) {
       try {
@@ -31,7 +29,7 @@ export const userApi = {
 
   findOne: {
     auth: {
-      strategy: "jwt"
+      strategy: "jwt",
     },
     handler: async function (request, h) {
       try {
@@ -55,39 +53,39 @@ export const userApi = {
   update: {
     auth: false,
     payload: {
-        maxBytes: 209715200,
-        output: "file",
-        parse: true,
-        multipart: true
+      maxBytes: 209715200,
+      output: "file",
+      parse: true,
+      multipart: true,
     },
     handler: async function (request, h) {
-        const user = await db.User.findById(request.params.id)
+      const user = await db.User.findById(request.params.id);
 
-        if (request.payload.fname) {
-            user.fname = request.payload.fname.toLowerCase()
-        }
+      if (request.payload.fname) {
+        user.fname = request.payload.fname.toLowerCase();
+      }
 
-        if (request.payload.lname) {
-            user.lname = request.payload.lname.toLowerCase()
-        }
+      if (request.payload.lname) {
+        user.lname = request.payload.lname.toLowerCase();
+      }
 
-        if (request.payload.email) {
-            user.email = request.payload.email.toLowerCase()
-        }
+      if (request.payload.email) {
+        user.email = request.payload.email.toLowerCase();
+      }
 
-        if (request.payload.password) {
-            user.password = request.payload.password
-        }
+      if (request.payload.password) {
+        user.password = request.payload.password;
+      }
 
-        if (request.payload.profilepicture.bytes > 0) {
-            user.profilepicture = {
-                data: fs.readFileSync(request.payload.profilepicture.path),
-                contentType: request.payload.profilepicture.headers["content-type"]
-            }
-        }
+      if (request.payload.profilepicture.bytes > 0) {
+        user.profilepicture = {
+          data: fs.readFileSync(request.payload.profilepicture.path),
+          contentType: request.payload.profilepicture.headers["content-type"],
+        };
+      }
 
-        await user.save()
-        return h.redirect("/profile");
+      await user.save();
+      return h.redirect("/profile");
     },
     tags: ["api"],
     description: "get a profile picture userApi",
@@ -99,23 +97,23 @@ export const userApi = {
     cors: true,
     handler: async function (request, h) {
       try {
-        const user = await db.User.findOne({ _id: request.params.id })
+        const user = await db.User.findOne({ _id: request.params.id });
 
         if (!user) {
-          return Boom.unauthorized("User not found")
+          return Boom.unauthorized("User not found");
         }
 
-        const userName = `${user.fname} ${user.lname}`
+        const userName = `${user.fname} ${user.lname}`;
         const profilepicture = {
           data: await user.profilepicture.data.toString("base64"),
-          contentType: await user.profilepicture.contentType
-        }
+          contentType: await user.profilepicture.contentType,
+        };
 
         const userProfile = {
           userName,
-          profilepicture
-        }
-        return h.response(userProfile)
+          profilepicture,
+        };
+        return h.response(userProfile);
       } catch (err) {
         return Boom.serverUnavailable("Database not available");
       }
@@ -130,25 +128,25 @@ export const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const duplicateUser = await db.User.findOne({ email: request.payload.email})
+        const duplicateUser = await db.User.findOne({ email: request.payload.email });
 
         if (duplicateUser) {
-          logger.error(`Duplicate User Email: ${duplicateUser.email}`)
-          return Boom.badRequest("Duplicate email")
+          logger.error(`Duplicate User Email: ${duplicateUser.email}`);
+          return Boom.badRequest("Duplicate email");
         }
-        
+
         const user = await new db.User(request.payload);
-        user.password = await encryptPassword(user.password)
-        user.role = "user"
+        user.password = await encryptPassword(user.password);
+        user.role = "user";
         user.profilepicture = {
-            data: fs.readFileSync("./public/images/placeholder.png"),
-            contentType: "image/png"
-        }
-        await user.save()
-        logger.info("user created")
-        return h.response(user)
+          data: fs.readFileSync("./public/images/placeholder.png"),
+          contentType: "image/png",
+        };
+        await user.save();
+        logger.info("user created");
+        return h.response(user);
       } catch (err) {
-        logger.error(err.message)
+        logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -160,14 +158,14 @@ export const userApi = {
 
   deleteAll: {
     auth: {
-      strategy: "jwt"
+      strategy: "jwt",
     },
     handler: async function (request, h) {
       try {
         await db.User.deleteAll();
         return h.response().code(204);
       } catch (err) {
-        console.log(err)
+        console.log(err);
         return Boom.serverUnavailable("Database Error");
       }
     },
@@ -180,10 +178,10 @@ export const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const key = process.env.Esri_Api_Key
-        return JSON.stringify(key)
+        const key = process.env.Esri_Api_Key;
+        return JSON.stringify(key);
       } catch (err) {
-        logger.error(err)
+        logger.error(err);
         return "";
       }
     },
@@ -197,7 +195,6 @@ export const userApi = {
     cors: true,
     handler: async function (request, h) {
       try {
-   
         const { email, password } = request.payload;
         const user = await db.User.find().getByEmail(email);
 
@@ -205,17 +202,16 @@ export const userApi = {
           return Boom.unauthorized("User not found");
         }
 
-        if (await unencryptPassword(password, user.password) === false) {
-          logger.error("Login Failed, bad credentials")
+        if ((await unencryptPassword(password, user.password)) === false) {
+          logger.error("Login Failed, bad credentials");
           return Boom.unauthorized("Invalid password");
         }
         const token = createToken(user);
         return h.response({ success: true, token: token }).code(201);
       } catch (err) {
-        logger.error(err)
+        logger.error(err);
         return Boom.serverUnavailable("Database Error");
       }
-    }
-  }
-}
-
+    },
+  },
+};

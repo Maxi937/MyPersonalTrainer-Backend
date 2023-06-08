@@ -12,7 +12,7 @@ import path from "path";
 import { fileURLToPath } from "url";
 import { validate } from "./api/jwt-utils.js";
 import { db } from "./models/db.js";
-import { createlogger } from "../config/logger.js";
+import { createlogger } from "./utility/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
 import { adminRoutes } from "./admin-routes.js";
@@ -139,7 +139,7 @@ export async function init() {
   // Start Server
   await server.start();
   logger.info(`Server running on ${server.info.uri}`);
-  await createAdmin()
+  await createAdmin();
 }
 
 process.on("unhandledRejection", (err) => {

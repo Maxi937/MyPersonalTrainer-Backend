@@ -1,9 +1,9 @@
 import { connectMongo } from "./mongo/connectMongo.js";
-import { createlogger } from "../../config/logger.js";
-import { User } from "./mongo/User.js"
+import { createlogger } from "../utility/logger.js";
+import { User } from "./mongo/User.js";
 import { encryptPassword } from "../utility/encrypt.js";
 
-const logger = createlogger()
+const logger = createlogger();
 
 export const db = {
   User: null,
@@ -11,11 +11,11 @@ export const db = {
   init(dbtype) {
     switch (dbtype) {
       case "mongo":
-        this.User = User
+        this.User = User;
         connectMongo();
         break;
       default:
-        logger.info("No Db Selected")
+        logger.info("No Db Selected");
     }
   },
-}
+};
