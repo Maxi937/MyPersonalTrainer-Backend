@@ -27,7 +27,7 @@ export function createTestLogger() {
         timestamp({ format: "MMM D, YYYY HH:mm" }),
         myFormat
       ),
-      transports: new winston.transports.Console(),
+      transports: new winston.transports.Console({format: colorize()}),
     });
   return logger
 }
