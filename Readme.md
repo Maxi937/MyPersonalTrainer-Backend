@@ -50,5 +50,3 @@ Testing is automated to run on a pre-commit. Commit will fail if tests fail.
 
 - Mocha
 - Chai
-
-
