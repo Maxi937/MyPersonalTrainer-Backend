@@ -51,7 +51,7 @@ const swaggerOptions = {
 
 logger.info("Swagger Configured");
 
-async function init() {
+export async function init() {
   const server = Hapi.server({
     port: process.env.PORT,
     host: process.env.HOST,

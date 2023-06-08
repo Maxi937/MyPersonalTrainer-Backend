@@ -4,9 +4,11 @@ Hapi/Node Backend for MyPersonalTrainer. Input validation & data sanitisation fo
 API's for using Beerconomy services. API to connect and get weather readings for locations.
 
 ## **URL**
+
 <URL>
 
 ## **Documentation**
+
 <URL/documentation>
 
 ## **Usage**
@@ -21,7 +23,6 @@ API's for using Beerconomy services. API to connect and get weather readings for
 | Source                                                                                      | Description                                      |
 | ------------------------------------------------------------------------------------------- | ------------------------------------------------ |
 | <https://stackoverflow.com/questions/66694654/how-to-convert-image-png-to-binary-in-nodejs> | Binary to string for the images stored in the db |
-
 
 ## **Tech**
 
