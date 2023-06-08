@@ -11,7 +11,9 @@ API's for using Beerconomy services. API to connect and get weather readings for
 
 <URL/documentation>
 
-## **Usage**
+## **Testing**
+
+Mocha used for testing. Testing is set up to run on a pre-commit. All tests must pass in order for code to be commited.
 
 ### Admin
 
