@@ -4,41 +4,42 @@ const myLevels = {
   levels: {
     notice: 0,
     info: 1,
+    http: 1,
     warn: 2,
-    error: 3
+    error: 3,
   },
   colors: {
-    notice: "blue",
-    info: "green",
-    warn: "yellow",
-    error: "red"
+    notice: "bold cyan",
+    info: "bold blue",
+    http: "bold magenta",
+    warn: "bold yellow",
+    error: "bold red",
+    timestamp: "gray"
   }
 }
 
+winston.addColors(myLevels.colors);
 
+const colorizer = winston.format.colorize();
+const myFormat = format.combine(
+  winston.format.colorize(),
+  winston.format.timestamp({ format: "MMM D, YYYY HH:mm" }),
+  winston.format.printf(msg => 
+    `${colorizer.colorize("timestamp", msg.timestamp)} [${msg.level}]: ${msg.message}`)
+  )
 export function createlogger() {
-  const { combine, label, printf, timestamp, colorize } = format;
-  const myFormat = printf((msg) => `${msg.timestamp} [${msg.level}]: ${msg.message} `);
-
   let logger = {}
 
   if (process.env.NODE_ENV === "development") {
     logger = winston.createLogger({
       levels: myLevels.levels,
-      format: combine(
-        colorize(),
-        timestamp({ format: "MMM D, YYYY HH:mm" }),
-        myFormat
-      ),
-      transports: new winston.transports.Console(),
+      format: myFormat,
+      transports: new winston.transports.Console({level:"error"}),
     });
   }
   else {
     logger = winston.createLogger({
-      format: combine(
-        timestamp({ format: "MMM D, YYYY HH:mm" }),
-        myFormat
-      ),
+      format: myFormat,
       transports: new winston.transports.File({
         filename: "logs/serverLog.txt"
       }),
@@ -48,26 +49,17 @@ export function createlogger() {
 }
 
 export function createTestLogger() {
-  const { combine, printf } = format;
-  const myFormat = printf(({ level, message }) => `[${level}]: ${message}`);
-  
   const logger = winston.createLogger({
-      format: combine(
-        myFormat
-      ),
+      format: myFormat,
       transports: new winston.transports.Console(),
     });
   return logger
 }
 
-
 export async function validationError(request, h, error) {
   const logger = createlogger()
-
   console.log( await request.payload)
   console.log( await typeof(request.payload))
   logger.warn(`JOI Validation error: ${error.message}`);
-
-
   return error
 }

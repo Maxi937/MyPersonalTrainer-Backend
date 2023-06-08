@@ -4,6 +4,8 @@ import { createAdmin } from "./utility/serverutils.js";
 
 const logger = createlogger()
 
+logger.notice("Initilising Server")
+
 try {
     const server = await start()
     logger.info(`Server running on <${server.info.uri}>`);

@@ -2,6 +2,7 @@ import os from "os";
 import { db } from "../models/db.js";
 import { createlogger } from "./logger.js";
 import { encryptPassword } from "./encrypt.js";
+import { colorRequestMethod } from "./formatutils.js";
 
 const logger = createlogger();
 
@@ -45,7 +46,12 @@ export async function responseTimes(server) {
         .header("x-res-end", end)
         .header("x-response-time", end - start)
         .header("Server", os.hostname());
-      logger.info(`${request.method.toUpperCase()}: ${request.path} - ${request.response.headers["x-response-time"]} ms`);
+
+      if (process.env.NODE_ENV === "development") {
+        logger.http(`${colorRequestMethod(request.method.toUpperCase())}: ${request.path} - ${request.response.headers["x-response-time"]} ms`);
+      } else {
+        logger.http(`${request.method.toUpperCase()}: ${request.path} - ${request.response.headers["x-response-time"]} ms`);
+      }   
     }
     return h.continue;
   });
