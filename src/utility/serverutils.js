@@ -26,19 +26,24 @@ export async function responseTimes(server) {
   server.ext("onRequest", (request, h) => {
     request.headers["x-req-start"] = (new Date()).getTime();
 
-    const routes = server._core.router.routes
-    const getRoutes = routes.get("get")
+    const {routes} = server._core.router
 
-    console.log(getRoutes)
+    const jwtRoutes = []
 
-    for (const route of getRoutes.routes) {
-      console.log(route.path)
-      console.log(route.settings)
-    }
+    routes.forEach((map, method) => {
+      map.routes.forEach((route) => {
+        if (route.route.public.settings.auth) {
+          const authstrategies = route.route.public.settings.auth.strategies
+          jwtRoutes.push({
+            "method": method,
+            "route": route.path,
+            "strategy": authstrategies[0]
+          })
+        }
+      })
+    })
 
-    //getRoutes.forEach((value, key) => {
-    //  console.log(value)
-    //})
+    console.log(jwtRoutes)
     return h.continue;
   });
 
