@@ -47,11 +47,7 @@ export async function responseTimes(server) {
         .header("x-response-time", end - start)
         .header("Server", os.hostname());
 
-      if (process.env.NODE_ENV === "development") {
-        logger.http(`${colorRequestMethod(request.method.toUpperCase())}: ${request.path} - ${request.response.headers["x-response-time"]} ms`);
-      } else {
-        logger.http(`${request.method.toUpperCase()}: ${request.path} - ${request.response.headers["x-response-time"]} ms`);
-      }   
+        logger.http("", {request})
     }
     return h.continue;
   });

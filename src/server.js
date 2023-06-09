@@ -19,9 +19,10 @@ import { adminRoutes } from "./admin-routes.js";
 import { responseTimes } from "./utility/serverutils.js";
 import { accountsController } from "./controllers/accounts-controller.js";
 
+const logger = createlogger();
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
-const logger = createlogger();
 
 // Load Config File
 const enviroment = process.env.NODE_ENV
