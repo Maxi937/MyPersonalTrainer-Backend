@@ -8,20 +8,17 @@ import SupabaseStorage from "./models/supabase/supabaseStorage.js";
 
 const logger = createlogger();
 
-// Load Config File
-
-
 async function startApp() {
   logger.notice("Initilising Server");
   const server = await start();
   await createAdmin();
 }
 
-// startApp()
 loadconfig();
 startApp()
 
 
+// TODO: move to tests
 async function testUpload() {
   const bucketName = "testBucket"
   const fileData = fs.readFileSync("./public/images/guiness.jpg");
