@@ -1,12 +1,12 @@
-import { createlogger } from "../../utility/logger.js";
 import { createClient } from "@supabase/supabase-js";
+import { createlogger } from "../../utility/logger.js";
 
 const logger = createlogger();
 
 export default class SupabaseBucket {
   constructor(supabaseClient, bucket) {
-    this.supabase = supabaseClient
-    this.bucketId = bucket.id
+    this.supabase = supabaseClient;
+    this.bucketId = bucket.id;
   }
 
   async deleteBucket(bucketId) {
