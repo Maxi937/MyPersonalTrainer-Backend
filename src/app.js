@@ -3,32 +3,13 @@ import fs from "fs";
 import { start } from "./server.js";
 import { createlogger } from "./utility/logger.js";
 import { createAdmin } from "./utility/serverutils.js";
+import { loadconfig } from "../config/loadconfig.js"
 import SupabaseStorage from "./models/supabase/supabaseStorage.js";
 
 const logger = createlogger();
 
 // Load Config File
-const enviroment = process.env.NODE_ENV;
 
-function loadconfig() {
-  let config = "";
-
-  switch (enviroment) {
-    case "production":
-      config = dotenv.config({ path: "production.env" });
-      break;
-    case "devprod":
-      config = dotenv.config({ path: "./config/production.env" });
-      break;
-    default:
-      config = dotenv.config({ path: "./config/dev.env" });
-  }
-
-  if (config.error || config === "") {
-    console.log("Config Error");
-    process.exit(1);
-  }
-}
 
 async function startApp() {
   logger.notice("Initilising Server");
@@ -38,7 +19,7 @@ async function startApp() {
 
 // startApp()
 loadconfig();
-// startApp()
+startApp()
 
 
 async function testUpload() {

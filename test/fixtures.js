@@ -1,5 +1,7 @@
-import * as dotenv from "dotenv";
 import { start } from "../src/server.js"
+import { loadconfig } from "../config/loadconfig.js";
+
+loadconfig()
 
 export const server = await start()
 export const serviceUrl = process.env.url;
