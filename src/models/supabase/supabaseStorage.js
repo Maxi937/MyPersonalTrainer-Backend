@@ -1,5 +1,4 @@
 import { createlogger } from "../../utility/logger.js";
-import { createClient } from "@supabase/supabase-js";
 import SupabaseBucket from "./supabaseBucket.js";
 
 const logger = createlogger();
