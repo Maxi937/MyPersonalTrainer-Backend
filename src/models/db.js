@@ -1,7 +1,6 @@
 import { connectMongo } from "./mongo/connectMongo.js";
 import { createlogger } from "../utility/logger.js";
 import { User } from "./mongo/User.js";
-import { encryptPassword } from "../utility/encrypt.js";
 
 const logger = createlogger();
 

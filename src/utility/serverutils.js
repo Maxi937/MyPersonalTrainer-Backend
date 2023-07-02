@@ -2,7 +2,6 @@ import os from "os";
 import { db } from "../models/db.js";
 import { createlogger } from "./logger.js";
 import { encryptPassword } from "./encrypt.js";
-import { colorRequestMethod } from "./formatutils.js";
 
 const logger = createlogger();
 
