@@ -6,7 +6,7 @@ import { maggie, adminUser } from "../fixtures.js";
 
 suite("Authentication API tests", async () => {
   setup(async () => {
-    myPersonalTrainerService.clearAuth();
+    await myPersonalTrainerService.clearAuth();
     await myPersonalTrainerService.authenticate(adminUser)
     await myPersonalTrainerService.deleteAllUsers();
   });

@@ -1,26 +1,8 @@
 import { createlogger } from "../../utility/logger.js";
-import SupabaseBucket from "./supabaseBucket.js";
+import { connectSupabase } from "./connectSupabase.js";
+
 
 const logger = createlogger();
-
-function connectSupabase() {
-  const options = {
-    db: {
-      schema: "public",
-    },
-    auth: {
-      persistSession: false,
-      detectSessionInUrl: true,
-    },
-    global: {
-      headers: { "x-application-name": "my-personal-trainer" },
-    },
-  };
-
-  logger.info("Creating Supabase Client");
-  const supabase = createClient(process.env.PERSONAL_TRAINER_SUPABASE_URL, process.env.PERSONAL_TRAINER_SUPABASE_SERVICE_KEY, options);
-  return supabase;
-}
 
 export default class SupabaseStorage {
   constructor() {
@@ -86,3 +68,7 @@ export default class SupabaseStorage {
     return data;
   }
 }
+
+
+
+

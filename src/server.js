@@ -117,9 +117,9 @@ async function setupServer() {
   
   server.auth.default("session");
   
-  // Connect to Mongo Database
+  // Initialise DB
   db.init("mongo");
-  
+
   // Set Routes
   server.route(webRoutes);
   server.route(apiRoutes);

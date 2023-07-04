@@ -7,7 +7,7 @@ const users = new Array(testUsers.length);
 
 suite("User API tests", () => {
   setup(async () => {
-    myPersonalTrainerService.clearAuth();
+    await myPersonalTrainerService.clearAuth();
     await myPersonalTrainerService.authenticate(adminUser);
     await myPersonalTrainerService.deleteAllUsers();
 

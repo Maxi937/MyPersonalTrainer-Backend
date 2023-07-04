@@ -2,9 +2,9 @@ import axios from "axios";
 import { serviceUrl } from "../fixtures.js";
 import { createTestLogger } from "../../src/utility/logger.js";
 
-const logger = createTestLogger()
+const logger = createTestLogger();
 
-logger.info(`Service Url: ${serviceUrl}`)
+logger.info(`Service Url: ${serviceUrl}`);
 
 export const myPersonalTrainerService = {
   url: serviceUrl,
@@ -37,5 +37,12 @@ export const myPersonalTrainerService = {
 
   async clearAuth() {
     axios.defaults.headers.common.Authorization = "";
+  },
+
+  async addImage(photo) {
+    const form = new FormData();
+    form.append("photo", photo);
+    const res = await axios.post(`${this.url}/api/photos`, form);
+    return res.data;
   },
 };

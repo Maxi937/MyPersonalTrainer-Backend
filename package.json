@@ -11,8 +11,9 @@
     "dev": "cross-env NODE_ENV=development nodemon .src/app.js",
     "aws": "cross-env NODE_ENV=aws nodemon .src/app.js",
     "test": "cross-env NODE_ENV=development mocha --ui tdd test/**/*.js -exit",
-    "testmodels": "mocha --ui tdd test/models/**/*.js -exit",
+    "testmodels": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/models/**/*.js -exit",
     "testapi": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/api/**/*.js -exit",
+    "testphotoapi": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/api/photo-api-test.js -exit",
     "lint": "eslint . --ext .js"
   },
   "author": "Matthew Hornby",
