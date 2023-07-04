@@ -1,10 +1,10 @@
+import fs from "fs";
 import { createlogger } from "../../utility/logger.js";
 import SupabaseStorage from "./supabaseStorage.js";
 
 const logger = createlogger();
 
 export default class Photo extends SupabaseStorage {
-
   constructor(supabaseClient) {
     super(supabaseClient);
     this.bucketId = "Photos";
@@ -15,7 +15,7 @@ export default class Photo extends SupabaseStorage {
       if (buckets.filter((e) => e.id === bucketName).length === 0) {
         await storage.createBucket(bucketName, mimeTypes);
       }
-    }
+    };
   }
 
   async deleteBucket(bucketId) {
@@ -33,37 +33,64 @@ export default class Photo extends SupabaseStorage {
     if (error) {
       return error;
     }
-    return data;
+    return {data: data, success: true};
   }
 
-  async uploadImage(fileToUpload, newFileName, bucketFolder="", cacheControl = "3600", upsert = false) {
-    const pathOnBucket = `${bucketFolder}\\${newFileName}`;
-    // logger.info(`Uploading ${fileToUpload} to ${bucketId}: ${pathOnBucket}`);
+  async uploadLocalImage(file, pathOnBucket = "", bucketFolder = "", cacheControl = "3600", upsert = true) {
+    const fileData = fs.readFileSync(file.path);
+    let fileName = file.filename;
 
+    if (pathOnBucket !== "") {
+      fileName = `${pathOnBucket}\\${fileName}`;
+    }
+
+    logger.info(`Uploading to ${this.bucketId}: ${fileName}`);
     const options = {
       cacheControl,
       upsert,
+      contentType: file.headers["content-type"],
     };
 
-    const { data, error } = await this.supabase.storage.from(this.bucketId).upload(pathOnBucket, fileToUpload, options);
+    const { data, error } = await this.supabase.storage.from(this.bucketId).upload(fileName, fileData, options);
 
     if (error) {
-      console.log(error);
       return error;
     }
-    return data;
+    return {data: data, success: true};
   }
 
-  async getPhotos(limit = 100) {
-    logger.info("Getting Photos")
-    const { data, error } = await this.supabase.storage.from(this.bucketId).list("", {
+  async uploadUserImage(file, pathOnBucket = "", bucketFolder = "", cacheControl = "3600", upsert = true) {
+    const fileData = fs.readFileSync(file.path);
+    let fileName = file.filename;
+
+    if (pathOnBucket !== "") {
+      fileName = `${pathOnBucket}/${fileName}`;
+    }
+
+    logger.info(`Uploading to ${this.bucketId}: ${fileName}`);
+    const options = {
+      cacheControl,
+      upsert,
+      contentType: file.headers["content-type"],
+    };
+
+    const { data, error } = await this.supabase.storage.from(this.bucketId).upload(fileName, fileData, options);
+
+    if (error) {
+      return error;
+    }
+    return {data: data, success: true};
+  }
+
+  async getPhotos(path = "", limit = 100) {
+    logger.info("Getting Photos");
+    const { data, error } = await this.supabase.storage.from(this.bucketId).list(path, {
       limit: limit,
       offset: 0,
       sortBy: { column: "name", order: "asc" },
     });
 
     if (error) {
-      console.log(error);
       return error;
     }
     return data;

@@ -1,25 +1,22 @@
 import { assert } from "chai";
-import fs from "fs"
-import path from "path"
 import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
-import { assertSubset } from "../test-utils.js";
-
-
+import { createMockFormData , assertSubset } from "../test-utils.js";
+import { maggie, adminUser } from "../fixtures.js";
 
 suite("Photo API tests", async () => {
   setup(async () => {
+    await myPersonalTrainerService.deleteAllImages();
+  });
 
+  suiteTeardown(async () => {
+    await myPersonalTrainerService.deleteAllImages();
   });
 
   test("Upload - Local File", async () => {
-    const filePath = "./public/images/guiness.jpg"
-    const fileName = path.basename(filePath)
-    const fileData = fs.readFileSync("./public/images/guiness.jpg");
-    const byteArray = new Uint8Array(fileData);
-    const file = new File([byteArray], fileName, { type: "image/jpg" });
-
-    const response = await myPersonalTrainerService.addImage(file);
-    console.log(response)
+    const form = createMockFormData("./public/images/guiness.jpg")
+    const response = await myPersonalTrainerService.addLocalImage(form);
     assert(response.success);
+    assert.isDefined(response.data.path);
   });
 });
+

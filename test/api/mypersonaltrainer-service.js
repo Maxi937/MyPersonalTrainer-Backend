@@ -39,10 +39,23 @@ export const myPersonalTrainerService = {
     axios.defaults.headers.common.Authorization = "";
   },
 
-  async addImage(photo) {
-    const form = new FormData();
-    form.append("photo", photo);
-    const res = await axios.post(`${this.url}/api/photos`, form);
+  async addLocalImage(form) {
+    const res = await axios.post(`${this.url}/api/photos/local`, form);
+    return res.data;
+  },
+
+  async addUserImage(form) {
+    const res = await axios.post(`${this.url}/api/profile/photos`, form);
+    return res.data;
+  },
+
+  async getUserImages() {
+    const res = await axios.get(`${this.url}/api/profile/photos`);
+    return res.data;
+  },
+
+  async deleteAllImages() {
+    const res = await axios.delete(`${this.url}/api/photos`);
     return res.data;
   },
 };

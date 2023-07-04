@@ -22,30 +22,48 @@ export const photoApi = {
     notes: "Returns all photos",
   },
 
-  addImage: {
+  addLocalImage: {
     auth: false,
     payload: {
-      maxBytes: 209715200,
+      maxBytes: 52428800,
       output: "file",
       parse: true,
       multipart: true,
     },
     handler: async function (request, h) {
-      logger.info(request.payload);
-
       try {
-        const file = request.payload;
-        //return console.log(file)
-        //const photos = await db.PhotoStorage.uploadImage()
-        //console.log(photos)
-        return h.response({ success: true}).code(201);
+        const file = request.payload.photouploadform
+        const response = await db.PhotoStorage.uploadLocalImage(file)
+
+        if(response.success) {
+          return h.response(response).code(201);
+        }
+        return h.response({ success: false}).code(200);
       } catch (err) {
-        return err;
-        //return Boom.serverUnavailable("Database Error");
+        return Boom.serverUnavailable("Database Error");
       }
     },
     tags: ["api"],
     description: "Get all photos",
     notes: "Returns all photos",
   },
+
+  deleteAllImages: {
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        const response = await db.PhotoStorage.emptyBucket();
+
+        if(response.success) {
+          return h.response(response).code(201)
+        }
+        return h.response({ success: false}).code(200)
+      } catch (err) {
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "get key",
+    notes: "Gives a key",
+  }
 };

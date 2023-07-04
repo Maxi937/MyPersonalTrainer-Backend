@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { assertSubset } from "../test-utils.js";
+import { assertSubset, createMockFormData } from "../test-utils.js";
 import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
 import { maggie, adminUser, testUsers } from "../fixtures.js";
 
@@ -16,7 +16,11 @@ suite("User API tests", () => {
       users[0] = await myPersonalTrainerService.createUser(testUsers[i]); 
     }
   });
-  teardown(async () => { });
+
+  suiteTeardown(async () => { 
+    await myPersonalTrainerService.deleteAllUsers();
+    await myPersonalTrainerService.clearAuth();
+  });
 
   test("create a user", async () => {
     const newUser = await myPersonalTrainerService.createUser(maggie);
