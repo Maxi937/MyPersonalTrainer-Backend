@@ -1,2 +1,2 @@
 #!/bin/sh
-npm run testapi
+npm run testall
