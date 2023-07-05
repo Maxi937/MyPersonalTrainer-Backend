@@ -1,6 +1,6 @@
-import { userApi } from "./api/user-api.js";
-import { photoApi } from "./api/photo-api.js";
-import { profileApi } from "./api/profile-api.js";
+import { userApi } from "./features/user/user-api.js";
+import { photoApi } from "./features/photo/photo-api.js";
+import { profileApi } from "./features/profile/profile-api.js";
 
 export const apiRoutes = [
   // Users

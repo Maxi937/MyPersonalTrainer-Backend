@@ -1,9 +1,9 @@
 /* eslint-disable no-restricted-syntax */
 import fs from "fs";
-import { UserSpec } from "../models/validation/joi-schemas.js";
-import { formatISOToDate } from "../utility/formatutils.js";
-import { createlogger } from "../utility/logger.js";
-import { db } from "../models/db.js";
+import { UserSpec } from "../user/user-validation.js";
+import { formatISOToDate } from "../../utility/formatutils.js";
+import { createlogger } from "../../utility/logger.js";
+import { db } from "../../database/db.js";
 
 const logger = createlogger();
 

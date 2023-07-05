@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
-import { db } from "../models/db.js";
-import { createlogger } from "../utility/logger.js";
+import { db } from "../database/db.js";
+import { createlogger } from "./logger.js";
 
 const logger = createlogger();
 

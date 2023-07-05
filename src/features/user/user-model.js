@@ -1,5 +1,3 @@
-// This is an example model from the Deed-Box webApp
-
 import Mongoose from "mongoose";
 import { createlogger } from "../../utility/logger.js";
 

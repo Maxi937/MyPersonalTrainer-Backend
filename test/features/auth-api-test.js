@@ -1,6 +1,6 @@
 import { assert } from "chai";
 import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
-import { decodeToken } from "../../src/api/jwt-utils.js";
+import { decodeToken } from "../../src/utility/jwt-utils.js";
 import { maggie, adminUser } from "../fixtures.js";
 
 

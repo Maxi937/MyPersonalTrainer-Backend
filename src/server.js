@@ -9,14 +9,14 @@ import HapiSwagger from "hapi-swagger";
 import Joi from "joi";
 import path from "path";
 import { fileURLToPath } from "url";
-import { validate } from "./api/jwt-utils.js";
-import { db } from "./models/db.js";
+import { validate } from "./utility/jwt-utils.js";
+import { db } from "./database/db.js";
 import { createlogger } from "./utility/logger.js";
 import { webRoutes } from "./web-routes.js";
 import { apiRoutes } from "./api-routes.js";
 import { adminRoutes } from "./admin-routes.js";
 import { responseTimes } from "./utility/serverutils.js";
-import { accountsController } from "./controllers/accounts-controller.js";
+import { accountsController } from "./features/user/user-controller.js";
 
 const logger = createlogger();
 const __filename = fileURLToPath(import.meta.url);

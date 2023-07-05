@@ -1,4 +1,4 @@
-import { adminController } from "./controllers/admin-controller.js";
+import { adminController } from "./features/admin/admin-controller.js";
 
 
 export const adminRoutes = [

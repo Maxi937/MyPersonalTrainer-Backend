@@ -1,6 +1,6 @@
 import Boom from "@hapi/boom";
-import { validationError, createlogger } from "../utility/logger.js";
-import { db } from "../models/db.js";
+import { validationError, createlogger } from "../../utility/logger.js";
+import { db } from "../../database/db.js";
 
 const logger = createlogger();
 

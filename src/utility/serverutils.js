@@ -1,5 +1,5 @@
 import os from "os";
-import { db } from "../models/db.js";
+import { db } from "../database/db.js";
 import { createlogger } from "./logger.js";
 import { encryptPassword } from "./encrypt.js";
 

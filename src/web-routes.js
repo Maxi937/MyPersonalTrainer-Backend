@@ -1,9 +1,6 @@
-import { aboutController } from "./controllers/about-controller.js";
-import { accountsController } from "./controllers/accounts-controller.js";
+import { accountsController } from "./features/user/user-controller.js";
 
 export const webRoutes = [
-  { method: "GET", path: "/about", config: aboutController.index },
-
   // Accounts
   { method: "GET", path: "/", config: accountsController.index },
   { method: "GET", path: "/signup", config: accountsController.showSignup },

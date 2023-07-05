@@ -1,6 +1,6 @@
 import { connectMongo } from "./mongo/connectMongo.js";
 import { createlogger } from "../utility/logger.js";
-import { User } from "./mongo/User.js";
+import { User } from "../features/user/user-model.js";
 import Photo from "./supabase/Photo.js";
 
 const logger = createlogger();
@@ -19,6 +19,6 @@ export const db = {
         logger.info("No Db Selected");
     }
 
-    this.PhotoStorage = new Photo()
+    this.PhotoStorage = new Photo();
   },
 };

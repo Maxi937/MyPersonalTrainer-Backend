@@ -1,11 +1,10 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
-import { validationError, createlogger } from "../utility/logger.js";
-import { UserSpec, IdSpec, UserArray } from "../models/validation/joi-schemas.js";
-import { encryptPassword, unencryptPassword } from "../utility/encrypt.js";
-import { getUserIdFromRequest , createToken } from "./jwt-utils.js";
-
-import { db } from "../models/db.js";
+import { validationError, createlogger } from "../../utility/logger.js";
+import { UserSpec, IdSpec, UserArray } from "./user-validation.js";
+import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
+import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
+import { db } from "../../database/db.js";
 
 const logger = createlogger();
 

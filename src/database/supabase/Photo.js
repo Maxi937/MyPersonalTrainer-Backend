@@ -33,7 +33,7 @@ export default class Photo extends SupabaseStorage {
     if (error) {
       return error;
     }
-    return {data: data, success: true};
+    return { data: data, success: true };
   }
 
   async uploadLocalImage(file, pathOnBucket = "", bucketFolder = "", cacheControl = "3600", upsert = true) {
@@ -56,7 +56,7 @@ export default class Photo extends SupabaseStorage {
     if (error) {
       return error;
     }
-    return {data: data, success: true};
+    return { data: data, success: true };
   }
 
   async uploadUserImage(file, pathOnBucket = "", bucketFolder = "", cacheControl = "3600", upsert = true) {
@@ -79,7 +79,7 @@ export default class Photo extends SupabaseStorage {
     if (error) {
       return error;
     }
-    return {data: data, success: true};
+    return { data: data, success: true };
   }
 
   async getPhotos(path = "", limit = 100) {

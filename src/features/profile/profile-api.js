@@ -1,8 +1,8 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
-import { validationError, createlogger } from "../utility/logger.js";
-import { getUserIdFromRequest , createToken } from "./jwt-utils.js";
-import { db } from "../models/db.js";
+import { validationError, createlogger } from "../../utility/logger.js";
+import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
+import { db } from "../../database/db.js";
 
 const logger = createlogger();
 
@@ -82,13 +82,13 @@ export const profileApi = {
 
   getUserImages: {
     auth: {
-        strategy: "jwt",
-      },
+      strategy: "jwt",
+    },
     cors: true,
     handler: async function (request, h) {
       try {
-        const userId = getUserIdFromRequest(request)
-        const images = await db.PhotoStorage.getPhotos(userId)
+        const userId = getUserIdFromRequest(request);
+        const images = await db.PhotoStorage.getPhotos(userId);
         return h.response(images);
       } catch (err) {
         return Boom.serverUnavailable("Database not available");
@@ -109,16 +109,16 @@ export const profileApi = {
     },
     handler: async function (request, h) {
       try {
-        const userId = getUserIdFromRequest(request)
-        const file = request.payload.photouploadform
-        const response = await db.PhotoStorage.uploadUserImage(file, userId)
+        const userId = getUserIdFromRequest(request);
+        const file = request.payload.photouploadform;
+        const response = await db.PhotoStorage.uploadUserImage(file, userId);
 
-        if(response.success) {
+        if (response.success) {
           return h.response(response).code(201);
         }
-        return h.response({ success: false}).code(200);
+        return h.response({ success: false }).code(200);
       } catch (err) {
-        console.log(err)
+        console.log(err);
         return Boom.serverUnavailable("Database Error");
       }
     },
