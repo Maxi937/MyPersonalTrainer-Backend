@@ -17,6 +17,9 @@ import { apiRoutes } from "./api-routes.js";
 import { adminRoutes } from "./admin-routes.js";
 import { responseTimes } from "./utility/serverutils.js";
 import { accountsController } from "./features/user/user-controller.js";
+import { registerRoutes } from "./registerRoutes.js";
+import { testApi } from "./features/testroutes/test-api.js";
+
 
 const logger = createlogger();
 const __filename = fileURLToPath(import.meta.url);
@@ -121,10 +124,14 @@ async function setupServer() {
   db.init("mongo");
 
   // Set Routes
+  server.route(await registerRoutes())
   server.route(webRoutes);
   server.route(apiRoutes);
   server.route(adminRoutes);
-  
+
+
+
+
   process.on("unhandledRejection", (err) => {
     logger.error(err.message);
     process.exit(1);
