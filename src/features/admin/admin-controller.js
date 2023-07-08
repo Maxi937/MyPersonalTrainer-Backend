@@ -7,8 +7,10 @@ import { db } from "../../database/db.js";
 
 const logger = createlogger();
 
-export const adminController = {
+const adminController = {
   index: {
+    method: "GET",
+    path: "/admin",
     handler: async function (request, h) {
       const users = await db.User.find({ role: { $ne: "admin" } }).lean();
 
@@ -27,6 +29,8 @@ export const adminController = {
   },
 
   user: {
+    method: "GET",
+    path: "/admin/users/{id}",
     handler: async function (request, h) {
       const user = await db.User.findOne({ _id: request.params.id }).lean();
       const reviews = await db.Review.find({ user: request.params.id }).populate("place").lean();
@@ -41,6 +45,8 @@ export const adminController = {
   },
 
   updateUser: {
+    method: "POST",
+    path: "/admin/users/{id}",
     auth: false,
     payload: {
       maxBytes: 209715200,
@@ -79,6 +85,8 @@ export const adminController = {
   },
 
   users: {
+    method: "GET",
+    path: "/admin/users",
     handler: async function (request, h) {
       const users = await db.User.find({ role: { $ne: "admin" } }).lean();
       let usersAddedToday = 0;
@@ -114,12 +122,16 @@ export const adminController = {
   },
 
   openUserForm: {
+    method: "GET",
+    path: "/admin/forms/new-user",
     handler: async function (request, h) {
       return h.view("forms/admin/new-user");
     },
   },
 
   createNewUser: {
+    method: "POST",
+    path: "/admin/newuser",
     auth: false,
     validate: {
       payload: UserSpec,
@@ -146,6 +158,8 @@ export const adminController = {
   },
 
   deleteUser: {
+    method: "GET",
+    path: "/admin/users/delete/{id}",
     handler: async function (request, h) {
       await db.User.deleteOne({ _id: request.params.id });
       await db.Review.deleteMany({ user: request.params.id });
@@ -153,3 +167,5 @@ export const adminController = {
     },
   },
 };
+
+export default adminController

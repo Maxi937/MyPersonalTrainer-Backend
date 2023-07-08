@@ -20,4 +20,5 @@ export function connectMongo() {
   db.once("open", function () {
     logger.info(`Datase connected to ${this.name} on ${this.host}`);
   });
+  return db
 }

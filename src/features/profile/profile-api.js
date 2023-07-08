@@ -6,8 +6,10 @@ import { db } from "../../database/db.js";
 
 const logger = createlogger();
 
-export const profileApi = {
+const profileApi = {
   update: {
+    method: "POST",
+    path: "/api/profile",
     auth: false,
     payload: {
       maxBytes: 209715200,
@@ -40,7 +42,6 @@ export const profileApi = {
           contentType: request.payload.profilepicture.headers["content-type"],
         };
       }
-
       await user.save();
       return h.redirect("/profile");
     },
@@ -50,6 +51,8 @@ export const profileApi = {
   },
 
   getUserProfile: {
+    method: "GET",
+    path: "/api/profile/getProfile",
     auth: false,
     cors: true,
     handler: async function (request, h) {
@@ -81,9 +84,9 @@ export const profileApi = {
   },
 
   getUserImages: {
-    auth: {
-      strategy: "jwt",
-    },
+    method: "GET",
+    path: "/api/profile/photos",
+    auth: { strategy: "jwt" },
     cors: true,
     handler: async function (request, h) {
       try {
@@ -100,6 +103,8 @@ export const profileApi = {
   },
 
   addUserImage: {
+    method: "POST", 
+    path: "/api/profile/photos",
     auth: false,
     payload: {
       maxBytes: 52428800,
@@ -127,3 +132,5 @@ export const profileApi = {
     notes: "Returns all photos",
   },
 };
+
+export default profileApi

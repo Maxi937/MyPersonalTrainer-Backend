@@ -6,8 +6,10 @@ import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
 
 const logger = createlogger();
 
-export const accountsController = {
+const accountsController = {
   index: {
+    method: "GET",
+    path: "/",
     auth: false,
     handler: async function (request, h) {
       return h.view("admin/admin-login", { title: "Welcome to My Personal Trainer" });
@@ -15,6 +17,8 @@ export const accountsController = {
   },
 
   showSignup: {
+    method: "GET",
+    path: "/signup",
     auth: false,
     handler: function (request, h) {
       return h.view("forms/user/user-signup", { title: "Sign up for Pint Accountant" });
@@ -22,6 +26,8 @@ export const accountsController = {
   },
 
   signup: {
+    method: "POST",
+    path: "/register",
     auth: false,
     validate: {
       payload: UserSpec,
@@ -59,6 +65,8 @@ export const accountsController = {
   },
 
   showLogin: {
+    method: "GET",
+    path: "/login",
     auth: false,
     handler: function (request, h) {
       return h.view("user/user-login", { title: "Login to Playlist" });
@@ -66,6 +74,8 @@ export const accountsController = {
   },
 
   login: {
+    method: "POST",
+    path: "/authenticate",
     auth: false,
     validate: {
       payload: UserCredentialsSpec,
@@ -94,17 +104,13 @@ export const accountsController = {
   },
 
   logout: {
+    method: "GET",
+    path: "/logout",
     handler: function (request, h, session) {
       request.cookieAuth.clear();
       return h.redirect("/");
     },
   },
-
-  async validate(request, session) {
-    const user = await db.User.getById(session.id);
-    if (!user) {
-      return { isValid: false };
-    }
-    return { isValid: true, credentials: user };
-  },
 };
+
+export default accountsController

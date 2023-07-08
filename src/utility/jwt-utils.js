@@ -28,7 +28,7 @@ export function decodeToken(token) {
   return userInfo;
 }
 
-export async function validate(decoded) {
+export async function validateToken(decoded) {
   const user = await db.User.findOne({ _id: decoded.id });
   if (!user) {
     return { isValid: false };

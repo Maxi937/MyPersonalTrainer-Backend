@@ -1,4 +1,4 @@
-import { start } from "../src/server.js"
+import { start } from "../src/server/server.js"
 import { loadconfig } from "../config/loadconfig.js";
 
 loadconfig()

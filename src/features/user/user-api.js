@@ -8,8 +8,10 @@ import { db } from "../../database/db.js";
 
 const logger = createlogger();
 
-export const userApi = {
+const userApi = {
   find: {
+    method: "GET", 
+    path: "/api/users",
     auth: {
       strategy: "jwt",
     },
@@ -28,6 +30,8 @@ export const userApi = {
   },
 
   findOne: {
+    method: "GET", 
+    path: "/api/users/{id}",
     auth: {
       strategy: "jwt",
     },
@@ -51,6 +55,8 @@ export const userApi = {
   },
 
   getUserProfile: {
+    method: "GET", 
+    path: "/api/users/{id}/getuserprofile",
     auth: false,
     cors: true,
     handler: async function (request, h) {
@@ -82,6 +88,8 @@ export const userApi = {
   },
 
   create: {
+    method: "POST", 
+    path: "/api/users",
     cors: true,
     auth: false,
     handler: async function (request, h) {
@@ -115,6 +123,8 @@ export const userApi = {
   },
 
   deleteAll: {
+    method: "DELETE", 
+    path: "/api/users",
     auth: {
       strategy: "jwt",
     },
@@ -133,6 +143,8 @@ export const userApi = {
   },
 
   authenticate: {
+    method: "POST", 
+    path: "/api/users/authenticate",
     auth: false,
     cors: true,
     handler: async function (request, h) {
@@ -157,3 +169,5 @@ export const userApi = {
     },
   },
 };
+
+export default userApi

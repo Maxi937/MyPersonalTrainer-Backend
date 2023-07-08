@@ -4,8 +4,10 @@ import { db } from "../../database/db.js";
 
 const logger = createlogger();
 
-export const photoApi = {
+const photoApi = {
   find: {
+    method: "GET", 
+    path: "/api/photos",
     auth: false,
     handler: async function (request, h) {
       try {
@@ -23,6 +25,8 @@ export const photoApi = {
   },
 
   addLocalImage: {
+    method: "POST", 
+    path: "/api/photos/local",
     auth: false,
     payload: {
       maxBytes: 52428800,
@@ -49,6 +53,8 @@ export const photoApi = {
   },
 
   deleteAllImages: {
+    method: "DELETE", 
+    path: "/api/photos",
     auth: false,
     handler: async function (request, h) {
       try {
@@ -67,3 +73,5 @@ export const photoApi = {
     notes: "Gives a key",
   }
 };
+
+export default photoApi
