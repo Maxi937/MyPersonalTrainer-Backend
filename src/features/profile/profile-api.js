@@ -103,7 +103,7 @@ const profileApi = {
   },
 
   addUserImage: {
-    method: "POST", 
+    method: "POST",
     path: "/api/profile/photos",
     auth: false,
     payload: {
@@ -133,4 +133,4 @@ const profileApi = {
   },
 };
 
-export default profileApi
+export default profileApi;

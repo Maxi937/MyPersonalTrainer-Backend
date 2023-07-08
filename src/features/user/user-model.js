@@ -26,13 +26,6 @@ const userSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
-    favourites: [
-      {
-        type: Mongoose.SchemaTypes.ObjectId,
-        ref: "Place",
-        required: false,
-      },
-    ],
     profilepicture: {
       data: Buffer,
       contentType: String,
@@ -99,7 +92,7 @@ userSchema.statics.getById = async function (userId) {
 
 userSchema.statics.getProfile = async function (userId) {
   try {
-    return await this.findOne({ _id: userId }).select(["-password", "-updatedAt", "-__v"]).populate("favourites").lean();
+    return await this.findOne({ _id: userId }).select(["-password", "-updatedAt", "-__v"]).lean();
   } catch (err) {
     logger.error(err);
     return None;
@@ -110,4 +103,30 @@ userSchema.query.getByEmail = function (email) {
   return this.findOne({ email: email }).lean();
 };
 
+// Client inherites all the properties of a user 
+const clientSchema = new Mongoose.Schema(
+  {
+    ...userSchema.obj,
+
+
+
+  }
+
+);
+
+
+// Trainer inherites all the properties of a user 
+const trainerSchema = new Mongoose.Schema(
+  {
+    ...userSchema.obj,
+
+
+
+  }
+
+);
+
 export const User = Mongoose.model("User", userSchema);
+export const Client = Mongoose.model("Client", userSchema);
+export const Trainer = Mongoose.model("Trainer", trainerSchema);
+
