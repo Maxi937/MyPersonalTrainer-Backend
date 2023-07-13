@@ -2,6 +2,7 @@ import { connectMongo } from "./mongo/connectMongo.js";
 import { createlogger } from "../utility/logger.js";
 import { encryptPassword } from "../utility/encrypt.js";
 import { User } from "../features/user/user-model.js";
+import { Trainer } from "../features/trainer/trainer-model.js";
 import PhotoStorage from "./supabase/PhotoStorage.js";
 
 const logger = createlogger();
@@ -15,13 +16,14 @@ export const db = {
     switch (dbType) {
       case "mongoDB":
         this.User = User;
+        this.Trainer = Trainer;
         this.Connection = connectMongo();
         break;
       default:
         logger.error("No DB Selected");
     }
     this.PhotoStorage = new PhotoStorage();
-    this.createAdmin()
+    this.createAdmin();
   },
 
   async createAdmin() {
@@ -32,13 +34,13 @@ export const db = {
       password: await encryptPassword(process.env.ADMINISTRATOR_PASSWORD),
       role: "admin",
     };
-  
+
     let admin = await this.User.findOne({ role: adminDetails.role });
-  
+
     if (!admin) {
       logger.warn("No Database Administrator Found. Creating deafult admin user.");
       admin = await new db.User(adminDetails);
-  
+
       try {
         admin.save();
       } catch (err) {
@@ -55,6 +57,3 @@ export async function validateAccount(request, session) {
   }
   return { isValid: true, credentials: user };
 }
-
-
-

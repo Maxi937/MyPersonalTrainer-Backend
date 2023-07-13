@@ -3,7 +3,7 @@ import { createlogger } from "../../utility/logger.js";
 
 const logger = createlogger();
 
-const userSchema = new Mongoose.Schema(
+export const userSchema = new Mongoose.Schema(
   {
     fname: {
       type: String,
@@ -27,21 +27,32 @@ const userSchema = new Mongoose.Schema(
       required: true,
     },
     profilepicture: {
-      data: Buffer,
-      contentType: String,
+      type: String,
+      required: false,
     },
   },
   { timestamps: true }
 );
 
-userSchema.methods.addUser = function () {
+userSchema.statics.addUser = function (user) {
   try {
-    this.save();
+    user.role = "user"
+    const newuser = new this(user)
+    newuser.save();
     logger.info("User added Successfully");
-    logger.info(this);
+    return newuser
   } catch (err) {
     logger.error(err);
+    return {}
   }
+};
+
+userSchema.statics.isDuplicateEmail = async function (email) {
+  const duplicate = await this.findOne({ email: email });
+  if (duplicate) {
+    return true;
+  }
+  return false;
 };
 
 userSchema.methods.addFavourite = function (favourite) {
@@ -103,30 +114,4 @@ userSchema.query.getByEmail = function (email) {
   return this.findOne({ email: email }).lean();
 };
 
-// Client inherites all the properties of a user 
-const clientSchema = new Mongoose.Schema(
-  {
-    ...userSchema.obj,
-
-
-
-  }
-
-);
-
-
-// Trainer inherites all the properties of a user 
-const trainerSchema = new Mongoose.Schema(
-  {
-    ...userSchema.obj,
-
-
-
-  }
-
-);
-
 export const User = Mongoose.model("User", userSchema);
-export const Client = Mongoose.model("Client", userSchema);
-export const Trainer = Mongoose.model("Trainer", trainerSchema);
-

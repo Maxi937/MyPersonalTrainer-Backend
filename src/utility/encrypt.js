@@ -1,11 +1,11 @@
 import bcrypt from "bcryptjs"
 
-export async function encryptPassword(password) {
+export function encryptPassword(password) {
     const saltRounds = 10 
     return bcrypt.hash(password, saltRounds);
   // Store hash in DB instead of password.
 }
 
-export async function unencryptPassword(enteredPassword, storedPasswordHash) {
+export function unencryptPassword(enteredPassword, storedPasswordHash) {
     return bcrypt.compare(enteredPassword, storedPasswordHash);
 }

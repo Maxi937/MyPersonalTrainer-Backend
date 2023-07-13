@@ -15,7 +15,13 @@ export const maggie = {
   lname: "Simpson",
   email: "maggie@simpson.com",
   password: "secret",
-  role: "user"
+};
+
+export const kiki = {
+  fname: "Kiki",
+  lname: "Trainer",
+  email: "Kiki@Trainer.com",
+  password: "secret",
 };
 
 export const testUsers = [
@@ -24,20 +30,17 @@ export const testUsers = [
     lname: "Simpson",
     email: "homer@simpson.com",
     password: "secret",
-    role: "user"
   },
   {
     fname: "Marge",
     lname: "Simpson",
     email: "marge@simpson.com",
     password: "secret",
-    role: "user"
   },
   {
     fname: "Bart",
     lname: "Simpson",
     email: "bart@simpson.com",
     password: "secret",
-    role: "user"
   }
 ];

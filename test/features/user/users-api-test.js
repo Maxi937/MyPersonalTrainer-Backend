@@ -1,7 +1,7 @@
 import { assert } from "chai";
-import { assertSubset, createMockFormData } from "../test-utils.js";
-import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
-import { maggie, adminUser, testUsers } from "../fixtures.js";
+import { assertSubset, createMockFormData } from "../../test-utils.js";
+import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
+import { maggie, adminUser, testUsers } from "../../fixtures.js";
 
 const users = new Array(testUsers.length);
 
@@ -32,7 +32,7 @@ suite("User API tests", () => {
     try {
       const newUser = await myPersonalTrainerService.createUser(maggie);
       const duplicate = await myPersonalTrainerService.createUser(maggie);
-      console.log(duplicate)
+  
       assert.fail("AxiosError: Request failed with status code 400");
     }
     catch(error) {

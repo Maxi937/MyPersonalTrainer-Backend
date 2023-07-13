@@ -11,7 +11,7 @@
     "dev": "cross-env NODE_ENV=development nodemon .src/app.js",
     "aws": "cross-env NODE_ENV=aws nodemon .src/app.js",
     "test": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/$FILE -- -exit",
-    "testall": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/**/*.js -exit",
+    "testall": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/**/*/*.js -exit",
     "testfeatures": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/features/**/*.js -exit",
     "lint": "eslint . --ext .js"
   },

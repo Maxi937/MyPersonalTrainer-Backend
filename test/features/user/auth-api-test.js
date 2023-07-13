@@ -1,7 +1,7 @@
 import { assert } from "chai";
-import { myPersonalTrainerService } from "./mypersonaltrainer-service.js";
-import { decodeToken } from "../../src/utility/jwt-utils.js";
-import { maggie, adminUser } from "../fixtures.js";
+import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
+import { decodeToken } from "../../../src/utility/jwt-utils.js";
+import { maggie, adminUser } from "../../fixtures.js";
 
 
 suite("Authentication API tests", async () => {
@@ -9,6 +9,7 @@ suite("Authentication API tests", async () => {
     await myPersonalTrainerService.clearAuth();
     await myPersonalTrainerService.authenticate(adminUser)
     await myPersonalTrainerService.deleteAllUsers();
+    await myPersonalTrainerService.clearAuth();
   });
 
   test("authenticate - Administrator", async () => {

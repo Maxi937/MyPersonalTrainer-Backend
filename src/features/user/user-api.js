@@ -10,11 +10,9 @@ const logger = createlogger();
 
 const userApi = {
   find: {
-    method: "GET", 
+    method: "GET",
     path: "/api/users",
-    auth: {
-      strategy: "jwt",
-    },
+    auth: false,
     handler: async function (request, h) {
       try {
         const users = await db.User.getAll();
@@ -30,11 +28,9 @@ const userApi = {
   },
 
   findOne: {
-    method: "GET", 
+    method: "GET",
     path: "/api/users/{id}",
-    auth: {
-      strategy: "jwt",
-    },
+    auth: false,
     handler: async function (request, h) {
       try {
         const user = await db.User.findOne({ _id: request.params.id }).lean();
@@ -54,64 +50,24 @@ const userApi = {
     response: { schema: UserSpec, failAction: validationError },
   },
 
-  getUserProfile: {
-    method: "GET", 
-    path: "/api/users/{id}/getuserprofile",
-    auth: false,
-    cors: true,
-    handler: async function (request, h) {
-      try {
-        const user = await db.User.findOne({ _id: request.params.id });
-
-        if (!user) {
-          return Boom.unauthorized("User not found");
-        }
-
-        const userName = `${user.fname} ${user.lname}`;
-        const profilepicture = {
-          data: await user.profilepicture.data.toString("base64"),
-          contentType: await user.profilepicture.contentType,
-        };
-
-        const userProfile = {
-          userName,
-          profilepicture,
-        };
-        return h.response(userProfile);
-      } catch (err) {
-        return Boom.serverUnavailable("Database not available");
-      }
-    },
-    tags: ["api"],
-    description: "get a profile picture and username",
-    notes: "returns profile picture as base64 string",
-  },
-
   create: {
-    method: "POST", 
+    method: "POST",
     path: "/api/users",
     cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
-        const duplicateUser = await db.User.findOne({ email: request.payload.email });
+        let user = request.payload;
+        user.password = await encryptPassword(user.password);
 
-        if (duplicateUser) {
-          logger.error(`Duplicate User Email: ${duplicateUser.email}`);
+        if (await db.User.isDuplicateEmail(user.email)) {
           return Boom.badRequest("Duplicate email");
         }
 
-        const user = await new db.User(request.payload);
-        user.password = await encryptPassword(user.password);
-        user.role = "user";
-        user.profilepicture = {
-          data: fs.readFileSync("./public/images/placeholder.png"),
-          contentType: "image/png",
-        };
-        await user.save();
-        logger.info("user created");
+        user = await db.User.addUser(user);
         return h.response(user);
       } catch (err) {
+        console.log(err);
         logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
       }
@@ -123,7 +79,7 @@ const userApi = {
   },
 
   deleteAll: {
-    method: "DELETE", 
+    method: "DELETE",
     path: "/api/users",
     auth: {
       strategy: "jwt",
@@ -143,7 +99,7 @@ const userApi = {
   },
 
   authenticate: {
-    method: "POST", 
+    method: "POST",
     path: "/api/users/authenticate",
     auth: false,
     cors: true,
@@ -170,4 +126,4 @@ const userApi = {
   },
 };
 
-export default userApi
+export default userApi;
