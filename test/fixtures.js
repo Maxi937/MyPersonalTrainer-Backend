@@ -22,6 +22,7 @@ export const kiki = {
   lname: "Trainer",
   email: "Kiki@Trainer.com",
   password: "secret",
+  displayName: "kikiFit",
 };
 
 export const testUsers = [

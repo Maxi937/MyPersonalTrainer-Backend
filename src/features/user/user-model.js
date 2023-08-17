@@ -34,11 +34,11 @@ export const userSchema = new Mongoose.Schema(
   { timestamps: true }
 );
 
-userSchema.statics.addUser = function (user) {
+userSchema.statics.addUser = async function (user) {
   try {
     user.role = "user"
     const newuser = new this(user)
-    newuser.save();
+    await newuser.save();
     logger.info("User added Successfully");
     return newuser
   } catch (err) {
@@ -92,14 +92,6 @@ userSchema.statics.deleteAll = async function () {
   }
 };
 
-userSchema.statics.getById = async function (userId) {
-  try {
-    return await this.findOne({ _id: userId }).lean();
-  } catch (err) {
-    logger.error(err);
-    return None;
-  }
-};
 
 userSchema.statics.getProfile = async function (userId) {
   try {
@@ -112,6 +104,15 @@ userSchema.statics.getProfile = async function (userId) {
 
 userSchema.query.getByEmail = function (email) {
   return this.findOne({ email: email }).lean();
+};
+
+userSchema.query.getById = async function (userId) {
+  try {
+    return await this.findOne({ _id: userId });
+  } catch (err) {
+    logger.error(err);
+    return None;
+  }
 };
 
 export const User = Mongoose.model("User", userSchema);
