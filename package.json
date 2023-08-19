@@ -1,6 +1,6 @@
 {
-  "name": "pintaccountant",
-  "version": "0.1.0",
+  "name": "personal-trainer-server",
+  "version": "0.0.1",
   "private": true,
   "description": "",
   "main": "src/app.js",
@@ -10,9 +10,9 @@
     "devprod": "cross-env NODE_ENV=devprod node src/app.js",
     "dev": "cross-env NODE_ENV=development nodemon .src/app.js",
     "aws": "cross-env NODE_ENV=aws nodemon .src/app.js",
-    "test": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/features/$FILE/*.js -exit",
-    "testall": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/**/*/*.js -exit",
-    "testfeatures": "cross-env NODE_ENV=test-development mocha --timeout 5000 --ui tdd test/features/**/*.js -exit",
+    "test": "cross-env NODE_ENV=test-development mocha --timeout 8000 --ui tdd test/features/$FILE/*.js -exit",
+    "testall": "cross-env NODE_ENV=test-development NODE_NO_WARNINGS=1 mocha --timeout 8000 --ui tdd test/**/*/*.js -exit",
+    "testfeatures": "cross-env NODE_ENV=test-development NODE_NO_WARNINGS=1 mocha --timeout 8000 --ui tdd test/features/**/*.js -exit",
     "lint": "eslint . --ext .js"
   },
   "author": "Matthew Hornby",
