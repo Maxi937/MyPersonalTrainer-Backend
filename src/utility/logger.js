@@ -73,6 +73,7 @@ const serverLog = {
   transports: new winston.transports.File({
     level: "httpinfo",
     filename: "logs/serverLog.txt",
+    options: { flags: "w" }
   }),
 };
 
