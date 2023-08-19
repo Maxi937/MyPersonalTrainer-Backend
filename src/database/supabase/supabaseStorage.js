@@ -1,8 +1,6 @@
-import { createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { connectSupabase } from "./connectSupabase.js";
 
-
-const logger = createlogger();
 
 export default class SupabaseStorage {
   constructor() {

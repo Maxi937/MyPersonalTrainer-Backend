@@ -1,8 +1,6 @@
 import jwt from "jsonwebtoken";
 import { db } from "../database/db.js";
-import { createlogger } from "./logger.js";
-
-const logger = createlogger();
+import logger from "./logger.js";
 
 export function createToken(user) {
   const payload = {

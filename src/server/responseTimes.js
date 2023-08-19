@@ -1,11 +1,7 @@
 import os from "os";
-import { createlogger } from "../utility/logger.js";
+import logger from "../utility/logger.js";
 
-
-const logger = createlogger();
-
-
-export async function responseTimes(server) {
+export function responseTimes(server) {
   server.ext("onRequest", (request, h) => {
     request.headers["x-req-start"] = new Date().getTime();
     return h.continue;
@@ -20,8 +16,7 @@ export async function responseTimes(server) {
         .header("x-res-end", end)
         .header("x-response-time", end - start)
         .header("Server", os.hostname());
-
-      logger.http("", { request });
+      logger.http(null, { request });
     }
     return h.continue;
   });

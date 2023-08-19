@@ -1,8 +1,6 @@
 import fs from "fs";
-import { createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import SupabaseStorage from "./supabaseStorage.js";
-
-const logger = createlogger();
 
 export default class Photo extends SupabaseStorage {
   constructor(supabaseClient) {

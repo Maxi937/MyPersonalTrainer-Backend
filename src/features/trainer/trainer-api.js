@@ -1,11 +1,9 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
-import { validationError, createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
 import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
-
-const logger = createlogger();
 
 const trainerApi = {
   find: {

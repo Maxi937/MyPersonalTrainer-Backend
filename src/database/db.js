@@ -1,11 +1,9 @@
 import { connectMongo } from "./mongo/connectMongo.js";
-import { createlogger } from "../utility/logger.js";
+import logger from "../utility/logger.js";
 import { encryptPassword } from "../utility/encrypt.js";
 import { User } from "../features/user/user-model.js";
 import { Trainer } from "../features/trainer/trainer-model.js";
 import PhotoStorage from "./supabase/PhotoStorage.js";
-
-const logger = createlogger();
 
 export const db = {
   User: null,

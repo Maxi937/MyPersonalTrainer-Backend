@@ -1,6 +1,6 @@
 import Mongoose from "mongoose";
 import { userSchema } from "../user/user-model.js";
-import { createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 
 const trainerSchema = new Mongoose.Schema();
 

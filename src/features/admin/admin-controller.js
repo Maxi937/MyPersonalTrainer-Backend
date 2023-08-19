@@ -2,10 +2,9 @@
 import fs from "fs";
 import { UserSpec } from "../user/user-validation.js";
 import { formatISOToDate } from "../../utility/formatutils.js";
-import { createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { db } from "../../database/db.js";
 
-const logger = createlogger();
 
 const adminController = {
   index: {

@@ -1,10 +1,9 @@
 import fs from "fs";
 import { UserSpec, UserCredentialsSpec } from "./user-validation.js";
 import { db } from "../../database/db.js";
-import { createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
 
-const logger = createlogger();
 
 const accountsController = {
   index: {

@@ -1,7 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { createlogger } from "../../utility/logger.js";
-
-const logger = createlogger();
+import logger from "../../utility/logger.js";
 
 export function connectSupabase() {
     const options = {

@@ -10,12 +10,12 @@ import Joi from "joi";
 import path from "path";
 import { fileURLToPath } from "url";
 import { validateToken } from "../utility/jwt-utils.js";
-import { createlogger } from "../utility/logger.js";
+import logger from "../utility/logger.js";
 import { responseTimes } from "./responseTimes.js";
+import { requestInfo } from "./requestInfo.js";
 import { db, validateAccount } from "../database/db.js";
 import { registerRoutes } from "./registerRoutes.js";
 
-const logger = createlogger();
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
@@ -71,7 +71,9 @@ async function setupServer() {
 
   // Extend Server to get add response time to headers
   responseTimes(server);
-  logger.info("Response Times Loaded");
+
+  // Extend Server to get log request Info
+  requestInfo(server)
 
   // Set up Cookie auth
   server.auth.strategy("session", "cookie", {

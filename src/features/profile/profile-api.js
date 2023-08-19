@@ -1,10 +1,9 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
-import { validationError, createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
 
-const logger = createlogger();
 
 const profileApi = {
   update: {

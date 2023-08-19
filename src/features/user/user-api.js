@@ -1,12 +1,10 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
-import { validationError, createlogger } from "../../utility/logger.js";
+import logger from "../../utility/logger.js";
 import { UserSpec, IdSpec, UserArray } from "./user-validation.js";
 import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
 import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
-
-const logger = createlogger();
 
 const userApi = {
   find: {
@@ -24,7 +22,7 @@ const userApi = {
     tags: ["api"],
     description: "Get all userApi",
     notes: "Returns details of all userApi",
-    response: { schema: UserArray, failAction: validationError },
+    response: { schema: UserArray },
   },
 
   findOne: {
@@ -46,8 +44,8 @@ const userApi = {
     tags: ["api"],
     description: "Get a specific user",
     notes: "Returns user details",
-    validate: { params: { id: IdSpec }, failAction: validationError },
-    response: { schema: UserSpec, failAction: validationError },
+    validate: { params: { id: IdSpec } },
+    response: { schema: UserSpec },
   },
 
   create: {
@@ -75,7 +73,12 @@ const userApi = {
     tags: ["api"],
     description: "Create a User",
     notes: "Returns the newly created user",
-    validate: { payload: UserSpec, failAction: validationError },
+    validate: {
+      payload: UserSpec,
+      failAction(request, h, err) {
+        return logger.error("JOI validation failure"); // set up a log level for validation errors
+      },
+    },
   },
 
   deleteAll: {

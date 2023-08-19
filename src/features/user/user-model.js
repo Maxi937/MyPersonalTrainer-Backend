@@ -1,7 +1,5 @@
 import Mongoose from "mongoose";
-import { createlogger } from "../../utility/logger.js";
-
-const logger = createlogger();
+import logger from "../../utility/logger.js";
 
 export const userSchema = new Mongoose.Schema(
   {

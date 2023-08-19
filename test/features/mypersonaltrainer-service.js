@@ -1,8 +1,6 @@
 import axios from "axios";
 import { serviceUrl } from "../fixtures.js";
-import { createTestLogger } from "../../src/utility/logger.js";
-
-const logger = createTestLogger();
+import logger from "../../src/utility/logger.js";
 
 logger.info(`Service Url: ${serviceUrl}`);
 

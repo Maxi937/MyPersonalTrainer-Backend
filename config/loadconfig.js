@@ -1,7 +1,5 @@
 import * as dotenv from "dotenv";
-import { createlogger } from "../src/utility/logger.js";
-
-const logger = createlogger();
+import logger from "../src/utility/logger.js";
 
 // Load Config File
 export function loadconfig() {
