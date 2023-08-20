@@ -12,6 +12,7 @@
     "aws": "cross-env NODE_ENV=aws nodemon .src/app.js",
     "test": "cross-env NODE_ENV=test-development mocha --timeout 8000 --ui tdd test/features/$FILE/*.js -exit",
     "testall": "cross-env NODE_ENV=test-development NODE_NO_WARNINGS=1 mocha --timeout 8000 --ui tdd test/**/*/*.js -exit",
+    "testalldry": "cross-env NODE_ENV=test-development NODE_NO_WARNINGS=1 mocha --dryRun true --timeout 8000 --ui tdd test/**/*/*.js -exit",
     "testfeatures": "cross-env NODE_ENV=test-development NODE_NO_WARNINGS=1 mocha --timeout 8000 --ui tdd test/features/**/*.js -exit",
     "lint": "eslint . --ext .js"
   },
