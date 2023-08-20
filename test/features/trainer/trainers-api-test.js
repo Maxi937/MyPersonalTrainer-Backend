@@ -9,7 +9,6 @@ suite("Trainer API tests", () => {
     await myPersonalTrainerService.authenticate(adminUser);
     await myPersonalTrainerService.deleteAllTrainers();
     await myPersonalTrainerService.deleteAllUsers();
-    assert.throw()
   });
 
   suiteTeardown(async () => {
