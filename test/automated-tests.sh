@@ -3,6 +3,7 @@
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
+# shellcheck disable=SC1090
 source ~/myFunctions
 
 # Run tests
