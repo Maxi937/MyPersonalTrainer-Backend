@@ -17,3 +17,10 @@ icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
 message="$passingTests/$numberOfTests passing"
 
 notify-send -c "$category" -i "$icon" "$message";
+
+if [ "$passingTests" -eq "$numberOfTests" ]
+then
+    exit 0
+fi
+
+exit 1
