@@ -1,9 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 # shellcheck disable=SC1090
 
 # This script is called on git pre-commit via wsl
 
-powershell messageBox.ps1 '"Hello"' '"hi"'
+powershell.exe messageBox.ps1 '"Hello"' '"hi"'
 
 # source my functions for notify-send function
 source ~/myFunctions
