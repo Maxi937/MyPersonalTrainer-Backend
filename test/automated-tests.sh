@@ -1,13 +1,12 @@
 #!/bin/bash
+# shellcheck disable=SC1090
 
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
-# shellcheck disable=SC1090
 source ~/myFunctions
 
 # Run tests
-
 # dry run to get total number of tests
 numberOfTests=$(npm run testalldry | grep -o -E '[[:digit:]]?[[:digit:]] passing' | grep -o -E '[[:digit:]]?[[:digit:]]')
 testOutput=$(npm run testall)
