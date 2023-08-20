@@ -3,7 +3,7 @@
 
 # This script is called on git pre-commit via wsl
 
-pwershell messageBox.ps1 '"Hello"' '"hi"'
+powershell messageBox.ps1 '"Hello"' '"hi"'
 
 # source my functions for notify-send function
 source ~/myFunctions
