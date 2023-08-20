@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 # shellcheck disable=SC1090
 
 # This script is called on git pre-commit via wsl
