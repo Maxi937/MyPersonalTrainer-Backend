@@ -33,17 +33,16 @@ export const db = {
       role: "admin",
     };
 
-    let admin = await this.User.findOne({ role: adminDetails.role });
+    try {
+      let admin = await this.User.findOne({ role: adminDetails.role });
 
-    if (!admin) {
-      logger.warn("No Database Administrator Found. Creating deafult admin user.");
-      admin = await new db.User(adminDetails);
-
-      try {
+      if (!admin) {
+        logger.warn("No Database Administrator Found. Creating deafult admin user.");
+        admin = await new db.User(adminDetails);
         admin.save();
-      } catch (err) {
-        logger.error("Unable to create admin user");
       }
+    } catch (err) {
+      logger.error("Unable to create admin user");
     }
   },
 };
