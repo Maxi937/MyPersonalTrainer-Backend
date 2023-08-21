@@ -21,6 +21,7 @@ category="Personal Trainer Automated Tests"
 icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
 message="$passingTests/$numberOfTests passing"
 
+# Send Toast
 notify-send -c "$category" -i "$icon" "$message";
 
 # Exit with success if all tests pass or fail if not
