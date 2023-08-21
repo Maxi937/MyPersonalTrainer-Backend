@@ -26,7 +26,18 @@ trainerSchema.methods.addClient = async function (clientId) {
     await this.save();
     return this.clients
   } catch (err) {
-    console.log(err);
+    logger.error(err);
+    return this.clients;
+  }
+};
+
+trainerSchema.methods.deleteClient = async function (clientId) {
+  try {
+    this.clients.pull({ _id: clientId });
+    await this.save();
+    return this.clients
+  } catch (err) {
+    logger.error(err);
     return this.clients;
   }
 };

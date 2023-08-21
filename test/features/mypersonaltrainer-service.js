@@ -75,5 +75,10 @@ export const myPersonalTrainerService = {
   async getClients(trainerId) {
     const res = await axios.get(`${this.url}/api/trainers/${trainerId}/clients`);
     return res.data;
+  },
+
+  async deleteClient(trainerId, clientId) {
+    const res = await axios.delete(`${this.url}/api/trainers/${trainerId}/clients/${clientId}`);
+    return res.data;
   }
 };

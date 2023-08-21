@@ -15,7 +15,7 @@ export const db = {
       case "mongoDB":
         this.User = User;
         this.Trainer = Trainer;
-        this.Connection = connectMongo();
+        this.Connection = await connectMongo();
         break;
       default:
         logger.error("No DB Selected");

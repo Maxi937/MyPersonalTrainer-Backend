@@ -1,7 +1,7 @@
 import Mongoose from "mongoose";
 import logger from "../../utility/logger.js";
 
-export function connectMongo() {
+export async function connectMongo() {
   Mongoose.set("strictQuery", true);
 
   Mongoose.connect(process.env.MONGODB_URI);
@@ -18,5 +18,5 @@ export function connectMongo() {
   db.once("open", function () {
     logger.info(`Datase connected to ${this.name} on ${this.host}`);
   });
-  return db
+  return db;
 }

@@ -1,4 +1,3 @@
-import os from "os";
 import logger from "../utility/logger.js";
 
 export function requestInfo(server) {

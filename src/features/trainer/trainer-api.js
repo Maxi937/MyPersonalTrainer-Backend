@@ -125,6 +125,32 @@ const trainerApi = {
     // requires validation,
   },
 
+  deleteClient: {
+    method: "DELETE",
+    path: "/api/trainers/{trainerId}/clients/{clientId}",
+    cors: true,
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        const trainer = await db.Trainer.find().getById(request.params.trainerId);
+        
+        if (!trainer) {
+          return Boom.badRequest("Trainer does not exist");
+        }
+        
+        const response = await trainer.deleteClient(request.params.clientId);
+        return h.response(response);
+      } catch (err) {
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Remove a Client from a Trainer",
+    notes: "Returns the Trainers Clients",
+    // requires validation,
+  },
+
   deleteAll: {
     method: "DELETE",
     path: "/api/trainers",
