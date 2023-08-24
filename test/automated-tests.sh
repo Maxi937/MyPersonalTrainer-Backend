@@ -4,7 +4,11 @@
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
-# source ~/myFunctions.sh
+source ~/myFunctions.sh
+
+npm -v
+
+exit 1
 
 
 
@@ -20,15 +24,13 @@ passingTests=$(echo "$testOutput" | grep -c -E '✔|√')
 #Test ouput to console
 echo "$testOutput"
 
-# Send Windows Notification when complete
-# category="Personal Trainer Automated Tests"
-# icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
-# message="$passingTests/$numberOfTests passing"
+Send Windows Notification when complete
+category="Personal Trainer Automated Tests"
+icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
+message="$passingTests/$numberOfTests passing"
 
-# # Send Toast
-# notify-send -c "$category" -i "$icon" "$message";
-
-exit 1
+# Send Toast
+notify-send -c "$category" -i "$icon" "$message";
 
 # Exit with success if all tests pass or fail if not
 if [ "$passingTests" -eq "$numberOfTests" ]

@@ -11,20 +11,20 @@ suite("Authentication API tests", async () => {
     await myPersonalTrainerService.clearAuth();
   });
 
-  test("authenticate - Administrator", async () => {
+  test("Authentication - Administrator", async () => {
     const response = await myPersonalTrainerService.authenticate(adminUser);
     assert.equal(response.status, "success");
     assert.isDefined(response.token);
   });
 
-  test("authenticate - User", async () => {
+  test("Authentication - User", async () => {
     const returnedUser = await myPersonalTrainerService.createUser(maggie);
     const response = await myPersonalTrainerService.authenticate(maggie);
     assert.equal(response.status, "success");
     assert.isDefined(response.token);
   });
 
-  test("verify Token", async () => {
+  test("Authentication - Verify Token", async () => {
     myPersonalTrainerService.clearAuth();
     const { user } = await myPersonalTrainerService.createUser(maggie);
     const response = await myPersonalTrainerService.authenticate(maggie);
@@ -34,7 +34,7 @@ suite("Authentication API tests", async () => {
     assert.equal(userInfo.userId, user._id);
   });
 
-  test("check Unauthorized", async () => {
+  test("Authentication - Access Route - Unauthorized", async () => {
     await myPersonalTrainerService.clearAuth();
     const response = await myPersonalTrainerService.deleteAllUsers();
     assert.equal(response.status, "fail")
