@@ -4,12 +4,7 @@
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
-ls
-cd ~
-ls
 source ~/myFunctions
-
-exit 1
 
 # Run tests
 # dry run to get total number of tests
