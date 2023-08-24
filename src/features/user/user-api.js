@@ -1,7 +1,8 @@
-import Boom from "@hapi/boom";
+import Boom, { boomify } from "@hapi/boom";
+import Joi from "joi";
 import fs from "fs";
 import logger from "../../utility/logger.js";
-import { UserSpec, IdSpec, UserArray } from "./user-validation.js";
+import { UserSpec, IdSpec, UserArray, ApiResponseSchema } from "./user-validation.js";
 import { encryptPassword, unencryptPassword } from "../../utility/encrypt.js";
 import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
@@ -14,15 +15,15 @@ const userApi = {
     handler: async function (request, h) {
       try {
         const users = await db.User.getAll();
-        return users;
+        return h.response({ status: "success", users: users });
       } catch (err) {
-        return Boom.serverUnavailable("Database Error");
+        return Boom.serverUnavailable();
       }
     },
     tags: ["api"],
-    description: "Get all userApi",
-    notes: "Returns details of all userApi",
-    response: { schema: UserArray },
+    description: "Returns all Users",
+    notes: "Returns 'status: success' if the request succeeds, even if there are no users",
+    response: { schema: ApiResponseSchema },
   },
 
   findOne: {
@@ -31,13 +32,14 @@ const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const user = await db.User.findOne({ _id: request.params.id }).lean();
+        const user = await db.User.find().lean().getById(request.params.id);
 
         if (!user) {
-          return Boom.notFound("No User with this id");
+          return Boom.notFound();
         }
-        return user;
+        return h.response({ status: "success", user: user }).code(200);
       } catch (err) {
+        console.log(err);
         return Boom.serverUnavailable("No User with this id");
       }
     },
@@ -45,7 +47,7 @@ const userApi = {
     description: "Get a specific user",
     notes: "Returns user details",
     validate: { params: { id: IdSpec } },
-    response: { schema: UserSpec },
+    response: { schema: ApiResponseSchema },
   },
 
   create: {
@@ -63,7 +65,7 @@ const userApi = {
         }
 
         user = await db.User.addUser(user);
-        return h.response(user);
+        return h.response({ status: "success", user: user });
       } catch (err) {
         console.log(err);
         logger.error(err.message);
@@ -76,6 +78,7 @@ const userApi = {
     validate: {
       payload: UserSpec,
       failAction(request, h, err) {
+        console.log(err)
         return logger.error("JOI validation failure"); // set up a log level for validation errors
       },
     },
@@ -101,6 +104,26 @@ const userApi = {
     notes: "All users removed from db",
   },
 
+  delete: {
+    method: "DELETE",
+    path: "/api/users/{id}",
+    auth: {
+      strategy: "jwt",
+    },
+    handler: async function (request, h) {
+      try {
+        await db.User.findOneAndDelete({ _id: request.params.id });
+        return h.response({ status: "success" }).code(202);
+      } catch (err) {
+        logger.error(err);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Delete all userApi",
+    notes: "All users removed from db",
+  },
+
   authenticate: {
     method: "POST",
     path: "/api/users/authenticate",
@@ -111,17 +134,17 @@ const userApi = {
         const { email, password } = request.payload;
         const user = await db.User.find().getByEmail(email);
 
-        if (!user) {
-          return Boom.unauthorized("User not found");
+        // TODO: Review decryption need to unencrypt first regardless of whether a user exists - timin attack vector
+        if ((!user || (await unencryptPassword(password, user.password)) === false)) {
+          logger.error("Login Failed, bad credentials");
+          console.log("errerererererer")
+          return Boom.badRequest("Resource not available");
         }
 
-        if ((await unencryptPassword(password, user.password)) === false) {
-          logger.error("Login Failed, bad credentials");
-          return Boom.unauthorized("Invalid password");
-        }
         const token = createToken(user);
-        return h.response({ success: true, token: token }).code(201);
+        return h.response({ status: "success", token: token }).code(201);
       } catch (err) {
+        console.log(err)
         logger.error(err);
         return Boom.serverUnavailable("Database Error");
       }

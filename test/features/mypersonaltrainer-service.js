@@ -19,6 +19,12 @@ export const myPersonalTrainerService = {
 
   async getUser(id) {
     const res = await axios.get(`${this.url}/api/users/${id}`);
+    // console.log(res)
+    return res.data;
+  },
+
+  async deleteUser(id) {
+    const res = await axios.delete(`${this.url}/api/users/${id}`);
     return res.data;
   },
 
@@ -68,8 +74,8 @@ export const myPersonalTrainerService = {
   },
 
   async addClientToTrainer(trainerId, clientId) {
-    const res = await axios.post(`${this.url}/api/trainers/clients`, { trainerId: trainerId, clientId: clientId});
-    return res.data;
+      const res = await axios.post(`${this.url}/api/trainers/clients`, { trainerId: trainerId, clientId: clientId });
+      return res.data;
   },
 
   async getClients(trainerId) {
@@ -80,5 +86,5 @@ export const myPersonalTrainerService = {
   async deleteClient(trainerId, clientId) {
     const res = await axios.delete(`${this.url}/api/trainers/${trainerId}/clients/${clientId}`);
     return res.data;
-  }
+  },
 };

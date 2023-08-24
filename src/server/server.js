@@ -15,6 +15,7 @@ import { responseTimes } from "./responseTimes.js";
 import { requestInfo } from "./requestInfo.js";
 import { db, validateAccount } from "../database/db.js";
 import { registerRoutes } from "./registerRoutes.js";
+import { boomResponseData } from "./boomResponseData.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -69,11 +70,10 @@ async function setupServer() {
     isCached: false,
   });
 
-  // Extend Server to get add response time to headers
+  // Server Extensions
   responseTimes(server);
-
-  // Extend Server to get log request Info
-  requestInfo(server)
+  requestInfo(server);
+  boomResponseData(server);
 
   // Set up Cookie auth
   server.auth.strategy("session", "cookie", {
@@ -97,8 +97,8 @@ async function setupServer() {
 
   server.auth.default("session");
 
-  // Set Routes 
-  // This adds the public folder 
+  // Set Routes
+  // This adds the public folder
   const publicFolder = { method: "GET", path: "/{param*}", handler: { directory: { path: "./public" } }, options: { auth: false } };
   server.route(publicFolder);
 

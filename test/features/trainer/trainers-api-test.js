@@ -33,7 +33,13 @@ suite("Trainer API tests", () => {
   test("Client Management - Assign Multiple Clients to Trainer", async () => {
     const trainer = await myPersonalTrainerService.createTrainer(kiki);
 
-    const newUsers = await Promise.all(testUsers.map(async (user) => myPersonalTrainerService.createUser(user)));
+    const newUsers = await Promise.all(
+      testUsers.map(async (newuser) => {
+        const { user } = await myPersonalTrainerService.createUser(newuser);
+        return user;
+      })
+    );
+
     await Promise.all(newUsers.map(async (user) => myPersonalTrainerService.addClientToTrainer(trainer._id, user._id)));
 
     const response = await myPersonalTrainerService.getClients(trainer._id);
@@ -44,14 +50,27 @@ suite("Trainer API tests", () => {
     });
   });
 
+  test("Client Management - Assign Client to Trainer - Client does not exist", async () => {
+    const trainer = await myPersonalTrainerService.createTrainer(kiki);
+    const { user } = await myPersonalTrainerService.createUser(maggie);
+    const id = user._id;
+    await myPersonalTrainerService.deleteUser(id);
+
+    const response = await myPersonalTrainerService.addClientToTrainer(trainer._id, user._id);
+    assert.deepEqual(response.status, "fail");
+
+    const clients = await myPersonalTrainerService.getClients(trainer._id);
+    assert.deepEqual(clients.length, 0);
+  });
+
   test("Client Management - Remove a Client from a Trainer", async () => {
-    const client = await myPersonalTrainerService.createUser(maggie);
+    const { user } = await myPersonalTrainerService.createUser(maggie);
     const trainer = await myPersonalTrainerService.createTrainer(kiki);
 
-    const addClient = await myPersonalTrainerService.addClientToTrainer(trainer._id, client._id);
+    const addClient = await myPersonalTrainerService.addClientToTrainer(trainer._id, user._id);
     assert.deepEqual(addClient.length, 1);
 
-    const deleteClient = await myPersonalTrainerService.deleteClient(trainer._id, client._id);
+    const deleteClient = await myPersonalTrainerService.deleteClient(trainer._id, user._id);
     assert.deepEqual(deleteClient.length, 0);
   });
 });

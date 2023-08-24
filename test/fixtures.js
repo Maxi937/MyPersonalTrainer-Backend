@@ -1,14 +1,27 @@
-import { start } from "../src/server/server.js"
+import axios from "axios";
+import { start } from "../src/server/server.js";
 import { loadconfig } from "../config/loadconfig.js";
 
-loadconfig()
-export const server = await start()
+loadconfig();
+export const server = await start();
 export const serviceUrl = process.env.url;
+
+// Add a response interceptor
+axios.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response) {
+      return error.response
+    } 
+    console.log("error");
+    return Promise.reject(error);
+  }
+);
 
 export const adminUser = {
   email: process.env.ADMINISTRATOR_EMAIL,
-  password: process.env.ADMINISTRATOR_PASSWORD
-}
+  password: process.env.ADMINISTRATOR_PASSWORD,
+};
 
 export const maggie = {
   fname: "Maggie",
@@ -43,5 +56,5 @@ export const testUsers = [
     lname: "Simpson",
     email: "bart@simpson.com",
     password: "secret",
-  }
+  },
 ];

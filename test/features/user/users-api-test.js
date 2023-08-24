@@ -3,7 +3,7 @@ import { assertSubset, createMockFormData } from "../../test-utils.js";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
 import { maggie, adminUser, testUsers } from "../../fixtures.js";
 
-const users = new Array(testUsers.length);
+const mockUsers = new Array(testUsers.length);
 
 suite("User API tests", () => {
   setup(async () => {
@@ -11,67 +11,68 @@ suite("User API tests", () => {
     await myPersonalTrainerService.authenticate(adminUser);
     await myPersonalTrainerService.deleteAllUsers();
 
-    for (let i = 0; i < testUsers.length; i += 1) {
+    for (let i = 0; i < mockUsers.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
-      users[0] = await myPersonalTrainerService.createUser(testUsers[i]); 
+      const { user } = await myPersonalTrainerService.createUser(testUsers[i]);
+      mockUsers[i] = user;
     }
   });
 
-  suiteTeardown(async () => { 
+  suiteTeardown(async () => {
     await myPersonalTrainerService.deleteAllUsers();
     await myPersonalTrainerService.clearAuth();
   });
 
-  test("create a user", async () => {
+  test("User Management - Create User", async () => {
+    const { user } = await myPersonalTrainerService.createUser(maggie);
+    assertSubset(maggie, user);
+    assert.isDefined(user._id);
+  });
+
+  test("User Management - Create User - Duplicate Email", async () => {
     const newUser = await myPersonalTrainerService.createUser(maggie);
-    assertSubset(maggie, newUser);
-    assert.isDefined(newUser._id);
+    const response = await myPersonalTrainerService.createUser(maggie);
+    assert.equal(response.status, "fail");
   });
 
-  test("create a user - duplicate email", async () => {
-    try {
-      const newUser = await myPersonalTrainerService.createUser(maggie);
-      const duplicate = await myPersonalTrainerService.createUser(maggie);
-  
-      assert.fail("AxiosError: Request failed with status code 400");
-    }
-    catch(error) {
-      assert(error.response.data.message === "Duplicate email");
-      assert.equal(error.response.data.statusCode, 400);
-    }
+  test("User Management - Get User", async () => {
+    const response = await myPersonalTrainerService.getUser(mockUsers[0]._id);
+    assert.equal(response.status, "success");
+    assert.deepEqual(mockUsers[0].email, response.user.email);
   });
 
-  test("delete all users", async () => {
-    let returnedUsers = await myPersonalTrainerService.getAllUsers();
-    assert.equal(returnedUsers.length, 3);
+  test("User Management - Get User - Bad Id", async () => {
+    const response = await myPersonalTrainerService.getUser("1234");
+    const { user } = response;
+    assert.isUndefined(user);
+    assert.equal(response.status, "fail");
+    assert.equal(response.statusCode, 404);
+  });
+
+  test("User Management - Get User - Deleted User", async () => {
     await myPersonalTrainerService.deleteAllUsers();
-    returnedUsers = await myPersonalTrainerService.getAllUsers();
-    assert.equal(returnedUsers.length, 0);
+    const response = await myPersonalTrainerService.getUser(mockUsers[0]._id);
+    const { user } = response;
+    assert.isUndefined(user);
+    assert.equal(response.status, "fail");
+    assert.equal(response.statusCode, 404);
   });
 
-  test("get a user", async () => {
-    const returnedUser = await myPersonalTrainerService.getUser(users[0]._id);
-    assert.deepEqual(users[0].email, returnedUser.email);
-  });
-
-  test("get a user - bad id", async () => {
-    try {
-      const returnedUser = await myPersonalTrainerService.getUser("1234");
-      assert.fail("Should not return a response");
-    } catch (error) {
-      assert(error.response.data.message === "No User with this id");
-      // assert.equal(error.response.data.statusCode, 503);
-    }
-  });
-
-  test("get a user - deleted user", async () => {
+  test("User Management - Delete User", async () => {
     await myPersonalTrainerService.deleteAllUsers();
-    try {
-      const returnedUser = await myPersonalTrainerService.getUser(testUsers[0]._id);
-      assert.fail("Should not return a response");
-    } catch (error) {
-      assert(error.response.data.message === "No User with this id");
-      assert.equal(error.response.data.statusCode, 503);
-    }
+    const { user } = await myPersonalTrainerService.createUser(maggie);
+    const response = await myPersonalTrainerService.deleteUser(user._id);
+    assert.isDefined(response);
+    assert.deepEqual(response.status, "success");
+    const { users } = await myPersonalTrainerService.getAllUsers();
+    assert.deepEqual(users.length, 0);
+  });
+
+  test("User Management - Delete All Users", async () => {
+    let { users } = await myPersonalTrainerService.getAllUsers();
+    assert.equal(users.length, 3);
+    await myPersonalTrainerService.deleteAllUsers();
+    ({ users } = await myPersonalTrainerService.getAllUsers());
+    assert.equal(users.length, 0);
   });
 });

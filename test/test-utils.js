@@ -1,7 +1,7 @@
 import winston, { format } from "winston";
-import path from "path"
-import fs from "fs"
-import {Blob} from "buffer";
+import path from "path";
+import fs from "fs";
+import { Blob } from "buffer";
 
 export function createMockFormData(pathToALocalFile) {
   const filePath = pathToALocalFile;
@@ -11,7 +11,7 @@ export function createMockFormData(pathToALocalFile) {
   const blob = new Blob([byteArray], { type: "image/jpg" });
   const form = new FormData();
   form.append("photouploadform", blob, fileName);
-  return form
+  return form;
 }
 
 export function assertSubset(subset, superset) {
@@ -29,3 +29,4 @@ export function assertSubset(subset, superset) {
     return true;
   });
 }
+

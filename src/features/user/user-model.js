@@ -90,6 +90,16 @@ userSchema.statics.deleteAll = async function () {
   }
 };
 
+// userSchema.statics.deleteOne = async function (id) {
+//   try {
+//     await this.findOneAndDelete({ _id: id });
+//     return 
+//   } catch (err) {
+//     console.log(err);
+//     return err;
+//   }
+// };
+
 
 userSchema.statics.getProfile = async function (userId) {
   try {
@@ -109,7 +119,7 @@ userSchema.query.getById = async function (userId) {
     return await this.findOne({ _id: userId });
   } catch (err) {
     logger.error(err);
-    return None;
+    return null;
   }
 };
 

@@ -1,5 +1,6 @@
 import logger from "../utility/logger.js";
 
+// Extend Server to get log detailed request Info
 export function requestInfo(server) {
   server.ext("onRequest", (request, h) => {
     const {info} = request

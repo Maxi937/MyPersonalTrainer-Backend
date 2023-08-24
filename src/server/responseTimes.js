@@ -1,6 +1,7 @@
 import os from "os";
 import logger from "../utility/logger.js";
 
+// Extend Server to get add Response Times to headers & log Requests
 export function responseTimes(server) {
   server.ext("onRequest", (request, h) => {
     request.headers["x-req-start"] = new Date().getTime();
