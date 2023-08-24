@@ -4,11 +4,15 @@
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
-source ~/myFunctions.sh
+# source ~/myFunctions.sh
+
+
 
 # Run tests
 # dry run to get total number of tests
 numberOfTests=$(npm run testalldry | grep -o -E '[[:digit:]]?[[:digit:]] passing' | grep -o -E '[[:digit:]]?[[:digit:]]')
+echo $numberOfTests
+
 testOutput=$(npm run testall)
 # Reason for two check marks - When run through GIT a different check mark character is used in the output.
 passingTests=$(echo "$testOutput" | grep -c -E '✔|√') 
@@ -23,6 +27,8 @@ echo "$testOutput"
 
 # # Send Toast
 # notify-send -c "$category" -i "$icon" "$message";
+
+exit 1
 
 # Exit with success if all tests pass or fail if not
 if [ "$passingTests" -eq "$numberOfTests" ]
