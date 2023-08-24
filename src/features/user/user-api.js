@@ -14,7 +14,7 @@ const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const users = await db.User.getAll();
+        const users = await db.User.find().getAll();
         return h.response({ status: "success", users: users });
       } catch (err) {
         return Boom.serverUnavailable();

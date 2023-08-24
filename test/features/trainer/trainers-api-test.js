@@ -17,21 +17,32 @@ suite("Trainer API tests", () => {
   });
 
   test("Create Trainer", async () => {
-    const newUser = await myPersonalTrainerService.createTrainer(kiki);
-    assertSubset(kiki, newUser);
-    assert.isDefined(newUser._id);
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
+    assertSubset(kiki, trainer);
+    assert.isDefined(trainer._id);
+  });
+
+  test("Delete Trainer", async () => {
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
+    assertSubset(kiki, trainer);
+    assert.isDefined(trainer._id);
+    const response = await myPersonalTrainerService.deleteTrainer(trainer._id)
+    
+    const { trainers } = await myPersonalTrainerService.getAllTrainers()
+  
+    assert.equal(trainers.length, 0)
   });
 
   test("Client Management - Assign Client to Trainer", async () => {
     const client = await myPersonalTrainerService.createUser(maggie);
-    const trainer = await myPersonalTrainerService.createTrainer(kiki);
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
     const response = await myPersonalTrainerService.addClientToTrainer(trainer._id, client._id);
 
     assert.deepEqual(client._id, response[0]);
   });
 
   test("Client Management - Assign Multiple Clients to Trainer", async () => {
-    const trainer = await myPersonalTrainerService.createTrainer(kiki);
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
 
     const newUsers = await Promise.all(
       testUsers.map(async (newuser) => {
@@ -51,7 +62,7 @@ suite("Trainer API tests", () => {
   });
 
   test("Client Management - Assign Client to Trainer - Client does not exist", async () => {
-    const trainer = await myPersonalTrainerService.createTrainer(kiki);
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
     const { user } = await myPersonalTrainerService.createUser(maggie);
     const id = user._id;
     await myPersonalTrainerService.deleteUser(id);
@@ -65,7 +76,7 @@ suite("Trainer API tests", () => {
 
   test("Client Management - Remove a Client from a Trainer", async () => {
     const { user } = await myPersonalTrainerService.createUser(maggie);
-    const trainer = await myPersonalTrainerService.createTrainer(kiki);
+    const { trainer } = await myPersonalTrainerService.createTrainer(kiki);
 
     const addClient = await myPersonalTrainerService.addClientToTrainer(trainer._id, user._id);
     assert.deepEqual(addClient.length, 1);

@@ -12,15 +12,15 @@ const trainerApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const users = await db.Trainer.getAll();
-        return users;
+        const trainers = await db.Trainer.find().getAll();
+        return h.response({ status: "success", trainers: trainers});
       } catch (err) {
-        return Boom.serverUnavailable("Database Error");
+        return Boom.serverUnavailable();
       }
     },
     tags: ["api"],
-    description: "Get all userApi",
-    notes: "Returns details of all userApi",
+    description: "Get all Trainers",
+    notes: "Returns details of all Trainers",
     // requires response validation,
   },
 
@@ -59,11 +59,11 @@ const trainerApi = {
         trainer.role = "trainer";
 
         if (await db.Trainer.isDuplicateEmail(trainer.email)) {
-          return Boom.badRequest("Duplicate email");
+          return Boom.badRequest();
         }
 
         trainer = await db.Trainer.create(trainer);
-        return h.response(trainer);
+        return h.response({status: "success", trainer: trainer});
       } catch (err) {
         logger.error(err.message);
         return Boom.serverUnavailable();
@@ -150,6 +150,26 @@ const trainerApi = {
     description: "Remove a Client from a Trainer",
     notes: "Returns the Trainers Clients",
     // requires validation,
+  },
+
+  delete: {
+    method: "DELETE",
+    path: "/api/trainers/{id}",
+    auth: {
+      strategy: "jwt",
+    },
+    handler: async function (request, h) {
+      try {
+        await db.Trainer.findOneAndDelete({ _id: request.params.id });
+        return h.response({ status: "success" }).code(202);
+      } catch (err) {
+        logger.error(err);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Delete a Trainer",
+    notes: "Trainer removed from db",
   },
 
   deleteAll: {

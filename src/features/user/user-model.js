@@ -71,9 +71,9 @@ userSchema.methods.deleteFavourite = function (favouriteId) {
   }
 };
 
-userSchema.statics.getAll = function () {
+userSchema.query.getAll = function () {
   try {
-    return this.find({ role: { $ne: "admin" } }).lean();
+    return this.find({ role: { $ne: "admin" } });
   } catch (err) {
     logger.error(err);
     return [];
