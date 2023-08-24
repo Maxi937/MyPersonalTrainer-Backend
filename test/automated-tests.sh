@@ -4,7 +4,7 @@
 # This script is called on git pre-commit via wsl
 
 # source my functions for notify-send function
-source ~/myFunctions
+source ~/myFunctions.sh
 
 # Run tests
 # dry run to get total number of tests
@@ -17,12 +17,12 @@ passingTests=$(echo "$testOutput" | grep -c -E '✔|√')
 echo "$testOutput"
 
 # Send Windows Notification when complete
-category="Personal Trainer Automated Tests"
-icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
-message="$passingTests/$numberOfTests passing"
+# category="Personal Trainer Automated Tests"
+# icon="C:\Users\Matthew\Pictures\wsl-notify-icons\ubuntu.webp"
+# message="$passingTests/$numberOfTests passing"
 
-# Send Toast
-notify-send -c "$category" -i "$icon" "$message";
+# # Send Toast
+# notify-send -c "$category" -i "$icon" "$message";
 
 # Exit with success if all tests pass or fail if not
 if [ "$passingTests" -eq "$numberOfTests" ]
