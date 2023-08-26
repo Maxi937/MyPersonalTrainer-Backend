@@ -3,6 +3,7 @@ import logger from "../utility/logger.js";
 import { encryptPassword } from "../utility/encrypt.js";
 import { User } from "../features/user/user-model.js";
 import { Trainer } from "../features/trainer/trainer-model.js";
+import { Exercise } from "../features/workout/excercise-model.js";
 import PhotoStorage from "./supabase/PhotoStorage.js";
 
 export const db = {
@@ -15,6 +16,7 @@ export const db = {
       case "mongoDB":
         this.User = User;
         this.Trainer = Trainer;
+        this.Exercise = Exercise;
         this.Connection = await connectMongo();
         break;
       default:

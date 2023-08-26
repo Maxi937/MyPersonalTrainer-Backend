@@ -11,6 +11,7 @@ export const adminUser = {
   password: process.env.ADMINISTRATOR_PASSWORD,
 };
 
+
 export const maggie = {
   fname: "Maggie",
   lname: "Simpson",
