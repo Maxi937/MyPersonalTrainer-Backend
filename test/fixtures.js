@@ -6,18 +6,6 @@ loadconfig();
 export const server = await start();
 export const serviceUrl = process.env.url;
 
-// Add a response interceptor
-axios.interceptors.response.use(
-  (response) => response,
-  (error) => {
-    if (error.response) {
-      return error.response
-    } 
-    console.log("error");
-    return Promise.reject(error);
-  }
-);
-
 export const adminUser = {
   email: process.env.ADMINISTRATOR_EMAIL,
   password: process.env.ADMINISTRATOR_PASSWORD,
@@ -37,6 +25,30 @@ export const kiki = {
   password: "secret",
   displayName: "kikiFit",
 };
+
+export const testTrainers = [
+  {
+    fname: "Ray",
+    lname: "McDowan",
+    email: "Ray@Trainer.com",
+    password: "secret",
+    displayName: "RayFit",
+  },
+  {
+    fname: "Lorna",
+    lname: "Morna",
+    email: "lorna@Trainer.com",
+    password: "secret",
+    displayName: "lornaFit",
+  },
+  {
+    fname: "Dillon",
+    lname: "Frank",
+    email: "Dillon@Trainer.com",
+    password: "secret",
+    displayName: "DillonFit",
+  },
+];
 
 export const testUsers = [
   {

@@ -14,7 +14,15 @@ const userApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const users = await db.User.find().getAll();
+        const { query } = request;
+
+        const users = await db.User.find(query);
+
+        if (users.length === 1) {
+          const user = users[0];
+          return h.response({ status: "success", user: user });
+        }
+
         return h.response({ status: "success", users: users });
       } catch (err) {
         return Boom.serverUnavailable();
@@ -23,7 +31,7 @@ const userApi = {
     tags: ["api"],
     description: "Returns all Users",
     notes: "Returns 'status: success' if the request succeeds, even if there are no users",
-    response: { schema: ApiResponseSchema },
+    // response: { schema: ApiResponseSchema },
   },
 
   findOne: {
@@ -78,8 +86,8 @@ const userApi = {
     validate: {
       payload: UserSpec,
       failAction(request, h, err) {
-        console.log(err)
-        return logger.error("JOI validation failure"); // set up a log level for validation errors
+        return Boom.badRequest(err.message);
+        // return logger.error("JOI validation failure"); // set up a log level for validation errors
       },
     },
   },
@@ -135,16 +143,14 @@ const userApi = {
         const user = await db.User.find().getByEmail(email);
 
         // TODO: Review decryption need to unencrypt first regardless of whether a user exists - timin attack vector
-        if ((!user || (await unencryptPassword(password, user.password)) === false)) {
-          logger.error("Login Failed, bad credentials");
-          console.log("errerererererer")
+        if (!user || (await unencryptPassword(password, user.password)) === false) {
           return Boom.badRequest("Resource not available");
         }
 
         const token = createToken(user);
         return h.response({ status: "success", token: token }).code(201);
       } catch (err) {
-        console.log(err)
+        console.log(err);
         logger.error(err);
         return Boom.serverUnavailable("Database Error");
       }

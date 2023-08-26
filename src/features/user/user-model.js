@@ -32,16 +32,25 @@ export const userSchema = new Mongoose.Schema(
   { timestamps: true }
 );
 
+// Filter out any admin results from general find queries
+userSchema.post("find", (result) => {
+  result.forEach((element, index) => {
+    if (element.role === "admin") {
+      result.splice(index, 1);
+    }
+  });
+});
+
 userSchema.statics.addUser = async function (user) {
   try {
-    user.role = "user"
-    const newuser = new this(user)
+    user.role = "user";
+    const newuser = new this(user);
     await newuser.save();
     logger.info("User added Successfully");
-    return newuser
+    return newuser;
   } catch (err) {
     logger.error(err);
-    return {}
+    return {};
   }
 };
 
@@ -93,13 +102,12 @@ userSchema.statics.deleteAll = async function () {
 // userSchema.statics.deleteOne = async function (id) {
 //   try {
 //     await this.findOneAndDelete({ _id: id });
-//     return 
+//     return
 //   } catch (err) {
 //     console.log(err);
 //     return err;
 //   }
 // };
-
 
 userSchema.statics.getProfile = async function (userId) {
   try {

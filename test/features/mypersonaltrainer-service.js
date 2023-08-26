@@ -1,6 +1,9 @@
 import axios from "axios";
 import { serviceUrl } from "../fixtures.js";
 import logger from "../../src/utility/logger.js";
+import { registerAxiosResponseHandler } from "../test-utils.js";
+
+registerAxiosResponseHandler(axios);
 
 logger.info(`Service Url: ${serviceUrl}`);
 
@@ -28,13 +31,28 @@ export const myPersonalTrainerService = {
     return res.data;
   },
 
-  async getAllUsers() {
-    const res = await axios.get(`${this.url}/api/users`);
+  async getUsers(args = {}) {
+    let queryString = "?";
+    Object.entries(args).forEach(([key, value]) => {
+      queryString += `${key}=${value}&`;
+    });
+
+    const res = await axios.get(`${this.url}/api/users${queryString}`);
     return res.data;
   },
 
   async deleteAllUsers() {
     const res = await axios.delete(`${this.url}/api/users`);
+    return res.data;
+  },
+
+  async getTrainers(args = {}) {
+    let queryString = "?";
+    Object.entries(args).forEach(([key, value]) => {
+      queryString += `${key}=${value}&`;
+    });
+
+    const res = await axios.get(`${this.url}/api/trainers${queryString}`);
     return res.data;
   },
 
@@ -85,11 +103,6 @@ export const myPersonalTrainerService = {
 
   async addClientToTrainer(trainerId, clientId) {
     const res = await axios.post(`${this.url}/api/trainers/clients`, { trainerId: trainerId, clientId: clientId });
-    return res.data;
-  },
-
-  async getClients(trainerId) {
-    const res = await axios.get(`${this.url}/api/trainers/${trainerId}/clients`);
     return res.data;
   },
 

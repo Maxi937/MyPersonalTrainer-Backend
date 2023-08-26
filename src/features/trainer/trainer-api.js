@@ -12,8 +12,15 @@ const trainerApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const trainers = await db.Trainer.find().getAll();
-        return h.response({ status: "success", trainers: trainers});
+        const { query } = request;
+        const trainers = await db.Trainer.find(query);
+
+        if (trainers.length === 1) {
+          const trainer = trainers[0];
+          return h.response({ status: "success", trainer: trainer });
+        }
+
+        return h.response({ status: "success", trainers: trainers });
       } catch (err) {
         return Boom.serverUnavailable();
       }
@@ -63,7 +70,7 @@ const trainerApi = {
         }
 
         trainer = await db.Trainer.create(trainer);
-        return h.response({status: "success", trainer: trainer});
+        return h.response({ status: "success", trainer: trainer });
       } catch (err) {
         logger.error(err.message);
         return Boom.serverUnavailable();
@@ -86,34 +93,13 @@ const trainerApi = {
         const client = await db.User.find().getById(request.payload.clientId);
 
         if (!trainer || !client) {
-          return Boom.badRequest("Resource does not exist")
+          return Boom.badRequest("Resource does not exist");
           // return h.response({ status: "fail", message: "unkown resource"})
         }
 
-        const response = await trainer.addClient(client._id);
-        return h.response(response);
-      } catch (err) {
-        console.log(err);
-        logger.error(err.message);
-        return Boom.serverUnavailable();
-      }
-    },
-    tags: ["api"],
-    description: "Create a User",
-    notes: "Returns the newly created user",
-    // requires validation,
-  },
+        await trainer.addClient(client._id);
 
-  getClients: {
-    method: "GET",
-    path: "/api/trainers/{id}/clients",
-    cors: true,
-    auth: false,
-    handler: async function (request, h) {
-      try {
-        const trainer = await db.Trainer.find().lean().getById(request.params.id);
-        const response = trainer.clients;
-        return h.response(response);
+        return h.response({ status: "success", trainer: trainer });
       } catch (err) {
         console.log(err);
         logger.error(err.message);
@@ -138,10 +124,11 @@ const trainerApi = {
         if (!trainer) {
           return Boom.badRequest("Trainer does not exist");
         }
+        await trainer.deleteClient(request.params.clientId);
 
-        const response = await trainer.deleteClient(request.params.clientId);
-        return h.response(response);
+        return h.response({ status: "success", trainer: trainer });
       } catch (err) {
+        console.log(err.message);
         logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
       }
