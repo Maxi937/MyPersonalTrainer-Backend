@@ -1,6 +1,7 @@
 import Joi from "joi";
+import { MongooseDetailsSpec } from "../../database/mongo/mongo-validation.js";
 
-export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
+// export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).description("a valid ID");
 
 export const UserSpec = Joi.object()
   .keys({
@@ -10,10 +11,7 @@ export const UserSpec = Joi.object()
     password: Joi.string().required(),
     profilepicture: Joi.allow().optional(),
     role: Joi.string().optional(),
-    _id: IdSpec,
-    __v: Joi.number(),
-    createdAt: Joi.date(),
-    updatedAt: Joi.date(),
+    MongooseDetailsSpec
   })
   .label("UserDetails");
 

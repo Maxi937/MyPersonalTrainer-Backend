@@ -1,4 +1,4 @@
-export const lateralRaise = {
-    name: "lateral raise",
-    description: "shoulder workout"
-}
+// export const lateralRaise = {
+//     name: "lateral raise",
+//     description: "shoulder workout"
+// }

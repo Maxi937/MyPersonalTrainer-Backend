@@ -1,6 +1,6 @@
 import Boom, { boomify } from "@hapi/boom";
 import Joi from "joi";
-import fs from "fs";
+import { ExerciseSpec } from "./exercise-validation.js";
 import logger from "../../utility/logger.js";
 import { db } from "../../database/db.js";
 
@@ -69,13 +69,14 @@ const exerciseApi = {
     tags: ["api"],
     description: "Create an Exercise",
     notes: "Returns the newly exercise",
-    // validate: {
-    //   payload: UserSpec,
-    //   failAction(request, h, err) {
-    //     return Boom.badRequest(err.message);
-    //     // return logger.error("JOI validation failure"); // set up a log level for validation errors
-    //   },
-    // },
+    validate: {
+      payload: ExerciseSpec,
+      failAction(request, h, err) {
+        console.log(err.message)
+        return Boom.badRequest(err.message);
+        // return logger.error("JOI validation failure"); // set up a log level for validation errors
+      },
+    },
   },
 
   deleteAll: {

@@ -13,6 +13,10 @@ export const exerciseSchema = new Mongoose.Schema(
       type: String,
       required: true,
     },
+    bodyPart: {
+      type: String,
+      required: true,
+    },
     meta: {
       type: Object,
       required: false,
@@ -25,7 +29,6 @@ export const exerciseSchema = new Mongoose.Schema(
   },
   { timestamps: true }
 );
-
 
 exerciseSchema.statics.deleteAll = async function () {
   try {
