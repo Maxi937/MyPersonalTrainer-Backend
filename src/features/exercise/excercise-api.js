@@ -72,7 +72,7 @@ const exerciseApi = {
     validate: {
       payload: ExerciseSpec,
       failAction(request, h, err) {
-        console.log(err.message)
+        console.log(err.message);
         return Boom.badRequest(err.message);
         // return logger.error("JOI validation failure"); // set up a log level for validation errors
       },
@@ -88,7 +88,7 @@ const exerciseApi = {
     handler: async function (request, h) {
       try {
         await db.Exercise.deleteAll();
-        return h.response().code(204);
+        return h.response({ status: "success" }).code(204);
       } catch (err) {
         console.log(err);
         return Boom.serverUnavailable("Database Error");

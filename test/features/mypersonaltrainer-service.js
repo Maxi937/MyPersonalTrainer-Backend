@@ -116,23 +116,23 @@ export const myPersonalTrainerService = {
     return res.data;
   },
 
-  // async getExercises(args = {}) {
-  //   let queryString = "?";
-  //   Object.entries(args).forEach(([key, value]) => {
-  //     queryString += `${key}=${value}&`;
-  //   });
+  async getExercises(args = {}) {
+    let queryString = "?";
+    Object.entries(args).forEach(([key, value]) => {
+      queryString += `${key}=${value}&`;
+    });
 
-  //   const res = await axios.get(`${this.url}/api/trainers${queryString}`);
-  //   return res.data;
-  // },
+    const res = await axios.get(`${this.url}/api/exercises${queryString}`);
+    return res.data;
+  },
 
-  // async deleteExercise(id) {
-  //   const res = await axios.delete(`${this.url}/api/trainers/${id}`);
-  //   return res.data;
-  // },
+  async deleteExercise(id) {
+    const res = await axios.delete(`${this.url}/api/exercises/${id}`);
+    return res.data;
+  },
 
-  // async deleteAllExercises() {
-  //   const res = await axios.delete(`${this.url}/api/trainers`);
-  //   return res.data;
-  // },
+  async deleteAllExercises() {
+    const res = await axios.delete(`${this.url}/api/exercises`);
+    return res.data;
+  },
 };
