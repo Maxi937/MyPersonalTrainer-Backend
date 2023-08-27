@@ -8,11 +8,11 @@ suite("Exercise API tests", () => {
   setup(async () => {
     await myPersonalTrainerService.clearAuth();
     await myPersonalTrainerService.authenticate(adminUser);
-    await myPersonalTrainerService.deleteAllExercises()
+    await myPersonalTrainerService.deleteAllExercises();
   });
 
   suiteTeardown(async () => {
-    await myPersonalTrainerService.deleteAllExercises()
+    await myPersonalTrainerService.deleteAllExercises();
     await myPersonalTrainerService.clearAuth();
   });
 
@@ -30,7 +30,7 @@ suite("Exercise API tests", () => {
     );
 
     const { exercises } = await myPersonalTrainerService.getExercises();
-    assert.equal(exercises.length, testExercises.length)
+    assert.equal(exercises.length, testExercises.length);
   });
 
   test("Get Exercise - Body Part", async () => {
@@ -40,8 +40,8 @@ suite("Exercise API tests", () => {
       })
     );
 
-    const { exercise } = await myPersonalTrainerService.getExercises({ bodyPart: "Chest"});
-    assert.equal(exercise.name, "Bench Press")
+    const { exercise } = await myPersonalTrainerService.getExercises({ bodyPart: "Chest" });
+    assert.equal(exercise.name, "Bench Press");
   });
 
   test("Delete Exercise", async () => {
@@ -51,12 +51,12 @@ suite("Exercise API tests", () => {
       })
     );
 
-    const { exercise } = await myPersonalTrainerService.getExercises({ bodyPart: "Chest"});
+    const { exercise } = await myPersonalTrainerService.getExercises({ bodyPart: "Chest" });
 
-    const response = await myPersonalTrainerService.deleteExercise(exercise._id)
-    assert.equal(response.status, "success")
+    const response = await myPersonalTrainerService.deleteExercise(exercise._id);
+    assert.equal(response.status, "success");
 
-    const {exercises} = await myPersonalTrainerService.getExercises()
-    assert.equal(exercises.length, testExercises.length -1)
+    const { exercises } = await myPersonalTrainerService.getExercises();
+    assert.equal(exercises.length, testExercises.length - 1);
   });
 });
