@@ -9,10 +9,8 @@ const photoApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        console.log("hello");
         const photos = await db.PhotoStorage.getPhotos();
-        console.log(photos);
-        return users;
+        return photos;
       } catch (err) {
         return Boom.serverUnavailable("Database Error");
       }

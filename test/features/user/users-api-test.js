@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { assertSubset, createMockFormData } from "../../test-utils.js";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
-import { maggie, adminUser, testUsers } from "../../fixtures.js";
+import { maggie, adminUser, testUsers } from "../../fixtures/fixtures.js";
 
 const mockUsers = new Array(testUsers.length);
 

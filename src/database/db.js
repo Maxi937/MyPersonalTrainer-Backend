@@ -3,7 +3,8 @@ import logger from "../utility/logger.js";
 import { encryptPassword } from "../utility/encrypt.js";
 import { User } from "../features/user/user-model.js";
 import { Trainer } from "../features/trainer/trainer-model.js";
-import { Exercise } from "../features/exercise/excercise-model.js";
+import { Exercise } from "../features/workoutRoutines/exercise/excercise-model.js";
+import { Workout } from "../features/workoutRoutines/workout/workout-model.js";
 import PhotoStorage from "./supabase/PhotoStorage.js";
 
 export const db = {
@@ -17,6 +18,7 @@ export const db = {
         this.User = User;
         this.Trainer = Trainer;
         this.Exercise = Exercise;
+        this.Workout = Workout;
         this.Connection = await connectMongo();
         break;
       default:

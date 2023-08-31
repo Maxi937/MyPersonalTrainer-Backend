@@ -20,6 +20,8 @@ import { boomResponseData } from "./boomResponseData.js";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+
+
 async function setupServer() {
   const swaggerOptions = {
     info: {
@@ -103,7 +105,14 @@ async function setupServer() {
   server.route(publicFolder);
 
   // This adds routes from each feature with a default export
-  server.route(await registerRoutes());
+  try {
+    server.route(await registerRoutes());
+  } catch(err) {
+    console.log("Unable to register Routes")
+    console.log(err)
+    process.exit(1)
+  }
+ 
 
   process.on("unhandledRejection", (err) => {
     logger.error(err.message);

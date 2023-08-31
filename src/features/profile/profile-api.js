@@ -122,8 +122,7 @@ const profileApi = {
         }
         return h.response({ success: false }).code(200);
       } catch (err) {
-        console.log(err);
-        return Boom.serverUnavailable("Database Error");
+        return Boom.serverUnavailable();
       }
     },
     tags: ["api"],

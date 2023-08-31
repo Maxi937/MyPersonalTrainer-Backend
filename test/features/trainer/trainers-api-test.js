@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { assertSubset, createMockFormData } from "../../test-utils.js";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
-import { kiki, maggie, adminUser, testUsers, testTrainers } from "../../fixtures.js";
+import { kiki, maggie, adminUser, testUsers, testTrainers } from "../../fixtures/fixtures.js";
 
 suite("Trainer API tests", () => {
   setup(async () => {
@@ -50,7 +50,7 @@ suite("Trainer API tests", () => {
 
   test("Get A Trainer - Id", async () => {
     const response = await myPersonalTrainerService.createTrainer(kiki);
-    const id = response.trainer._id
+    const id = response.trainer._id;
     const { trainer } = await myPersonalTrainerService.getTrainers({ _id: id });
     assert.isDefined(trainer);
     assert.equal(trainer._id, id);

@@ -1,8 +1,8 @@
 import { assert } from "chai";
 import { assertSubset, createMockFormData } from "../../test-utils.js";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
-import { kiki, maggie, adminUser, testUsers, testTrainers } from "../../fixtures.js";
-import { lateralRaise, testExercises } from "./exercise-fixtures.js";
+import { kiki, maggie, adminUser, testUsers, testTrainers } from "../../fixtures/fixtures.js";
+import { lateralRaise, testExercises } from "../../fixtures/exercise-fixtures.js";
 
 suite("Exercise API tests", () => {
   setup(async () => {

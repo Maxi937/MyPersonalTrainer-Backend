@@ -1,5 +1,5 @@
 import Joi from "joi";
-import { MongooseDetailsSpec, IdSpec } from "../../database/mongo/mongo-validation.js";
+import { MongooseDetailsSpec, IdSpec } from "../../../database/mongo/mongo-validation.js";
 
 export const ExerciseSpec = Joi.object()
   .keys({

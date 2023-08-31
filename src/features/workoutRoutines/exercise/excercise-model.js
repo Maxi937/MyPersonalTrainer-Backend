@@ -1,5 +1,5 @@
 import Mongoose from "mongoose";
-import logger from "../../utility/logger.js";
+import logger from "../../../utility/logger.js";
 
 // TODO: REFINE EXERCISE PROPERTIES
 

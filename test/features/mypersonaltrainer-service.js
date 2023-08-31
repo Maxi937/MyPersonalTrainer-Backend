@@ -1,10 +1,9 @@
 import axios from "axios";
-import { serviceUrl } from "../fixtures.js";
+import { serviceUrl } from "../fixtures/fixtures.js";
 import logger from "../../src/utility/logger.js";
 import { registerAxiosResponseHandler } from "../test-utils.js";
 
 registerAxiosResponseHandler(axios);
-
 logger.info(`Service Url: ${serviceUrl}`);
 
 export const myPersonalTrainerService = {
@@ -22,7 +21,6 @@ export const myPersonalTrainerService = {
 
   async getUser(id) {
     const res = await axios.get(`${this.url}/api/users/${id}`);
-    // console.log(res)
     return res.data;
   },
 
@@ -133,6 +131,31 @@ export const myPersonalTrainerService = {
 
   async deleteAllExercises() {
     const res = await axios.delete(`${this.url}/api/exercises`);
+    return res.data;
+  },
+
+  async createWorkout(workouts) {
+    const res = await axios.post(`${this.url}/api/workouts`, workouts);
+    return res.data;
+  },
+
+  async getWorkouts(args = {}) {
+    let queryString = "?";
+    Object.entries(args).forEach(([key, value]) => {
+      queryString += `${key}=${value}&`;
+    });
+
+    const res = await axios.get(`${this.url}/api/workouts${queryString}`);
+    return res.data;
+  },
+
+  async deleteWorkout(id) {
+    const res = await axios.delete(`${this.url}/api/workouts/${id}`);
+    return res.data;
+  },
+
+  async deleteAllWorkouts() {
+    const res = await axios.delete(`${this.url}/api/workouts`);
     return res.data;
   },
 };

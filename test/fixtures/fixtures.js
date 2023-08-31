@@ -1,6 +1,5 @@
-import axios from "axios";
-import { start } from "../src/server/server.js";
-import { loadconfig } from "../config/loadconfig.js";
+import { start } from "../../src/server/server.js";
+import { loadconfig } from "../../config/loadconfig.js";
 
 loadconfig();
 export const server = await start();
@@ -10,7 +9,6 @@ export const adminUser = {
   email: process.env.ADMINISTRATOR_EMAIL,
   password: process.env.ADMINISTRATOR_PASSWORD,
 };
-
 
 export const maggie = {
   fname: "Maggie",

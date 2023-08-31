@@ -104,7 +104,6 @@ const userApi = {
         await db.User.deleteAll();
         return h.response().code(204);
       } catch (err) {
-        console.log(err);
         return Boom.serverUnavailable("Database Error");
       }
     },

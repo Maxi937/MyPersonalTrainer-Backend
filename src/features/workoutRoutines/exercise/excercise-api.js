@@ -1,8 +1,8 @@
 import Boom, { boomify } from "@hapi/boom";
 import Joi from "joi";
 import { ExerciseSpec } from "./exercise-validation.js";
-import logger from "../../utility/logger.js";
-import { db } from "../../database/db.js";
+import logger from "../../../utility/logger.js";
+import { db } from "../../../database/db.js";
 
 const exerciseApi = {
   find: {

@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
 import { decodeToken } from "../../../src/utility/jwt-utils.js";
-import { maggie, adminUser } from "../../fixtures.js";
+import { maggie, adminUser } from "../../fixtures/fixtures.js";
 
 suite("Authentication API tests", async () => {
   setup(async () => {
@@ -37,7 +37,7 @@ suite("Authentication API tests", async () => {
   test("Authentication - Access Route - Unauthorized", async () => {
     await myPersonalTrainerService.clearAuth();
     const response = await myPersonalTrainerService.deleteAllUsers();
-    assert.equal(response.status, "fail")
+    assert.equal(response.status, "fail");
   });
 });
 

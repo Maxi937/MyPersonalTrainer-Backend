@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import { myPersonalTrainerService } from "../mypersonaltrainer-service.js";
 import { createMockFormData, assertSubset } from "../../test-utils.js";
-import { maggie, adminUser } from "../../fixtures.js";
+import { maggie, adminUser } from "../../fixtures/fixtures.js";
 
 
 suite("Profile API tests", async () => {
