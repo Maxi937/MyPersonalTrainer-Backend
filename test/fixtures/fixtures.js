@@ -2,8 +2,8 @@ import { start } from "../../src/server/server.js";
 import { loadconfig } from "../../config/loadconfig.js";
 
 loadconfig();
+export const serviceUrl = "http://localhost:4000";
 export const server = await start();
-export const serviceUrl = process.env.url;
 
 export const adminUser = {
   email: process.env.ADMINISTRATOR_EMAIL,

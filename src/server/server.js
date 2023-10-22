@@ -100,6 +100,7 @@ async function setupServer() {
   server.auth.default("session");
 
   // Set Routes
+
   // This adds the public folder
   const publicFolder = { method: "GET", path: "/{param*}", handler: { directory: { path: "./public" } }, options: { auth: false } };
   server.route(publicFolder);
@@ -115,6 +116,7 @@ async function setupServer() {
  
 
   process.on("unhandledRejection", (err) => {
+    console.log(err)
     logger.error(err.message);
     process.exit(1);
   });
