@@ -55,7 +55,7 @@ async function getRoutes(importList) {
  * The default export of each Feature is an array of Objects with one key.
  * The route is the value of this object key.
  * Each route is parsed for the "Method", "Path" with the rest of the properties being put into an "Options" object for Hapi's server.route() function.
- * @param {string} [featuresPath="./src/features"] - The Path the features folder. defaults to: "./src/features".
+ * @param {string} [featuresPath="./src/features"] - The Path of the features folder. defaults to: "./src/features".
  * @returns {Array<Object>} Sum of a and b
  */
 export async function registerRoutes(featuresPath = "./src/features") {

@@ -124,7 +124,7 @@ async function setupServer() {
 export async function start() {
   await db.initialiseDb("mongoDB");
   const server = await setupServer();
-  await server.start();
+  server.start();
   logger.info(`Server running on <${server.info.uri}>`);
   logger.info(`Server started: ${new Date()}`);
   return server;
