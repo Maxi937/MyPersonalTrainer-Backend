@@ -1,6 +1,11 @@
 import { start } from "../../src/server/server.js";
 import { loadconfig } from "../../config/loadconfig.js";
 
+// TODO: This Fixtures file needs to be split - the loading of the config and starting server should be in a seperate file to the test data. 
+// WHY?
+// When creating the seed scripts, I could not import from this file because the imports caused the server to try to be started.
+// Also the mypersonaltrainer-service should be changed to take an arg as the url so I can just reuse it when I need it 
+
 loadconfig();
 export const serviceUrl = "http://localhost:4000";
 export const server = await start();
