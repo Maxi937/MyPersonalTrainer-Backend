@@ -51,28 +51,39 @@ const profileApi = {
 
   getUserProfile: {
     method: "GET",
-    path: "/api/profile/getProfile",
+    path: "/api/profile",
     auth: false,
     cors: true,
     handler: async function (request, h) {
       try {
-        const user = await db.User.findOne({ _id: request.params.id });
-
-        if (!user) {
-          return Boom.unauthorized("User not found");
+        const userId = getUserIdFromRequest(request);
+        
+        if(!userId) {
+          return Boom.unauthorized();
         }
 
-        const userName = `${user.fname} ${user.lname}`;
-        const profilepicture = {
-          data: await user.profilepicture.data.toString("base64"),
-          contentType: await user.profilepicture.contentType,
-        };
+        console.log("user requesting profile", userId)
+
+        const user = await db.User.find().lean().getById(userId);
+
+        const userDetails = {
+          fname: user.fname,
+          lname: user.lname,
+          email: user.email
+        }
+
+        const workouts = await db.Workout.getWorkoutsByUser(userId);
+        const exercises = await db.Exercise.getExerciseByUser(userId);
 
         const userProfile = {
-          userName,
-          profilepicture,
-        };
-        return h.response(userProfile);
+          userDetails,
+          workouts,
+          exercises
+        } 
+
+        console.log(userProfile)
+
+        return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {
         return Boom.serverUnavailable("Database not available");
       }

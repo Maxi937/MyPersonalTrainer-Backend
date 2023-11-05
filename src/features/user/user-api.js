@@ -19,11 +19,6 @@ const userApi = {
 
         const users = await db.User.find(query);
 
-        // if (users.length === 1) {
-        //   const user = users[0];
-        //   return h.response({ status: "success", user: user });
-        // }
-
         return h.response({ status: "success", users: users });
       } catch (err) {
         return Boom.serverUnavailable();
@@ -74,7 +69,9 @@ const userApi = {
         }
 
         user = await db.User.addUser(user);
-        return h.response({ status: "success", user: user });
+
+        return h.redirect("/api/users/authenticate")
+        // return h.response({ status: "success", user: user });
       } catch (err) {
         console.log(err);
         logger.error(err.message);

@@ -13,11 +13,10 @@ const exerciseApi = {
     handler: async function (request, h) {
       try {
         const userId = getUserIdFromRequest(request);
-        
+
         if(!userId) {
           return Boom.unauthorized();
         }
-        console.log(userId)
 
         const exercises = await db.Exercise.getExerciseByUser(userId);
 

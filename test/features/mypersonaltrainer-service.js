@@ -158,4 +158,9 @@ export const myPersonalTrainerService = {
     const res = await axios.delete(`${this.url}/api/workouts`);
     return res.data;
   },
+
+  async getProfile() {
+    const res = await axios.get(`${this.url}/api/profile`);
+    return res.data;
+  },
 };
