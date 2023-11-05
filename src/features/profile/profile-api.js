@@ -1,7 +1,7 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
 import logger from "../../utility/logger.js";
-import { getUserIdFromRequest, createToken } from "../../utility/jwt-utils.js";
+import { getUserIdFromRequest } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
 
 

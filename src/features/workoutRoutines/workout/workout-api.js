@@ -3,6 +3,7 @@ import Joi from "joi";
 import { WorkoutSpec } from "./workout-validation.js";
 import logger from "../../../utility/logger.js";
 import { db } from "../../../database/db.js";
+import { getUserIdFromRequest } from "../../../utility/jwt-utils.js";
 
 const workoutApi = {
   find: {
@@ -11,14 +12,9 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const { query } = request;
+        const userId = getUserIdFromRequest(request);
 
-        const workouts = await db.Workout.find(query);
-
-        if (workouts.length === 1) {
-          const workout = workouts[0];
-          return h.response({ status: "success", workout: workout });
-        }
+        const workouts = await db.Workout.getWorkoutsByUser(userId);
 
         return h.response({ status: "success", workouts: workouts });
       } catch (err) {
@@ -53,6 +49,7 @@ const workoutApi = {
     notes: "Returns user details",
   },
 
+  // Need Service here to lookup the exercises the user already has and to create if not found - at the moment it just creates new exercises each time
   create: {
     method: "POST",
     path: "/api/workouts",
@@ -60,19 +57,36 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const workout = await db.Workout.create(request.payload);
+        const userId = getUserIdFromRequest(request);
+
+        if(!userId) {
+          return Boom.unauthorized();
+        }
+
+        const data = request.payload
+
+        const exercises = []
+
+        await Promise.all(
+              data.exercises.map(async (newexercise) => {
+                exercises.push(await db.Exercise.create(newexercise))
+              })
+            );
+
+        const workout = await db.Workout.create({ name: data.name, exercises:exercises, createdBy: userId });
+        
         return h.response({ status: "success", workout: workout });
       } catch (err) {
         return Boom.serverUnavailable();
       }
     },
     tags: ["api"],
-    description: "Create an Exercise",
+    description: "Create a Workout",
     notes: "Returns the newly exercise",
     validate: {
       payload: WorkoutSpec,
       failAction(request, h, err) {
-        console.log(err.message);
+        console.log("JOI:", err.message);
         return Boom.badRequest(err.message);
         // return logger.error("JOI validation failure"); // set up a log level for validation errors
       },

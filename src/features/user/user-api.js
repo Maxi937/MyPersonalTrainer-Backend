@@ -19,10 +19,10 @@ const userApi = {
 
         const users = await db.User.find(query);
 
-        if (users.length === 1) {
-          const user = users[0];
-          return h.response({ status: "success", user: user });
-        }
+        // if (users.length === 1) {
+        //   const user = users[0];
+        //   return h.response({ status: "success", user: user });
+        // }
 
         return h.response({ status: "success", users: users });
       } catch (err) {
@@ -139,6 +139,7 @@ const userApi = {
     cors: true,
     handler: async function (request, h) {
       try {
+        
         const { email, password } = request.payload;
         const user = await db.User.find().getByEmail(email);
 
@@ -146,6 +147,7 @@ const userApi = {
         if (!user || (await unencryptPassword(password, user.password)) === false) {
           return Boom.badRequest("Resource not available");
         }
+
 
         const token = createToken(user);
         return h.response({ status: "success", token: token }).code(201);

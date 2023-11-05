@@ -134,8 +134,8 @@ export const myPersonalTrainerService = {
     return res.data;
   },
 
-  async createWorkout(workouts) {
-    const res = await axios.post(`${this.url}/api/workouts`, workouts);
+  async createWorkout(workout) {
+    const res = await axios.post(`${this.url}/api/workouts`, workout);
     return res.data;
   },
 

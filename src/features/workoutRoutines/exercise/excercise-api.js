@@ -15,10 +15,10 @@ const exerciseApi = {
 
         const exercises = await db.Exercise.find(query);
 
-        if (exercises.length === 1) {
-          const exercise = exercises[0];
-          return h.response({ status: "success", exercise: exercise });
-        }
+        // if (exercises.length === 1) {
+        //   const exercise = exercises[0];
+        //   return h.response({ status: "success", exercise: exercise });
+        // }
 
         return h.response({ status: "success", exercises: exercises });
       } catch (err) {
