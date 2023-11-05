@@ -70,8 +70,8 @@ const userApi = {
 
         user = await db.User.addUser(user);
 
-        return h.redirect("/api/users/authenticate")
-        // return h.response({ status: "success", user: user });
+
+        return h.response({ status: "success", user: user });
       } catch (err) {
         console.log(err);
         logger.error(err.message);
