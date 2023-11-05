@@ -5,7 +5,7 @@ export const ExerciseSpec = Joi.object()
   .keys({
     name: Joi.string().required(),
     description: Joi.string().required(),
-    bodyPart: Joi.string().required(),
+    bodyPart: Joi.string(),
     meta: Joi.object(),
     sets: Joi.array(),
     createdBy: IdSpec,

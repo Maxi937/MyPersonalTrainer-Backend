@@ -69,6 +69,8 @@ const exerciseApi = {
         const data = request.payload
         data.createdBy = userId
 
+        console.log("create", data)
+
         const exercise = await db.Exercise.create(data);
         return h.response({ status: "success", exercise: exercise });
       } catch (err) {

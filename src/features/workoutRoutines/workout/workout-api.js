@@ -64,6 +64,9 @@ const workoutApi = {
         }
 
         const data = request.payload
+        
+        console.log(userId)
+        console.log(data)
 
         const exercises = []
 
