@@ -3,6 +3,7 @@ import Joi from "joi";
 import { ExerciseSpec } from "./exercise-validation.js";
 import logger from "../../../utility/logger.js";
 import { db } from "../../../database/db.js";
+import { getUserIdFromRequest } from "../../../utility/jwt-utils.js";
 
 const exerciseApi = {
   find: {
@@ -11,14 +12,14 @@ const exerciseApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const { query } = request;
+        const userId = getUserIdFromRequest(request);
+        
+        if(!userId) {
+          return Boom.unauthorized();
+        }
+        console.log(userId)
 
-        const exercises = await db.Exercise.find(query);
-
-        // if (exercises.length === 1) {
-        //   const exercise = exercises[0];
-        //   return h.response({ status: "success", exercise: exercise });
-        // }
+        const exercises = await db.Exercise.getExerciseByUser(userId);
 
         return h.response({ status: "success", exercises: exercises });
       } catch (err) {
@@ -60,7 +61,16 @@ const exerciseApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const exercise = await db.Exercise.create(request.payload);
+        const userId = getUserIdFromRequest(request);
+
+        if(!userId) {
+          return Boom.unauthorized();
+        }
+
+        const data = request.payload
+        data.createdBy = userId
+
+        const exercise = await db.Exercise.create(data);
         return h.response({ status: "success", exercise: exercise });
       } catch (err) {
         return Boom.serverUnavailable("Database Error");

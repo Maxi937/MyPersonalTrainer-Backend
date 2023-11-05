@@ -15,7 +15,6 @@ export const exerciseSchema = new Mongoose.Schema(
     },
     bodyPart: {
       type: String,
-      required: true,
     },
     meta: {
       type: Object,
@@ -35,6 +34,15 @@ export const exerciseSchema = new Mongoose.Schema(
   },
   { timestamps: true }
 );
+
+exerciseSchema.statics.getExerciseByUser = async function (userId) {
+  try {
+    return await this.find({ createdBy: userId }).lean()
+  } catch (err) {
+    logger.error(err);
+    return err;
+  }
+};
 
 exerciseSchema.statics.deleteAll = async function () {
   try {

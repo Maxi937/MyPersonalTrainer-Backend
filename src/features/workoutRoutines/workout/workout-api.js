@@ -13,7 +13,6 @@ const workoutApi = {
     handler: async function (request, h) {
       try {
         const userId = getUserIdFromRequest(request);
-        console.log(userId)
 
         const workouts = await db.Workout.getWorkoutsByUser(userId);
 
