@@ -21,6 +21,12 @@ export const exerciseSchema = new Mongoose.Schema(
       type: Object,
       required: false,
     },
+    sets: [
+      {
+        type: Array,
+        required: false,
+      },
+    ],
     createdBy: {
       type: Mongoose.SchemaTypes.ObjectId,
       ref: "User",

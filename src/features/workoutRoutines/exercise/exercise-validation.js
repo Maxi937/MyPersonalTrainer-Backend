@@ -7,6 +7,7 @@ export const ExerciseSpec = Joi.object()
     description: Joi.string().required(),
     bodyPart: Joi.string().required(),
     meta: Joi.object(),
+    sets: Joi.array(),
     createdBy: IdSpec,
     MongooseDetailsSpec,
   })
