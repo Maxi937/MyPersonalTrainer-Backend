@@ -6,6 +6,8 @@ export const WorkoutSpec = Joi.object()
   .keys({
     name: Joi.string().required(),
     exercises: Joi.array().items(ExerciseSpec),
+    history: Joi.allow(),
+    date: Joi.allow(),
     MongooseDetailsSpec,
   })
   .label("WorkoutDetails");

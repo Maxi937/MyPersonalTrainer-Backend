@@ -49,6 +49,43 @@ const workoutApi = {
     notes: "Returns user details",
   },
 
+  createHistory: {
+    method: "POST",
+    path: "/api/workouts/history",
+    cors: true,
+    auth: false,
+    handler: async function (request, h) {
+      try {
+        const userId = getUserIdFromRequest(request);
+
+        if(!userId) {
+          return Boom.unauthorized();
+        }
+
+        const workout = await db.Workout.findOne({ name: request.payload.name, createdBy: userId})
+        workout.history.push(new Date())
+        workout.save()
+        console.log("new history ", workout.name)
+ 
+        return h.response({ status: "success", workout: workout });
+      } catch (err) {
+        console.log(err);
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Add History",
+    notes: "Returns the newly created user",
+    validate: {
+      payload: WorkoutSpec,
+      failAction(request, h, err) {
+        return Boom.badRequest(err.message);
+        // return logger.error("JOI validation failure"); // set up a log level for validation errors
+      },
+    },
+  },
+
   // Need Service here to lookup the exercises the user already has and to create if not found - at the moment it just creates new exercises each time
   create: {
     method: "POST",
@@ -74,7 +111,7 @@ const workoutApi = {
           exercisesToAdd.push(_id)
         }
 
-        const workout = await db.Workout.create({ name: request.payload.name, exercises: exercisesToAdd, createdBy: userId });
+        const workout = await db.Workout.create({ name: request.payload.name, exercises: exercisesToAdd, createdBy: userId, history: [] });
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {

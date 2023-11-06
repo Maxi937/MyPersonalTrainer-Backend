@@ -18,6 +18,12 @@ export const workoutSchema = new Mongoose.Schema(
       ref: "User",
       required: false,
     },
+    history: [
+      {
+        type: Date,
+        required: false,
+      },
+    ],
   },
 
   { timestamps: true }
@@ -25,7 +31,7 @@ export const workoutSchema = new Mongoose.Schema(
 
 workoutSchema.statics.getWorkoutsByUser = async function (userId) {
   try {
-    return await this.find({ createdBy: userId }).populate("exercises").lean()
+    return await this.find({ createdBy: userId }).populate("exercises").lean();
   } catch (err) {
     logger.error(err);
     return err;

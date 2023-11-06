@@ -3,7 +3,7 @@ import fs from "fs";
 import logger from "../../utility/logger.js";
 import { getUserIdFromRequest } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
-
+import { formatISOToDate } from "../../utility/formatutils.js";
 
 const profileApi = {
   update: {
@@ -57,33 +57,48 @@ const profileApi = {
     handler: async function (request, h) {
       try {
         const userId = getUserIdFromRequest(request);
-        
-        if(!userId) {
+
+        if (!userId) {
           return Boom.unauthorized();
         }
 
-        console.log("user requesting profile", userId)
+        console.log("user requesting profile", userId);
 
         const user = await db.User.find().lean().getById(userId);
 
         const userDetails = {
           fname: user.fname,
           lname: user.lname,
-          email: user.email
-        }
+          email: user.email,
+        };
 
         const workouts = await db.Workout.getWorkoutsByUser(userId);
         const exercises = await db.Exercise.getExerciseByUser(userId);
+        const history = [];
+
+        if (workouts) {
+          for (let i = 0; i < workouts.length; i++) {
+            if (workouts[i].hasOwnProperty("history")) {
+              for (let x = 0; x < workouts[i].history.length; x++) {
+                workouts[i].date = formatISOToDate(history[x]);
+                history.push(workouts[i]);
+              }
+            }
+          }
+        }
 
         const userProfile = {
           userDetails,
           workouts,
-          exercises
-        } 
-        console.log(userProfile)
+          exercises,
+          history,
+        };
+
+        console.log(userProfile);
 
         return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {
+        console.log(err);
         return Boom.serverUnavailable("Database not available");
       }
     },
