@@ -80,6 +80,7 @@ const profileApi = {
           workouts,
           exercises
         } 
+        console.log(userProfile)
 
         return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {
