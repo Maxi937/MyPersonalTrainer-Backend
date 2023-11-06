@@ -63,14 +63,15 @@ const userApi = {
       try {
         let user = request.payload;
         user.password = await encryptPassword(user.password);
+        console.log(user)
 
         if (await db.User.isDuplicateEmail(user.email)) {
           return Boom.badRequest("Duplicate email");
         }
 
         user = await db.User.addUser(user);
-        const token = createToken(user);
-        return h.response({ status: "success", token: token }).code(201);
+
+        return h.response({ status: "success" }).code(201);
       } catch (err) {
         console.log(err);
         logger.error(err.message);
@@ -80,13 +81,6 @@ const userApi = {
     tags: ["api"],
     description: "Create a User",
     notes: "Returns the newly created user",
-    validate: {
-      payload: UserSpec,
-      failAction(request, h, err) {
-        return Boom.badRequest(err.message);
-        // return logger.error("JOI validation failure"); // set up a log level for validation errors
-      },
-    },
   },
 
   deleteAll: {
