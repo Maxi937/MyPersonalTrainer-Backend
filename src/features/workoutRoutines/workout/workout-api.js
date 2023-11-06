@@ -63,7 +63,12 @@ const workoutApi = {
         }
 
         const workout = await db.Workout.findOne({ name: request.payload.name, createdBy: userId})
-        workout.history.push(new Date())
+        if(workout.history) {
+          workout.history.push(new Date())
+        } else {
+          workout.history = [ new Date() ]
+        }
+        
         workout.save()
         console.log("new history ", workout.name)
  
