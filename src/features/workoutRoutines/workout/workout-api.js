@@ -65,6 +65,7 @@ const workoutApi = {
         }
 
         const userExercises = request.payload.exercises
+        console.log(userExercises)
 
         for(let i = 0;i < userExercises.length ; i++) {
           console.log("looking for ",  userExercises[i].name)

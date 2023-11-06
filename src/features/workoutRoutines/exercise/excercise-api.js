@@ -71,6 +71,7 @@ const exerciseApi = {
 
 
         if(data.sets[0].hasOwnProperty("reps")) {
+          console.log("android")
           for(let i = 0; i < data.sets.length; i++) {
             console.log(data.sets[i])
             data.sets[i] = data.sets[i].reps
@@ -80,6 +81,7 @@ const exerciseApi = {
         const exercise = await db.Exercise.create(data);
         return h.response({ status: "success", exercise: exercise });
       } catch (err) {
+        console.log(err)
         return Boom.serverUnavailable("Database Error");
       }
     },
