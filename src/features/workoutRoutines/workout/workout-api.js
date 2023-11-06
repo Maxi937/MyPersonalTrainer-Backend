@@ -114,14 +114,15 @@ const workoutApi = {
   },
 
   delete: {
-    method: "DELETE",
-    path: "/api/workouts/{id}",
-    auth: {
-      strategy: "jwt",
-    },
+    method: "POST",
+    path: "/api/workouts/delete",
+    auth: false,
     handler: async function (request, h) {
       try {
-        await db.Workout.deleteOne(request.params.id);
+        console.log(request.payload)
+
+        const userId = getUserIdFromRequest(request);
+        await db.Workout.findOneAndDelete({ name: request.payload.name, createdBy: userId })
         return h.response({ status: "success" }).code(202);
       } catch (err) {
         logger.error(err);
