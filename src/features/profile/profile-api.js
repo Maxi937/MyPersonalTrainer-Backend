@@ -74,15 +74,12 @@ const profileApi = {
 
         const workouts = await db.Workout.getWorkoutsByUser(userId);
         const exercises = await db.Exercise.getExerciseByUser(userId);
-        console.log(exercises)
 
         const userProfile = {
           userDetails,
           workouts,
           exercises
         } 
-
-        console.log(userProfile)
 
         return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {

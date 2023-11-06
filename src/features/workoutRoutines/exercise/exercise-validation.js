@@ -4,10 +4,10 @@ import { MongooseDetailsSpec, IdSpec } from "../../../database/mongo/mongo-valid
 export const ExerciseSpec = Joi.object()
   .keys({
     name: Joi.string().required(),
-    description: Joi.string().required(),
+    description: Joi.string(),
     bodyPart: Joi.string(),
     meta: Joi.object(),
-    sets: Joi.array(),
+    sets: Joi.array().required(),
     createdBy: IdSpec,
     MongooseDetailsSpec,
   })

@@ -11,7 +11,6 @@ export const exerciseSchema = new Mongoose.Schema(
     },
     description: {
       type: String,
-      required: true,
     },
     bodyPart: {
       type: String,
