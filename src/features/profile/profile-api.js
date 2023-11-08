@@ -80,7 +80,7 @@ const profileApi = {
           for (let i = 0; i < workouts.length; i++) {
             if (workouts[i].hasOwnProperty("history")) {
               for (let x = 0; x < workouts[i].history.length; x++) {
-                workouts[i].date = formatISOToDate(history[x]);
+                workouts[i].date = formatISOToDate(workouts[i].history[x]);
                 history.push(workouts[i]);
               }
             }
@@ -94,7 +94,7 @@ const profileApi = {
           history,
         };
 
-        console.log(userProfile);
+        // console.log(userProfile);
 
         return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {
