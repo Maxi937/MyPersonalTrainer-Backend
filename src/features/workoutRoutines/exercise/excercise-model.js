@@ -19,12 +19,10 @@ export const exerciseSchema = new Mongoose.Schema(
       type: Object,
       required: false,
     },
-    sets: [
-      {
-        type: Array,
-        required: false,
-      },
-    ],
+    sets: {
+      type: Object,
+      required: false,
+    },
     createdBy: {
       type: Mongoose.SchemaTypes.ObjectId,
       ref: "User",
@@ -36,7 +34,7 @@ export const exerciseSchema = new Mongoose.Schema(
 
 exerciseSchema.statics.getExerciseByUser = async function (userId) {
   try {
-    return await this.find({ createdBy: userId }).lean()
+    return await this.find({ createdBy: userId }).lean();
   } catch (err) {
     logger.error(err);
     return err;

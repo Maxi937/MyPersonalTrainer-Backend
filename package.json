@@ -6,6 +6,7 @@
   "main": "src/app.js",
   "type": "module",
   "scripts": {
+    "seed": "node seed/seed.js",
     "start": "cross-env NODE_ENV=production node src/app.js",
     "devprod": "cross-env NODE_ENV=devprod node src/app.js",
     "dev": "cross-env NODE_ENV=development nodemon .src/app.js",

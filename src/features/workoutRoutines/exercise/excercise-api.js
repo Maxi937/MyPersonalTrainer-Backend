@@ -68,14 +68,6 @@ const exerciseApi = {
 
         const data = request.payload
         data.createdBy = userId
-
-
-        if(data.sets[0].hasOwnProperty("reps")) {
-          console.log("android")
-          for(let i = 0; i < data.sets.length; i++) {
-            data.sets[i] = data.sets[i].reps
-          }
-        }
        
         const exercise = await db.Exercise.create(data);
         return h.response({ status: "success", exercise: exercise });
