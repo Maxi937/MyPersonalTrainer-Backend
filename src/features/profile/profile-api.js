@@ -57,14 +57,12 @@ const profileApi = {
     handler: async function (request, h) {
       try {
         const userId = getUserIdFromRequest(request);
+        const user = await db.User.find().lean().getById(userId);
 
-        if (!userId) {
+        if (!user) {
           return Boom.unauthorized();
         }
 
-        console.log("user requesting profile", userId);
-
-        const user = await db.User.find().lean().getById(userId);
 
         const userDetails = {
           fname: user.fname,
