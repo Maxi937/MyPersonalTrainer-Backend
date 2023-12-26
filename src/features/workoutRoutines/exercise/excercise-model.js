@@ -10,9 +10,11 @@ export const exerciseSchema = new Mongoose.Schema(
       required: true,
     },
     description: {
+      required: true,
       type: String,
     },
     bodyPart: {
+      required: true,
       type: String,
     },
     meta: {
