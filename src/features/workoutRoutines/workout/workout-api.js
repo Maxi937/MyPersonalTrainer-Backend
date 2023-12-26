@@ -163,9 +163,8 @@ const workoutApi = {
     handler: async function (request, h) {
       try {
         console.log(request.payload)
-
         const userId = getUserIdFromRequest(request);
-        await db.Workout.findOneAndDelete({ name: request.payload.name, createdBy: userId })
+        await db.Workout.findOneAndDelete({ _id: request.payload._id, createdBy: userId })
         return h.response({ status: "success" }).code(202);
       } catch (err) {
         logger.error(err);
