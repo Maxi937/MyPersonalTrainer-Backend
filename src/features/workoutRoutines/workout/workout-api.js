@@ -100,23 +100,12 @@ const workoutApi = {
     handler: async function (request, h) {
       try {
         const userId = getUserIdFromRequest(request);
-        const exercisesToAdd = [];
 
         if (!userId) {
           return Boom.unauthorized();
         }
 
-        const userExercises = request.payload.exercises
-        console.log(userExercises)
-
-        for(let i = 0;i < userExercises.length ; i++) {
-          console.log("looking for ",  userExercises[i].name)
-          const { _id } = await db.Exercise.findOne({ name: userExercises[i].name, createdBy: userId })
-          console.log(_id)
-          exercisesToAdd.push(_id)
-        }
-
-        const workout = await db.Workout.create({ name: request.payload.name, exercises: exercisesToAdd, createdBy: userId, history: [] });
+        const workout = await db.Workout.create({ name: request.payload.name, exercises: request.payload.exercises, createdBy: userId, history: [] });
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {
