@@ -11,6 +11,7 @@ export const workoutSchema = new Mongoose.Schema(
       {
         type: Mongoose.SchemaTypes.ObjectId,
         ref: "Exercise",
+        autopopulate: true,
       },
     ],
     createdBy: {
@@ -21,8 +22,9 @@ export const workoutSchema = new Mongoose.Schema(
     history: [
       {
         type: Mongoose.SchemaTypes.ObjectId,
-        ref: "Workout",
+        ref: "History",
         required: false,
+        autopopulate: true,
       },
     ],
   },
@@ -33,13 +35,24 @@ export const workoutSchema = new Mongoose.Schema(
 workoutSchema.statics.getWorkoutsByUser = async function (userId) {
   try {
     return await this.find({ createdBy: userId })
-      .populate("exercises")
+      .populate(["history", "exercises"])
       .lean();
   } catch (err) {
     logger.error(err);
     return err;
   }
 };
+
+workoutSchema.statics.getWorkoutHistoryByUser = async function (userId) {
+  try {
+    return await this.find({ createdBy: userId })
+      .populate("history")
+      .lean();
+  } catch (err) {
+    logger.error(err);
+    return err;
+  }
+}
 
 workoutSchema.statics.deleteAll = async function () {
   try {

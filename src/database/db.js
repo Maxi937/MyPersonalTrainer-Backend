@@ -5,6 +5,7 @@ import { User } from "../features/user/user-model.js";
 import { Trainer } from "../features/trainer/trainer-model.js";
 import { Exercise } from "../features/workoutRoutines/exercise/excercise-model.js";
 import { Workout } from "../features/workoutRoutines/workout/workout-model.js";
+import { History } from "../features/workoutRoutines/workout/history-model.js"
 import PhotoStorage from "./supabase/PhotoStorage.js";
 
 export const db = {
@@ -19,6 +20,7 @@ export const db = {
         this.Trainer = Trainer;
         this.Exercise = Exercise;
         this.Workout = Workout;
+        this.History = History
         this.Connection = await connectMongo();
         break;
       default:

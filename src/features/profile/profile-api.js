@@ -1,5 +1,6 @@
 import Boom from "@hapi/boom";
 import fs from "fs";
+import moment from "moment";
 import logger from "../../utility/logger.js";
 import { getUserIdFromRequest } from "../../utility/jwt-utils.js";
 import { db } from "../../database/db.js";
@@ -63,7 +64,6 @@ const profileApi = {
           return Boom.unauthorized();
         }
 
-
         const userDetails = {
           fname: user.fname,
           lname: user.lname,
@@ -72,20 +72,22 @@ const profileApi = {
 
         const workouts = await db.Workout.getWorkoutsByUser(userId);
         const exercises = await db.Exercise.getExerciseByUser(userId);
+      
 
-        for(let i = 0; i<=workouts.length; i++) {
+        for (let i = 0; i <= workouts.length; i++) {
           try {
-            if(workouts[i].hasOwnProperty("history")) {
+            if (workouts[i].hasOwnProperty("history")) {
               if (workouts[i].history.length >= 1) {
-                console.log("history found")
-                workouts[i].history = await db.Workout.find({ _id: workouts[i]._id, select: "history" }).populate("exercises").lean()
-                console.log(workouts[i].history)
+                for (let x = 0; x <= workouts[i].history.length; x++) {
+                  workouts[i].history[x] = await db.History.findOne({_id: workouts[i].history[x]._id}).populate("exercises").lean();
+                  workouts[i].history[x].createdAt = moment(Date(workouts[i].history[x].createdAt)).format("DD-MMM-YY")
+                  console.log(workouts[i].history[x]);
+                }
               }
             }
-          } catch(err) {
-
+          } catch (err) {
+            console.log(err);
           }
-         
         }
 
         const userProfile = {

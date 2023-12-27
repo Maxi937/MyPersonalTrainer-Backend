@@ -52,12 +52,13 @@ const workoutApi = {
 
   createHistory: {
     method: "POST",
-    path: "/api/workouts/history",
+    path: "/api/workouts/history/{id}",
     cors: true,
     auth: false,
     handler: async function (request, h) {
       try {
         console.log("PAYLOAD: ", request.payload)
+        console.log("Id: ", request.params.id)
         request.payload.date = new Date() // workaround for parsing java date string for mongoose 
         const userId = getUserIdFromRequest(request);
 
@@ -65,13 +66,13 @@ const workoutApi = {
           return Boom.unauthorized();
         }
         
-        const newWorkout = await db.Workout.create(request.payload)
-        const workout = await db.Workout.findOne({ _id: request.payload._id, createdBy: userId})
+        const newWorkout = await db.History.create({ exercises: request.payload, createdBy: userId})
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId})
         
-        if(workout.history) {
-          workout.history.push(newWorkout)
+        if(workout.hasOwnProperty("history")) {
+          workout.history.push(newWorkout._id)
         } else {
-          workout.history = [ newWorkout ]
+          workout.history = [ newWorkout._id ]
         }
         
         workout.save()
@@ -85,14 +86,14 @@ const workoutApi = {
     tags: ["api"],
     description: "Add History",
     notes: "Returns the newly created user",
-    validate: {
-      payload: WorkoutSpec,
-      failAction(request, h, err) {
-        console.log("JOI:", err.message);
-        return Boom.badRequest(err.message);
-        // return logger.error("JOI validation failure"); // set up a log level for validation errors
-      },
-    },
+    // validate: {
+    //   payload: WorkoutSpec,
+    //   failAction(request, h, err) {
+    //     console.log("JOI hhhhhh:", err.message);
+    //     return Boom.badRequest(err.message);
+    //     // return logger.error("JOI validation failure"); // set up a log level for validation errors
+    //   },
+    // },
   },
 
   // Need Service here to lookup the exercises the user already has and to create if not found - at the moment it just creates new exercises each time
