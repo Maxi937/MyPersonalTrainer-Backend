@@ -25,6 +25,7 @@ suite("User API tests", () => {
 
   test("User Management - Create User", async () => {
     const { user } = await myPersonalTrainerService.createUser(maggie);
+    console.log(user)
     assertSubset(maggie, user);
     assert.isDefined(user._id);
   });

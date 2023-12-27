@@ -28,9 +28,11 @@ suite("Authentication API tests", async () => {
     myPersonalTrainerService.clearAuth();
     const { user } = await myPersonalTrainerService.createUser(maggie);
     const response = await myPersonalTrainerService.authenticate(maggie);
-    console.log(response)
 
     const userInfo = decodeToken(response.token);
+    console.log(userInfo)
+    console.log(user.email)
+    console.log(user._id)
     assert.equal(userInfo.email, user.email);
     assert.equal(userInfo.userId, user._id);
   });

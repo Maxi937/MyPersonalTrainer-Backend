@@ -63,7 +63,6 @@ const userApi = {
       try {
         let user = request.payload;
         user.password = await encryptPassword(user.password);
-        console.log(user)
 
         if (await db.User.isDuplicateEmail(user.email)) {
           return Boom.badRequest("Duplicate email");
@@ -71,7 +70,7 @@ const userApi = {
 
         user = await db.User.addUser(user);
 
-        return h.response({ status: "success" }).code(201);
+        return h.response({ status: "success", user: user }).code(201);
       } catch (err) {
         console.log(err);
         logger.error(err.message);
