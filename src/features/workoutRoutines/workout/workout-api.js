@@ -109,7 +109,7 @@ const workoutApi = {
           return Boom.unauthorized();
         }
 
-        const workout = await db.Workout.create({ name: request.payload.name, exercises: request.payload.exercises, createdBy: userId, history: [] });
+        const workout = await db.Workout.create({ name: request.payload.name, exercises: request.payload.exercises, createdBy: userId });
         const dbWorkout = await db.Workout.findOne({ _id: workout._id }).populate("exercises").lean()
         
         return h.response({ status: "success", workout: dbWorkout });
