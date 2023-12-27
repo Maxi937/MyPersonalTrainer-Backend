@@ -50,6 +50,50 @@ const workoutApi = {
     notes: "Returns user details",
   },
 
+  update: {
+    method: "POST",
+    path: "/api/workouts/{id}",
+    cors: true,
+    auth: false,
+    handler: async function (request, h) {
+      try {
+      
+        const userId = getUserIdFromRequest(request);
+
+        if(!userId) {
+          return Boom.unauthorized();
+        }
+
+        
+
+        const newExercises = request.payload.exercises
+        console.log(newExercises)
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId}).populate("exercises")
+        workout.exercises = newExercises
+
+        workout.save()
+        console.log("return")
+        console.log(workout)
+ 
+        return h.response({ status: "success", workout: workout });
+      } catch (err) {
+        logger.error(err.message);
+        return Boom.serverUnavailable("Database Error");
+      }
+    },
+    tags: ["api"],
+    description: "Add History",
+    notes: "Returns the newly created user",
+    // validate: {
+    //   payload: WorkoutSpec,
+    //   failAction(request, h, err) {
+    //     console.log("JOI hhhhhh:", err.message);
+    //     return Boom.badRequest(err.message);
+    //     // return logger.error("JOI validation failure"); // set up a log level for validation errors
+    //   },
+    // },
+  },
+
   createHistory: {
     method: "POST",
     path: "/api/workouts/history/{id}",
@@ -57,8 +101,6 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        console.log("PAYLOAD: ", request.payload)
-        console.log("Id: ", request.params.id)
         request.payload.date = new Date() // workaround for parsing java date string for mongoose 
         const userId = getUserIdFromRequest(request);
 
