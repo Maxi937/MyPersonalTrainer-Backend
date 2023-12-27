@@ -9,7 +9,10 @@ export const ExerciseSpec = Joi.object()
     meta: Joi.object(),
     sets: Joi.array(),
     createdBy: IdSpec,
-    MongooseDetailsSpec,
+    _id: IdSpec,
+    __v: Joi.allow(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
   })
   .label("ExerciseDetails");
 

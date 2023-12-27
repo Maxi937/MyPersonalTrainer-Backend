@@ -4,7 +4,7 @@ export const IdSpec = Joi.alternatives().try(Joi.string(), Joi.object()).descrip
 
 export const MongooseDetailsSpec = Joi.object().keys({
   _id: IdSpec,
-  __v: Joi.number(),
+  __v: Joi.allow(),
   createdAt: Joi.date(),
   updatedAt: Joi.date(),
 });

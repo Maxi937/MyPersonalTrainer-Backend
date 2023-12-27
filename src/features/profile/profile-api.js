@@ -72,27 +72,27 @@ const profileApi = {
 
         const workouts = await db.Workout.getWorkoutsByUser(userId);
         const exercises = await db.Exercise.getExerciseByUser(userId);
-        const history = [];
 
-        if (workouts) {
-          for (let i = 0; i < workouts.length; i++) {
-            if (workouts[i].hasOwnProperty("history")) {
-              for (let x = 0; x < workouts[i].history.length; x++) {
-                workouts[i].date = formatISOToDate(workouts[i].history[x]);
-                history.push(workouts[i]);
+        for(let i = 0; i<=workouts.length; i++) {
+          try {
+            if(workouts[i].hasOwnProperty("history")) {
+              if (workouts[i].history.length >= 1) {
+                console.log("history found")
+                workouts[i].history = await db.Workout.find({ _id: workouts[i]._id, select: "history" }).populate("exercises").lean()
+                console.log(workouts[i].history)
               }
             }
+          } catch(err) {
+
           }
+         
         }
 
         const userProfile = {
           userDetails,
           workouts,
           exercises,
-          history,
         };
-
-        // console.log(userProfile);
 
         return h.response({ status: "success", profile: userProfile }).code(200);
       } catch (err) {

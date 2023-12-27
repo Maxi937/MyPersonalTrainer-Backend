@@ -8,7 +8,11 @@ export const WorkoutSpec = Joi.object()
     exercises: Joi.array().items(ExerciseSpec),
     history: Joi.allow(),
     date: Joi.allow(),
-    MongooseDetailsSpec,
+    _id: IdSpec,
+    __v: Joi.allow(),
+    createdBy: Joi.allow(),
+    createdAt: Joi.date(),
+    updatedAt: Joi.date(),
   })
   .label("WorkoutDetails");
 

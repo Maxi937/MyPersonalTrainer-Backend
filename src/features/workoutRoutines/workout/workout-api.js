@@ -4,6 +4,7 @@ import { WorkoutSpec } from "./workout-validation.js";
 import logger from "../../../utility/logger.js";
 import { db } from "../../../database/db.js";
 import { getUserIdFromRequest } from "../../../utility/jwt-utils.js";
+import { formatStringToISO } from "../../../utility/formatutils.js";
 
 const workoutApi = {
   find: {
@@ -33,7 +34,7 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        const workout = await db.Exercise.find().lean().getById(request.params.id);
+        const workout = await db.Workout.find().lean().getById(request.params.id);
 
         if (!workout) {
           return Boom.notFound();
@@ -56,25 +57,27 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
+        console.log("PAYLOAD: ", request.payload)
+        request.payload.date = new Date() // workaround for parsing java date string for mongoose 
         const userId = getUserIdFromRequest(request);
 
         if(!userId) {
           return Boom.unauthorized();
         }
-
-        const workout = await db.Workout.findOne({ name: request.payload.name, createdBy: userId})
+        
+        const newWorkout = await db.Workout.create(request.payload)
+        const workout = await db.Workout.findOne({ _id: request.payload._id, createdBy: userId})
+        
         if(workout.history) {
-          workout.history.push(new Date())
+          workout.history.push(newWorkout)
         } else {
-          workout.history = [ new Date() ]
+          workout.history = [ newWorkout ]
         }
         
         workout.save()
-        console.log("new history ", workout.name)
  
         return h.response({ status: "success", workout: workout });
       } catch (err) {
-        console.log(err);
         logger.error(err.message);
         return Boom.serverUnavailable("Database Error");
       }
@@ -85,6 +88,7 @@ const workoutApi = {
     validate: {
       payload: WorkoutSpec,
       failAction(request, h, err) {
+        console.log("JOI:", err.message);
         return Boom.badRequest(err.message);
         // return logger.error("JOI validation failure"); // set up a log level for validation errors
       },
@@ -106,8 +110,9 @@ const workoutApi = {
         }
 
         const workout = await db.Workout.create({ name: request.payload.name, exercises: request.payload.exercises, createdBy: userId, history: [] });
-
-        return h.response({ status: "success", workout: workout });
+        const dbWorkout = await db.Workout.findOne({ _id: workout._id }).populate("exercises").lean()
+        
+        return h.response({ status: "success", workout: dbWorkout });
       } catch (err) {
         return Boom.serverUnavailable();
       }
