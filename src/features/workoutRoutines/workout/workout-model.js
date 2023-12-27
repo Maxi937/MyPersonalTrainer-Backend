@@ -22,6 +22,7 @@ export const workoutSchema = new Mongoose.Schema(
       {
         type: Mongoose.SchemaTypes.ObjectId,
         ref: "Workout",
+        required: false,
       },
     ],
   },
