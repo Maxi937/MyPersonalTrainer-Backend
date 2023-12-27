@@ -114,7 +114,7 @@ const workoutApi = {
         
         return h.response({ status: "success", workout: dbWorkout });
       } catch (err) {
-        return Boom.serverUnavailable();
+        return Boom.serverUnavailable(err);
       }
     },
     tags: ["api"],
