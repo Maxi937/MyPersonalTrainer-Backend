@@ -62,26 +62,16 @@ const workoutApi = {
         if (!userId) {
           return Boom.unauthorized();
         }
-        
-        
-        console.log("Payload")
-        for (exercise in request.payload.exercises) {
-          console.log(exercise)
-          for (set in exercise.sets[0]) {
-            console.log(set)
-          }
-        }
 
         const newExercises = request.payload.exercises;
 
-        for(exercise in newExercises) {
-          const filter = { _id: exercise._id, createdBy: userId };
-          const update = { sets: exercise.sets };
+        newExercises.forEach(async (e) => {
+          const filter = { _id: e._id };
+          const update = { sets: e.sets };
           await db.Exercise.findOneAndUpdate(filter, update);
-        }
+        })
 
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
-
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {
