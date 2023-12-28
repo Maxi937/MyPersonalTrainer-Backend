@@ -68,7 +68,7 @@ const workoutApi = {
         console.log(request.payload)
 
         const newExercises = request.payload.exercises;
-        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises");
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
 
         console.log(workout)
 
