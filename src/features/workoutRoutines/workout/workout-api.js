@@ -64,17 +64,22 @@ const workoutApi = {
           return Boom.unauthorized();
         }
 
-        
-
         const newExercises = request.payload.exercises
-        console.log(newExercises)
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId}).populate("exercises")
-        workout.exercises = newExercises
+     
+        try {
+          for (exercise in newExercises) {
+            for (e in workout.exercises) {
+              if (exercise._id == e._id) {
+                e.sets = exercise.sets
+              }
+            }
+          }
 
+        } catch (err) {}
+          
         workout.save()
-        console.log("return")
-        console.log(workout)
- 
+     
         return h.response({ status: "success", workout: workout });
       } catch (err) {
         logger.error(err.message);
