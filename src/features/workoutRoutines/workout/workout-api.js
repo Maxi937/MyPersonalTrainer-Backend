@@ -65,15 +65,22 @@ const workoutApi = {
 
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
         const newExercises = request.payload.exercises;
-        const admin = await this.User.findOne({ role: adminDetails.role })
+        const admin = await db.User.findOne({ role: "admin" });
 
-        newExercises.forEach(async (e) => {
-          const exercise = await db.Exercise.create({ bodyPart: e.bodyPart, description: e.description, name: e.name,  sets: e.sets, createdBy: admin._id });
-          workout.exercises.pop()
-          workout.exercises.push(exercise._id)
-        })
 
-        workout.save()
+        workout.exercises = []
+        await Promise.all(
+          newExercises.map(async (e) => {
+            const exercise = await db.Exercise.create({ bodyPart: e.bodyPart, description: e.description, name: e.name, sets: e.sets, createdBy: admin._id });
+            workout.exercises.push(exercise._id);
+          })
+        );
+
+        console.log(workout.exercises);
+
+        const filter = { _id: workout._id };
+        const update = { exercises: workout.exercises };
+        await db.Workout.findOneAndUpdate(filter, update);
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {
@@ -111,7 +118,7 @@ const workoutApi = {
         const history = await db.History.create({ exercises: request.payload, createdBy: userId });
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId });
 
-        workout.history.push(history._id)
+        workout.history.push(history._id);
 
         workout.save();
 
