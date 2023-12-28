@@ -66,7 +66,8 @@ const workoutApi = {
         
         console.log("Payload")
         for (exercise in request.payload.exercises) {
-          for (set in exercise.sets) {
+          console.log(exercise)
+          for (set in exercise.sets[0]) {
             console.log(set)
           }
         }
