@@ -114,11 +114,7 @@ const workoutApi = {
         const history = await db.History.create({ exercises: request.payload, createdBy: userId });
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId });
 
-        db.Workout.findByIdAndUpdateAsync(req.params.id,
-          {
-            $push: { "history": history }
-          },
-          { safe: true, upsert: true })
+        workout.history.push(history._id)
 
         workout.save();
 
