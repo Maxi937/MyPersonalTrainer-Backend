@@ -57,29 +57,27 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-      
         const userId = getUserIdFromRequest(request);
 
-        if(!userId) {
+        if (!userId) {
           return Boom.unauthorized();
         }
 
-        const newExercises = request.payload.exercises
-        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId}).populate("exercises")
-     
+        const newExercises = request.payload.exercises;
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises");
+
         try {
           for (exercise in newExercises) {
             for (e in workout.exercises) {
               if (exercise._id == e._id) {
-                e.sets = exercise.sets
+                e.sets = exercise.sets;
               }
             }
           }
-
         } catch (err) {}
-          
-        workout.save()
-     
+
+        workout.save();
+
         return h.response({ status: "success", workout: workout });
       } catch (err) {
         logger.error(err.message);
@@ -106,24 +104,27 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        request.payload.date = new Date() // workaround for parsing java date string for mongoose 
+        request.payload.date = new Date(); // workaround for parsing java date string for mongoose
         const userId = getUserIdFromRequest(request);
 
-        if(!userId) {
+        if (!userId) {
           return Boom.unauthorized();
         }
-        
-        const newWorkout = await db.History.create({ exercises: request.payload, createdBy: userId})
-        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId})
-        
-        if(workout.hasOwnProperty("history")) {
-          workout.history.push(newWorkout._id)
-        } else {
-          workout.history = [ newWorkout._id ]
-        }
-        
-        workout.save()
- 
+
+        const history = await db.History.create({ exercises: request.payload, createdBy: userId });
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId });
+
+        db.Workout.findAndUpdate(
+          {
+            _id: request.params.id,
+          },
+          {
+            $push: { history: history },
+          }
+        );
+
+        workout.save();
+
         return h.response({ status: "success", workout: workout });
       } catch (err) {
         logger.error(err.message);
@@ -158,8 +159,8 @@ const workoutApi = {
         }
 
         const workout = await db.Workout.create({ name: request.payload.name, exercises: request.payload.exercises, createdBy: userId });
-        const dbWorkout = await db.Workout.findOne({ _id: workout._id }).populate("exercises").lean()
-        
+        const dbWorkout = await db.Workout.findOne({ _id: workout._id }).populate("exercises").lean();
+
         return h.response({ status: "success", workout: dbWorkout });
       } catch (err) {
         return Boom.serverUnavailable(err);
@@ -204,9 +205,9 @@ const workoutApi = {
     auth: false,
     handler: async function (request, h) {
       try {
-        console.log(request.payload)
+        console.log(request.payload);
         const userId = getUserIdFromRequest(request);
-        await db.Workout.findOneAndDelete({ _id: request.payload._id, createdBy: userId })
+        await db.Workout.findOneAndDelete({ _id: request.payload._id, createdBy: userId });
         return h.response({ status: "success" }).code(202);
       } catch (err) {
         logger.error(err);
