@@ -68,24 +68,15 @@ const workoutApi = {
         console.log(request.payload)
 
         const newExercises = request.payload.exercises;
+
+        for(exercise in newExercises) {
+          const filter = { _id: exercise.id, createdBy: userId };
+          const update = { sets: exercise.sets };
+          await db.Exercise.findOneAndUpdate(filter, update);
+        }
+
         const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
 
-        console.log(workout)
-
-        try {
-          for (exercise in newExercises) {
-            for (e in workout.exercises) {
-              if (exercise._id == e._id) {
-                e.sets = exercise.sets;
-              }
-            }
-          }
-        } catch (err) {}
-
-        console.log("workout after")
-        console.log(workout)
-
-        workout.save();
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {
