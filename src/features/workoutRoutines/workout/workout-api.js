@@ -63,15 +63,17 @@ const workoutApi = {
           return Boom.unauthorized();
         }
 
+        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
         const newExercises = request.payload.exercises;
+        const admin = await this.User.findOne({ role: adminDetails.role })
 
         newExercises.forEach(async (e) => {
-          const filter = { _id: e._id };
-          const update = { sets: e.sets };
-          await db.Exercise.findOneAndUpdate(filter, update);
+          const exercise = await db.Exercise.create({ bodyPart: e.bodyPart, description: e.description, name: e.name,  sets: e.sets, createdBy: admin._id });
+          workout.exercises.pop()
+          workout.exercises.push(exercise._id)
         })
 
-        const workout = await db.Workout.findOne({ _id: request.params.id, createdBy: userId }).populate("exercises").lean();
+        workout.save()
 
         return h.response({ status: "success", workout: workout });
       } catch (err) {
