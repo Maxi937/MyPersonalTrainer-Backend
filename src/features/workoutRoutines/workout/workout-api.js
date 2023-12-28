@@ -74,7 +74,7 @@ const workoutApi = {
         const newExercises = request.payload.exercises;
 
         for(exercise in newExercises) {
-          const filter = { _id: exercise.id, createdBy: userId };
+          const filter = { _id: exercise._id, createdBy: userId };
           const update = { sets: exercise.sets };
           await db.Exercise.findOneAndUpdate(filter, update);
         }
