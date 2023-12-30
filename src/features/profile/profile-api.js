@@ -80,7 +80,7 @@ const profileApi = {
               if (workouts[i].history.length >= 1) {
                 for (let x = 0; x <= workouts[i].history.length; x++) {
                   workouts[i].history[x] = await db.History.findOne({_id: workouts[i].history[x]._id}).populate("exercises").lean();
-                  workouts[i].history[x].createdAt = moment(Date(workouts[i].history[x].createdAt)).format("DD-MMM-YY")
+                  workouts[i].history[x].createdAt = moment(workouts[i].history[x].createdAt).format("DD-MMM-YY")
                   console.log(workouts[i].history[x]);
                 }
               }
